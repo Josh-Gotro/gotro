@@ -3,17 +3,21 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": "21.5.0"
+  },
   "scripts": {
     "vite": "vite",
     "server": "nodemon server.cjs",
     "dev": "concurrently \"npm:server\" \"npm:vite\"",
-    "build": "node $(npm bin)/vite build",
+    "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "serve -s dist",
     "heroku-postbuild": "npm run build"
   },
   "dependencies": {
+    "concurrently": "^8.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "vite": "^5.0.8"

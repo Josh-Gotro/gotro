@@ -43,4 +43,8 @@ http {
         }
 
         location / {
-            add_header 'Cache-Control' "public, max-age=3600";
+                    add_header 'Cache-Control' "public, max-age=3600";
+                    try_files $uri $uri/ /index.html;
+                }
+            }
+}

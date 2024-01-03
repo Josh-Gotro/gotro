@@ -1,11 +1,14 @@
 
 import { useEffect, useState } from 'react';
 import FallingLetter from './FallingLetter';
+import { useNavigate } from 'react-router-dom';
 import './welcome.css';
 
 const Welcome = () => {
   const [letters, setLetters] = useState([]);
   const [nextId, setNextId] = useState(0);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,11 +27,14 @@ const Welcome = () => {
   };
 
   return (
-  <div style={{ position: 'relative', height: '100vh', width: '100vw', overflow: 'visible' }}>
-    {letters.map((letter) => (
-      <FallingLetter key={letter.id} {...letter} removeLetter={removeLetter} />
-    ))}
-  </div>
+    <div style={{ position: 'relative', height: '100vh', width: '100vw', overflow: 'visible' }}>
+      {letters.map((letter) => (
+        <FallingLetter key={letter.id} {...letter} removeLetter={removeLetter} />
+      ))}
+      <button className="main-button" onClick={() => navigate('/ms')}>
+        CLICK
+      </button>
+    </div>
   );
 };
 

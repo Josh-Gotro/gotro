@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './makerspace.css';
 
+
 const MakerSpace = () => {
   const [input, setInput] = useState('');
   const [showInfo, setShowInfo] = useState(false);
@@ -8,11 +9,11 @@ const MakerSpace = () => {
   const handleChange = (event) => {
     const value = event.target.value.toLowerCase();
     setInput(value);
-    if (value === 'ramona' || value === 'rhymi') {
-      setShowInfo(true);
-    } else {
-      setShowInfo(false);
-    }
+if (value === import.meta.env.VITE_NAME1 || value === import.meta.env.VITE_NAME2) {
+  setShowInfo(true);
+} else {
+  setShowInfo(false);
+}
   };
 
 return (
@@ -22,8 +23,8 @@ return (
     </div>
     {showInfo &&
       <div className="info-container">
-        <p className="info-text">Door: 2406<br />Wifi: 907Maker</p>
-      </div>
+      <p className="info-text">Door: {import.meta.env.VITE_DOOR}<br />Wifi: {import.meta.env.VITE_WIFI}</p>
+    </div>
     }
   </div>
 );

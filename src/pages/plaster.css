@@ -25,7 +25,7 @@ input[type="number"] {
 /* Style table */
 table {
   width: 100%;
-  max-width: 600px;
+  max-width: 550px;
   margin: auto;
   margin-top: 40px;
 }
@@ -35,7 +35,7 @@ table {
 /* Style table headers */
 th {
   background-color: #504d4d;
-  padding: 5px;
+  padding: 10px;
   font-size: 0.8em;
 }
 

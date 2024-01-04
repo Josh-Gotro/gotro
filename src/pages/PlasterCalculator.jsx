@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import './plaster.css';
+import plasterCalcImage from '../assets/plaster-calc-function.png';
+
 
 const PlasterCalculator = () => {
   const [length, setLength] = useState('');
@@ -23,7 +25,7 @@ const PlasterCalculator = () => {
   };
 
   const calculatePlasterAndWater = (length, width, height) => {
-    const volume = length * width * height; // Volume of the object in cubic inches
+    const volume = length * width * height; // Volume of the mould in cubic inches
     const volumeWithExtra = volume * 1.075; // Add 7.5% more volume to allow for spills, leaks, etc.
     const quartsWater = volumeWithExtra / 80; // Amount of water needed in quarts
     const plasterWeightInPounds = quartsWater * 2.85; // Weight of plaster needed in pounds
@@ -34,7 +36,7 @@ const PlasterCalculator = () => {
 
     return {
       volume: volumeWithExtra,
-      water: quartsWater * 32, // Convert quarts of water to ounces
+      water: quartsWater * 32 * 1.043 , // Convert quarts of water to ounces, then from volume to weight. 1.043 is the weight of 1 oz of water at 70 degrees F
       plasterPounds,
       plasterOunces,
     };
@@ -79,9 +81,9 @@ const PlasterCalculator = () => {
           <thead>
             <tr>
               <th>LxWxH, inches</th>
-              <th>Volume (cu in)</th>
-              <th>Water required (oz)</th>
-              <th>Plaster required(lbs & oz)</th>
+              <th>Volume <br/>(cu in)</th>
+              <th>Water required <br/>(oz by weight)</th>
+              <th>Plaster required<br/>(lbs & oz)</th>
             </tr>
           </thead>
           <tbody>
@@ -105,11 +107,7 @@ const PlasterCalculator = () => {
           {showFormula ? 'Hide formula' : 'see formula used to calculate'}
         </span>
         {showFormula && (
-          <div className="show-more-info">
-            <p>Rectangle Volume = length x width x height</p>
-            <p>2.85 lbs plaster : 1 quart (2 pounds) water.</p>
-            <p> makes 80 cubic inches of mixed plaster.</p>
-          </div>
+          <img src={plasterCalcImage} alt="plaster calc function" />
         )}
 
         <span style={{ color: 'gold' }} onClick={handleCommonRatiosToggle}>

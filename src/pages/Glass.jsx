@@ -24,9 +24,11 @@ const Glass = () => {
     <div>
       <h1>Glass</h1>
       <div className="carousel">
-        <button onClick={prevImage}>Previous</button>
         <img className="glass-image" src={images[currentImageIndex]} alt={`Glass ${currentImageIndex + 1}`} />
-        <button onClick={nextImage}>Next</button>
+        <div className="button-container">
+          <button onClick={prevImage}>Previous</button>
+          <button onClick={nextImage}>Next</button>
+        </div>
       </div>
     </div>
   );

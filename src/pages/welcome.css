@@ -38,3 +38,18 @@
     transform: translateY(calc(100vh - 50px));
   }
 }
+
+@media (max-width: 600px) {
+  .main-button {
+    font-size: 3em;
+      width: 100vw;
+        height: 20%;
+    /* Adjust this value as needed */
+  }
+.main-button:hover {
+  background-color: transparent;
+  /* Pink at 40% transparency */
+  color: white;
+}
+
+}

@@ -201,6 +201,7 @@ const PlasterCalculator = () => {
         </span>
         {showTiming && (
           <>
+          <div className="responsive-table">
             <table>
               <thead>
                 <tr>
@@ -237,6 +238,7 @@ const PlasterCalculator = () => {
                 </tr>
               </tbody>
             </table>
+          </div>
 
             <table>
               <thead>
@@ -263,7 +265,9 @@ const PlasterCalculator = () => {
           </>
         )}
       </div>
+
     </div>
+
   );
 };
 

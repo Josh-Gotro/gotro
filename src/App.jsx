@@ -12,8 +12,7 @@ function App() {
         <Route path="/ms" element={<MakerSpace />} />
         <Route path="/plaster-calculator" element={<PlasterCalculator />} />
         <Route path="/glass" element={<Glass />} />
-
-        {/* Add more routes as needed */}
+        {/* add more routes here */}
       </Routes>
     </Router>
   );

@@ -1,11 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './makerspace.css';
 
 const MakerSpace = () => {
+  const [placeholder, setPlaceholder] = useState('');
   const [input, setInput] = useState('');
   const [showInfo, setShowInfo] = useState(false);
   const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const placeholders = ['glass', 'plaster'];
+    let i = 0;
+    const intervalId = setInterval(() => {
+      setPlaceholder(placeholders[i]);
+      i = (i + 1) % placeholders.length;
+    }, 3000); // Change placeholder every 2 seconds
+
+    return () => clearInterval(intervalId); // Clean up on component unmount
+  }, []);
 
   const handleChange = (event) => {
     const value = event.target.value.toLowerCase();
@@ -24,7 +37,7 @@ const MakerSpace = () => {
   return (
     <div className="center-container">
       <div className="input-container">
-        <input className="center-input" value={input} onChange={handleChange} />
+        <input className="center-input" value={input} onChange={handleChange} placeholder={placeholder} />
       </div>
       {showInfo &&
         <div className="info-container">

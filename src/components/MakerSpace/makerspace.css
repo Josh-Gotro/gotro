@@ -12,11 +12,15 @@
   display: flex;
   justify-content: center;
 }
+
 .center-input {
   width: 80%;
   height: 50px;
   font-size: 1.5em;
   text-align: center;
+  z-index: 2;
+  opacity: 80%;
+  line-height: 50px;
 }
 
 .info-container {
@@ -31,4 +35,9 @@
   color: #FF69B4;
   /* Neon pink */
   text-align: center;
+}
+
+.center-input::placeholder {
+  color: #47ec2a6e;
+    font-size: 1.3em;
 }

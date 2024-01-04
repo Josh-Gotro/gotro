@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import '../../pages/Welcome/welcome.css';
+import './falling-letter.css';
 import PropTypes from 'prop-types';
 
 const FallingLetter = ({ left, removeLetter, id }) => {

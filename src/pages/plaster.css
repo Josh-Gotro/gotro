@@ -1,0 +1,42 @@
+/* Remove arrows from number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Style inputs */
+input[type="number"] {
+  width: 70px;
+  height: 30px;
+  margin-right: 10px;
+  text-align: center;
+  /* Center the text */
+}
+
+/* Center input group */
+.input-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Take up full viewport height */
+}
+
+/* Style table */
+table {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* Style table headers */
+th {
+  background-color: #504d4d;
+  padding: 10px;
+}
+
+/* Style table cells */
+td {
+  padding: 10px;
+    text-align: center;
+}

@@ -27,18 +27,23 @@ table {
   width: 100%;
   max-width: 600px;
   margin: auto;
+  margin-top: 40px;
 }
+
+
 
 /* Style table headers */
 th {
   background-color: #504d4d;
-  padding: 10px;
+  padding: 5px;
+  font-size: 0.8em;
 }
 
 /* Style table cells */
 td {
-  padding: 10px;
-    text-align: center;
+  padding: 5px;
+  text-align: center;
+  font-size: 0.8em;
 }
 
 .show-more-info {

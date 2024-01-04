@@ -104,7 +104,7 @@ const PlasterCalculator = () => {
 
       <div className="show-more-info-section">
         <span style={{ color: 'gold' }} onClick={handleFormulaToggle}>
-          {showFormula ? 'Hide formula' : 'see formula used to calculate'}
+          {showFormula ? 'hide formula' : 'see formula used to calculate'}
         </span>
         {showFormula && (
           <img src={plasterCalcImage} alt="plaster calc function" />
@@ -112,7 +112,7 @@ const PlasterCalculator = () => {
 
         <span style={{ color: 'gold' }} onClick={handleCommonRatiosToggle}>
           {showCommonRatios
-            ? 'Hide common mix ratios'
+            ? 'hide common mix ratios'
             : 'see common mix ratios'}
         </span>
         {showCommonRatios && (
@@ -197,7 +197,7 @@ const PlasterCalculator = () => {
         )}
 
         <span style={{ color: 'gold' }} onClick={handleTimingToggle}>
-          {showTiming ? 'Hide timing' : 'see timing'}
+          {showTiming ? 'hide timing' : 'see timing'}
         </span>
         {showTiming && (
           <>

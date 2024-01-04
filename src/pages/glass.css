@@ -1,0 +1,15 @@
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-image {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+}
+
+button {
+  margin: 0 10px;
+}

@@ -59,19 +59,19 @@ const PlasterCalculator = () => {
           type="number"
           value={length}
           onChange={(e) => setLength(e.target.value)}
-          placeholder="Length (inches)"
+          placeholder="Length (in)"
         />
         <input
           type="number"
           value={width}
           onChange={(e) => setWidth(e.target.value)}
-          placeholder="Width (inches)"
+          placeholder="Width (in)"
         />
         <input
           type="number"
           value={height}
           onChange={(e) => setHeight(e.target.value)}
-          placeholder="Height (inches)"
+          placeholder="Height (in)"
         />
         <button onClick={handleSubmit}>Calculate</button>
       </div>

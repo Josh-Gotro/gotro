@@ -40,3 +40,20 @@ td {
   padding: 10px;
     text-align: center;
 }
+
+.show-more-info {
+  max-width: 600px;
+  /* Set maximum width */
+  margin: auto;
+  /* Center the div */
+  text-align: center;
+  /* Center the text */
+}
+
+.show-more-info-section {
+  margin-top: 50px;
+  display: flex;
+  /* Use flexbox */
+  flex-direction: column;
+  /* Arrange children in a column */
+}

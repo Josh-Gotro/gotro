@@ -38,6 +38,7 @@
 }
 
 .center-input::placeholder {
-  color: #47ec2a6e;
+  color: #ceffc54d;
     font-size: 1.3em;
+    opacity: 40%;
 }

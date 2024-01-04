@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Welcome from './pages/Welcome.jsx'
-import MakerSpace from './pages/MakerSpace.jsx'
-import PlasterCalculator from './pages/PlasterCalculator.jsx'
-import Glass from './pages/Glass.jsx'
+import Welcome from './pages/Welcome/Welcome.jsx'
+import MakerSpace from './components/MakerSpace/MakerSpace.jsx'
+import PlasterCalculator from './pages/Plaster/PlasterCalculator.jsx'
+import Glass from './pages/Glass/Glass.jsx'
 
 function App() {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import './welcome.css';
+import '../../pages/Welcome/welcome.css';
 import PropTypes from 'prop-types';
 
 const FallingLetter = ({ left, removeLetter, id }) => {
@@ -64,7 +64,7 @@ const FallingLetter = ({ left, removeLetter, id }) => {
 FallingLetter.propTypes = {
   left: PropTypes.number.isRequired,
   removeLetter: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired, // Change this line
 };
 
 export default FallingLetter;

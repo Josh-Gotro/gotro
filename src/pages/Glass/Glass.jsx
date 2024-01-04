@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import image1 from '../assets/agave-crown-profile.JPG';
-import image2 from '../assets/agave-crown-sunlight.JPG';
-import image3 from '../assets/cacti-trio-wip.JPG';
-import image4 from '../assets/cacti-trio-wip2.JPG';
-import image5 from '../assets/chess-wip.JPG';
-import image6 from '../assets/first-cactus.JPG';
+import image1 from '../../assets/agave-crown-profile.JPG';
+import image2 from '../../assets/agave-crown-sunlight.JPG';
+import image3 from '../../assets/cacti-trio-wip.JPG';
+import image4 from '../../assets/cacti-trio-wip2.JPG';
+import image5 from '../../assets/chess-wip.JPG';
+import image6 from '../../assets/first-cactus.JPG';
 import './glass.css';
 
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './plaster.css';
-import plasterCalcImage from '../assets/plaster-calc-function.png';
+import plasterCalcImage from '../../assets/plaster-calc-function.png';
 
 
 const PlasterCalculator = () => {
@@ -102,13 +102,76 @@ const PlasterCalculator = () => {
         </table>
       )}
 
-      <div className="show-more-info-section">
-        <span style={{ color: 'gold' }} onClick={handleFormulaToggle}>
-          {showFormula ? 'hide formula' : 'see formula used to calculate'}
-        </span>
-        {showFormula && (
-<img style={{ width: '90%', height: 'auto' }} src={plasterCalcImage} alt="plaster calc function" />        )}
 
+
+      <div className="show-more-info-section">
+        <span style={{ color: 'gold' }} onClick={handleTimingToggle}>
+          {showTiming ? 'hide timing' : 'see timing'}
+        </span>
+        {showTiming && (
+          <>
+          <div className="responsive-table">
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Add plaster</th>
+                  <th>Soak</th>
+                  <th>Mix</th>
+                  <th>Liquid</th>
+                  <th>Thix- <br/>  otropic</th>
+                  <th>Plastic</th>
+                  <th>Done</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>min</td>
+                  <td>1 </td>
+                  <td>3</td>
+                  <td>3</td>
+                  <td>3</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>min <br/> elapsed</td>
+                  <td>1 </td>
+                  <td>4</td>
+                  <td>7</td>
+                  <td>10</td>
+                  <td>12</td>
+                  <td>15</td>
+                  <td>15</td>
+                </tr>
+              </tbody>
+            </table>
+</div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Plaster State</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Liquid plaster</td>
+                  <td>Flows like heavy cream</td>
+                </tr>
+                <tr>
+                  <td>Thixotropic plaster</td>
+                  <td>Stands on its own but returns to liquid when shaken</td>
+                </tr>
+                <tr>
+                  <td>Plastic plaster</td>
+                  <td>Has the ability to be modeled like clay</td>
+                </tr>
+              </tbody>
+            </table>
+          </>
+        )}
         <span style={{ color: 'gold' }} onClick={handleCommonRatiosToggle}>
           {showCommonRatios
             ? 'hide common mix ratios'
@@ -194,74 +257,12 @@ const PlasterCalculator = () => {
             </tbody>
           </table>
         )}
-
-        <span style={{ color: 'gold' }} onClick={handleTimingToggle}>
-          {showTiming ? 'hide timing' : 'see timing'}
+        <span style={{ color: 'gold' }} onClick={handleFormulaToggle}>
+          {showFormula ? 'hide formula' : 'see formula used to calculate'}
         </span>
-        {showTiming && (
-          <>
-          <div className="responsive-table">
-            <table>
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Add plaster</th>
-                  <th>Soak</th>
-                  <th>Mix</th>
-                  <th>Liquid</th>
-                  <th>Thix- <br/>  otropic</th>
-                  <th>Plastic</th>
-                  <th>Done</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>min</td>
-                  <td>1 </td>
-                  <td>3</td>
-                  <td>3</td>
-                  <td>3</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>0</td>
-                </tr>
-                <tr>
-                  <td>min <br/> elapsed</td>
-                  <td>1 </td>
-                  <td>4</td>
-                  <td>7</td>
-                  <td>10</td>
-                  <td>12</td>
-                  <td>15</td>
-                  <td>15</td>
-                </tr>
-              </tbody>
-            </table>
-</div>
-            <table>
-              <thead>
-                <tr>
-                  <th>Plaster State</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Liquid plaster</td>
-                  <td>Flows like heavy cream</td>
-                </tr>
-                <tr>
-                  <td>Thixotropic plaster</td>
-                  <td>Stands on its own but returns to liquid when shaken</td>
-                </tr>
-                <tr>
-                  <td>Plastic plaster</td>
-                  <td>Has the ability to be modeled like clay</td>
-                </tr>
-              </tbody>
-            </table>
-          </>
-        )}
+        {showFormula && (
+          <img style={{ width: '90%', height: 'auto' }} src={plasterCalcImage} alt="plaster calc function" />        )}
+
       </div>
 
     </div>

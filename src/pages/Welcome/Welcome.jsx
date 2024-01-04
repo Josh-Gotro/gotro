@@ -1,13 +1,12 @@
 
 import { useEffect, useState } from 'react';
-import FallingLetter from './FallingLetter';
-import { useNavigate } from 'react-router-dom';
+import FallingLetter from '../../components/FallingLetter/FallingLetter';
 import './welcome.css';
+import MakerSpace from '../../components/MakerSpace/MakerSpace';
 
 const Welcome = () => {
   const [letters, setLetters] = useState([]);
   const [nextId, setNextId] = useState(0);
-  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -31,9 +30,7 @@ const Welcome = () => {
       {letters.map((letter) => (
         <FallingLetter key={letter.id} {...letter} removeLetter={removeLetter} />
       ))}
-      <button className="main-button" onClick={() => navigate('/ms')}>
-        CLICK
-      </button>
+      <MakerSpace />
     </div>
   );
 };

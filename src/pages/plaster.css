@@ -35,7 +35,7 @@ table {
 /* Style table headers */
 th {
   background-color: #504d4d;
-  padding: 10px;
+  padding: 5px;
   font-size: 0.8em;
 }
 
@@ -46,8 +46,12 @@ td {
   font-size: 0.8em;
 }
 
+.responsive-table {
+    font-size: 0.5em;
+}
+
 .show-more-info {
-  max-width: 600px;
+  max-width: 550px;
   /* Set maximum width */
   margin: auto;
   /* Center the div */

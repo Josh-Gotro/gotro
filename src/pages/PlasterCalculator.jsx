@@ -204,19 +204,19 @@ const PlasterCalculator = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Step description</th>
+                  <th></th>
                   <th>Add plaster</th>
                   <th>Soak</th>
                   <th>Mix</th>
                   <th>Liquid</th>
-                  <th>Thix‐otropic</th>
+                  <th>Thix- <br/>  otropic</th>
                   <th>Plastic</th>
                   <th>Done</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Time per step (minute)</td>
+                  <td>min</td>
                   <td>1 </td>
                   <td>3</td>
                   <td>3</td>
@@ -226,7 +226,7 @@ const PlasterCalculator = () => {
                   <td>0</td>
                 </tr>
                 <tr>
-                  <td>Total time elapsed (minute)</td>
+                  <td>min <br/> elapsed</td>
                   <td>1 </td>
                   <td>4</td>
                   <td>7</td>
@@ -237,8 +237,7 @@ const PlasterCalculator = () => {
                 </tr>
               </tbody>
             </table>
-          </div>
-
+</div>
             <table>
               <thead>
                 <tr>

@@ -107,8 +107,7 @@ const PlasterCalculator = () => {
           {showFormula ? 'hide formula' : 'see formula used to calculate'}
         </span>
         {showFormula && (
-          <img src={plasterCalcImage} alt="plaster calc function" />
-        )}
+<img style={{ width: '90%', height: 'auto' }} src={plasterCalcImage} alt="plaster calc function" />        )}
 
         <span style={{ color: 'gold' }} onClick={handleCommonRatiosToggle}>
           {showCommonRatios

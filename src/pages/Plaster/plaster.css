@@ -66,3 +66,24 @@ td {
   flex-direction: column;
   /* Arrange children in a column */
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-flow: column;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  gap: 2px;
+}
+
+.grid-container>div {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+
+.history-container {
+  width: 100%;
+  margin-top: 10rem;
+}

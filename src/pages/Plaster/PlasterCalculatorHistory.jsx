@@ -12,7 +12,7 @@ function PlasterCalculatorHistory({ calculations }) {
   };
 
   return (
-    <div>
+    <div className="grid-container">
       <div className="column">
         {calculations && calculations.map((calculation) => (
           <div key={calculation.id}>

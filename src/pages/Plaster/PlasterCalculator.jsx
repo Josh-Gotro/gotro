@@ -64,7 +64,10 @@ const fetchCalculations = () => {
         plaster_lbs: parseFloat(calculation.plaster_lbs),
         plaster_oz: parseFloat(calculation.plaster_oz),
       }));
-      setCalculations(parsedCalculations);
+      // Get the last 6 calculations
+      const recentCalculations = parsedCalculations.slice(-6);
+
+      setCalculations(recentCalculations);
     })
     .catch(error => {
       console.error('Error fetching calculation data:', error);
@@ -311,7 +314,10 @@ const handleSubmit = () => {
           <img style={{ width: '90%', height: 'auto' }} src={plasterCalcImage} alt="plaster calc function" />        )}
 
       </div>
+      <div className="history-container">
+        <h2>Previously viewed forms</h2>
 <PlasterCalculatorHistory calculations={calculations} />
+</div>
     </div>
 
   );

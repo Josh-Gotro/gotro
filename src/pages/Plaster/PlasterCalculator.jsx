@@ -247,7 +247,7 @@ const handleSubmit = async () => {
 
       </div>
       <div className="history-container">
-        <h2>Previously viewed forms</h2>
+        <h2>Recently viewed forms</h2>
 <PlasterCalculatorHistory calculations={plasterCalculations} />
 </div>
     </div>

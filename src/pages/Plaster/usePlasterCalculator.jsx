@@ -68,7 +68,7 @@ const createNewRecord = async (length, width, height) => {
           plaster_oz: parseFloat(calculation.plaster_oz),
         }));
         // Get the last 6 calculations
-        const recentCalculations = parsedCalculations.slice(-6);
+        const recentCalculations = parsedCalculations.slice(0, 6);
         setPlasterCalculations(recentCalculations);
       } catch (error) {
         console.error(error);

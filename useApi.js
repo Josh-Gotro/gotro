@@ -3,23 +3,58 @@ import axios from 'axios';
 
 const backendApiUrl = import.meta.env.VITE_BACKEND_API_URL;
 
-export function useFetchPlasterCalculations() {
-  const [plasterCalculations, setPlasterCalculations] = useState([]);
+export function useFetchCurrentCeramicFiring() {
+  const [currentCeramicFiring, setCurrentCeramicFiring] = useState(null);
 
   useEffect(() => {
-    const fetchPlasterCalculations = async () => {
+    const fetchCurrentCeramicFiring = async () => {
       try {
         const response = await axios.get(
-          `${backendApiUrl}/plaster-calculations`
+          `${backendApiUrl}/current-ceramic-firing`
         );
-        setPlasterCalculations(response.data);
+        setCurrentCeramicFiring(response.data);
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchPlasterCalculations();
+    fetchCurrentCeramicFiring();
   }, []);
 
-  return plasterCalculations;
+  return currentCeramicFiring;
+}
+
+export function useFetchCeramicFirings() {
+  const [ceramicFirings, setCeramicFirings] = useState([]);
+
+  useEffect(() => {
+    const fetchCeramicFirings = async () => {
+      try {
+        const response = await axios.get(`${backendApiUrl}/ceramic-firings`);
+        setCeramicFirings(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCeramicFirings();
+  }, []);
+
+  return ceramicFirings;
+}
+
+export function usePostCeramicFiring() {
+  const postCeramicFiring = async (data) => {
+    try {
+      const response = await axios.post(
+        `${backendApiUrl}/ceramic-firings`,
+        data
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return postCeramicFiring;
 }

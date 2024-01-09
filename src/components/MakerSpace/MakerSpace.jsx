@@ -29,7 +29,9 @@ const MakerSpace = () => {
       navigate('/glass');
     } else if (value === 'plaster') {
       navigate('/plaster-calculator');
-    } else {
+    } else if (value === 'kiln') {
+      navigate('kiln');
+    }else {
       setShowInfo(false);
     }
   };

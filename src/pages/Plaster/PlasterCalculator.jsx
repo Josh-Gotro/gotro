@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './plaster.css';
 import plasterCalcImage from '../../assets/plaster-calc-function.png';
 import PlasterCalculatorHistory from './PlasterCalculatorHistory.jsx';
-import axios from 'axios';
+import { useFetchPlasterCalculations } from './usePlasterCalculator.jsx';
 
 
 const PlasterCalculator = () => {
@@ -13,6 +13,7 @@ const PlasterCalculator = () => {
   const [showFormula, setShowFormula] = useState(false);
   const [showCommonRatios, setShowCommonRatios] = useState(false);
   const [showTiming, setShowTiming] = useState(false);
+  const { plasterCalculations, createNewRecord } = useFetchPlasterCalculations();
 
   const handleFormulaToggle = () => {
     setShowFormula(!showFormula);
@@ -26,79 +27,10 @@ const PlasterCalculator = () => {
     setShowTiming(!showTiming);
   };
 
-  const calculatePlasterAndWater = (length, width, height) => {
-    const volume = length * width * height; // Volume of the mould in cubic inches
-    const volumeWithExtra = volume * 1.075; // Add 7.5% more volume to allow for spills, leaks, etc.
-    const quartsWater = volumeWithExtra / 80; // Amount of water needed in quarts
-    const plasterWeightInPounds = quartsWater * 2.85; // Weight of plaster needed in pounds
 
-    // Convert plaster weight to whole pounds and ounces
-    const plasterPounds = Math.floor(plasterWeightInPounds);
-    const plasterOunces = (plasterWeightInPounds - plasterPounds) * 16; // Convert fractional pounds to ounces
-
-    return {
-      volume: volumeWithExtra,
-      water: quartsWater * 32 * 1.043 , // Convert quarts of water to ounces, then from volume to weight. 1.043 is the weight of 1 oz of water at 70 degrees F
-      plasterPounds,
-      plasterOunces,
-    };
-  };
-
-  useEffect(() => {
-  fetchCalculations();
-}, []);
-
-const [calculations, setCalculations] = useState([]);
-
-
-const fetchCalculations = () => {
-  axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/plaster-calculations`)
-    .then(response => {
-      const parsedCalculations = response.data.map(calculation => ({
-        ...calculation,
-        length: parseFloat(calculation.length),
-        width: parseFloat(calculation.width),
-        height: parseFloat(calculation.height),
-        volume: parseFloat(calculation.volume),
-        water: parseFloat(calculation.water),
-        plaster_lbs: parseFloat(calculation.plaster_lbs),
-        plaster_oz: parseFloat(calculation.plaster_oz),
-      }));
-      // Get the last 6 calculations
-      const recentCalculations = parsedCalculations.slice(-6);
-
-      setCalculations(recentCalculations);
-    })
-    .catch(error => {
-      console.error('Error fetching calculation data:', error);
-    });
-};
-
-const handleSubmit = () => {
-  const calcResults = calculatePlasterAndWater(
-    Number(length),
-    Number(width),
-    Number(height)
-  );
+const handleSubmit = async () => {
+  const calcResults = await createNewRecord(length, width, height);
   setResults(calcResults);
-
-  // Persist the calculation to the backend
-  axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/plaster-calculation`, {
-    length: Number(length),
-    width: Number(width),
-    height: Number(height),
-    volume: calcResults.volume,
-    water: calcResults.water,
-    plaster_lbs: calcResults.plasterPounds,
-    plaster_oz: calcResults.plasterOunces,
-  })
-  .then(response => {
-    fetchCalculations();
-    console.log('Calculation saved:', response.data);
-  })
-  .catch(error => {
-    console.error('Error saving calculation:', error);
-  });
 };
 
   return (
@@ -316,7 +248,7 @@ const handleSubmit = () => {
       </div>
       <div className="history-container">
         <h2>Previously viewed forms</h2>
-<PlasterCalculatorHistory calculations={calculations} />
+<PlasterCalculatorHistory calculations={plasterCalculations} />
 </div>
     </div>
 

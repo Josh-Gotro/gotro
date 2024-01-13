@@ -10,7 +10,7 @@ const MakerSpace = () => {
 
 
   useEffect(() => {
-    const placeholders = ['glass', 'plaster'];
+    const placeholders = ['glass', 'plaster', 'kiln'];
     let i = 0;
     const intervalId = setInterval(() => {
       setPlaceholder(placeholders[i]);

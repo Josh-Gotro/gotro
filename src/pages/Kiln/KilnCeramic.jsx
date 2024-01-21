@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-// import axios from 'axios';
 import { useFetchCurrentCeramicFiring, usePostCeramicFiring} from '../../../useApi';
 
 const KilnCeramic = () => {
@@ -18,6 +17,7 @@ useEffect(() => {
 
     // Only set non-null values to the answers state
     const nonNullAnswers = Object.entries(currentCeramicFiring)
+      // eslint-disable-next-line no-unused-vars
       .filter(([key, value]) => value != null)
       .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
     setAnswers(nonNullAnswers);
@@ -159,6 +159,10 @@ const handleSubmitRecord = () => {
       // Handle the error
       console.error(error);
     });
+
+  setAnswers({});
+  setCurrentQuestionIndex(0);
+  setCompletedQuestions([]);
 };
 
 return (

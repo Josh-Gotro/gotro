@@ -2,5 +2,56 @@
   display: flex;
   justify-content: center;
   padding-top: 1rem;
-  /* Adjust as needed */
 }
+
+.ceramic-history-card {
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  color: white;}
+
+.ceramic-history-card h2 {
+  margin-top: 0;
+}
+
+.ceramic-history-card p {
+  margin: 10px 0;
+}
+
+.ceramic-history-card .notes {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.ceramic-history-card.rating-negative {
+  border: 3px solid #d05353;
+  /* Light red */
+  background-color: #d05353;
+  /* Light red */
+}
+
+.ceramic-history-card.rating-neutral {
+  border: 3px solid #7d7d7d;
+  /* Light grey */
+  background-color: #7d7d7d;
+  /* Light grey */
+}
+
+.ceramic-history-card.rating-positive {
+  border: 3px solid #259325;
+  /* Light green */
+  background-color: #259325;
+  /* Light green */
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+table {
+  width: 100%;
+  margin: 20px 0;
+}
+

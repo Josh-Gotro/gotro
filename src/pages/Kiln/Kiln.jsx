@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import KilnGlass from './KilnGlass';
 import KilnCeramic from './KilnCeramic';
-import './Kiln.css';
+import './kiln.css';
 
 const Kiln = () => {
   const [selectedTab, setSelectedTab] = useState('Glass');

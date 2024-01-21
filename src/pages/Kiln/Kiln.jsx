@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import KilnGlass from './KilnGlass';
 import KilnCeramic from './KilnCeramic';
+import KilnGlassHistory from './KilnGlassHistory';
+import KilnCeramicHistory from './KilnCeramicHistory';
 import './kiln.css';
 
 const Kiln = () => {
@@ -13,6 +15,8 @@ const Kiln = () => {
         <button onClick={() => setSelectedTab('Ceramic')}>Ceramic</button>
       </div>
       {selectedTab === 'Glass' ? <KilnGlass /> : <KilnCeramic />}
+            {selectedTab === 'Glass' ? <KilnGlassHistory /> : <KilnCeramicHistory />}
+
     </div>
   );
 };

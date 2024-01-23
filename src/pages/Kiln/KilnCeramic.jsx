@@ -199,12 +199,6 @@ return (
       )}
     </div>
     <div>
-      {/* {records.map((record, index) => ( */}
-        {/* <div key={index}> */}
-          {/* Display the record */}
-          {/* <pre>{JSON.stringify(record, null, 2)}</pre> */}
-        {/* </div> */}
-      {/* ))} */}
     </div>
   </div>
 );

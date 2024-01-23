@@ -4,54 +4,111 @@
   padding-top: 1rem;
 }
 
-.ceramic-history-card {
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
-  background-color: #f9f9f9;
-  color: white;}
-
-.ceramic-history-card h2 {
-  margin-top: 0;
-}
-
-.ceramic-history-card p {
-  margin: 10px 0;
-}
-
-.ceramic-history-card .notes {
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-.ceramic-history-card.rating-negative {
-  border: 3px solid #d05353;
-  /* Light red */
-  background-color: #d05353;
-  /* Light red */
-}
-
-.ceramic-history-card.rating-neutral {
-  border: 3px solid #7d7d7d;
-  /* Light grey */
-  background-color: #7d7d7d;
-  /* Light grey */
-}
-
-.ceramic-history-card.rating-positive {
-  border: 3px solid #259325;
-  /* Light green */
-  background-color: #259325;
-  /* Light green */
-}
-
 .card-header {
   display: flex;
   justify-content: space-between;
 }
 
-table {
-  width: 100%;
-  margin: 20px 0;
+.card-header h2 {
+  margin: 0;
 }
 
+.ceramic-history-card {
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;/
+}
+
+.ceramic-history-card h2 {
+  color: #1a1a1a;
+}
+
+.ceramic-history-card p {
+  margin: 0;
+}
+
+.ceramic-history-card p {
+  margin: 0;
+}
+
+.ceramic-history-card .notes {
+  flex: 1;
+  font-weight: bold;
+}
+
+.ceramic-history-card.rating-negative {
+  background-color: #ce9696;
+}
+
+.ceramic-history-card.rating-neutral {
+  background-color: #a09c9c;
+}
+
+.ceramic-history-card.rating-positive {
+  background-color: #a7dca7;
+}
+
+
+.notes-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.notes-container span:first-of-type {
+  margin-bottom: 10px;
+}
+
+.notes-container p{
+  color: #1a1a1a;;
+}
+
+.outer-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+table {
+  width: auto;
+  margin: 0;
+  white-space: nowrap;
+}
+
+table,
+th,
+td {
+  border: 1px solid #1a1a1a;
+  border-collapse: collapse;
+}
+
+.table-notes-container {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+  .outer-container {
+    flex-direction: column;
+  }
+
+  .table-notes-container,
+  .notes-container {
+    margin: 10px 0;
+    flex: 0 0 100%;
+  }
+
+  .table-notes-container table {
+    width: 100%;
+    /* Make the table take the full width */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+  }
+}

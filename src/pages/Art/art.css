@@ -1,0 +1,149 @@
+/* Reset for art components */
+.art-container,
+.art-container * {
+  /* Reset inherited styles */
+  font-family: initial;
+  line-height: initial;
+  font-weight: initial;
+  color: initial;
+  background-color: initial;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Specific styles for the art container */
+.art-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(to bottom, #F03D3E, #EF3D3E);
+}
+
+/* Specific styles for the figure */
+.figure {
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 400px;
+  background-color: #313131;
+}
+
+.head {
+  position: absolute;
+  top: 10%;
+  left: calc(50% - 25px);
+  width: 50px;
+  height: 50px;
+  background-color: #56D1BE;
+  border-radius: 50%;
+}
+
+/* CIRCLE */
+.circle {
+  border-radius: 50%;
+  position: absolute;
+  background-color: transparent;
+  border: 5px solid #FFFFFF;
+}
+
+.large-circle {
+  width: 200px;
+  height: 200px;
+  bottom: 20px;
+  left: 20px;
+}
+
+.medium-circle {
+  width: 150px;
+  height: 150px;
+  bottom: 30px;
+  left: 30px;
+}
+
+.small-circle {
+  width: 100px;
+  height: 100px;
+  bottom: 40px;
+  left: 40px;
+}
+
+
+/* TREE */
+.tree-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.tree {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  height: 10vh;
+  width: 5px;
+  background-color: #3D75FD;
+  transform: translate(-50%, -50%);
+}
+
+.branch {
+  position: absolute;
+  bottom: 100%;
+  height: 10vh;
+  width: 5px;
+  background-color: #3D75FD;
+  transform-origin: bottom ;
+  transform: translateX(-50%);
+}
+
+/* Gold band styles */
+.gold-band {
+  position: absolute;
+  top: 55%;
+  left: 0;
+  width: 100%;
+  height: 66px;
+  background: linear-gradient(to right, #E88623, #FEBA4D, #FFED8D, #E88623);
+  z-index: 0;
+}
+
+.figure,
+.tree-container {
+  z-index: 1;
+}
+
+.head,
+.circle {
+  z-index: 999;
+}
+
+/* text */
+.text-display {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateX(-5%);
+  font-family: 'Helvetica', sans-serif;
+  font-size: 10em;
+  color: white;
+  text-align: center;
+}
+
+/* Mobile view */
+@media (max-width: 900px) {
+  .text-display {
+    top: 0;
+    left: 0;
+    bottom: initial;
+    right: initial;
+    font-size: 6em;
+    transform: translateX(0);
+  }
+    .gold-band {
+      top: 60%;
+    }
+}
+

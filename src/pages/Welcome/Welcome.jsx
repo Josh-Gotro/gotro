@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import FallingLetter from '../../components/FallingLetter/FallingLetter';
 import './welcome.css';
-import MakerSpace from '../../components/MakerSpace/MakerSpace';
+import SearchBox from '../../components/SearchBox/SearchBox';
 
 const Welcome = () => {
   const [letters, setLetters] = useState([]);
@@ -30,7 +30,7 @@ const Welcome = () => {
       {letters.map((letter) => (
         <FallingLetter key={letter.id} {...letter} removeLetter={removeLetter} />
       ))}
-      <MakerSpace />
+      <SearchBox />
     </div>
   );
 };

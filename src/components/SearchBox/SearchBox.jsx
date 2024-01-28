@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './makerspace.css';
+import './search-box.css';
 
-const MakerSpace = () => {
+const SearchBox = () => {
   const [placeholder, setPlaceholder] = useState('');
   const [input, setInput] = useState('');
   const [showInfo, setShowInfo] = useState(false);
@@ -50,4 +50,4 @@ const MakerSpace = () => {
   );
 }
 
-export default MakerSpace;
+export default SearchBox;

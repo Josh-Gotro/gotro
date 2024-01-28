@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './art.css';
 
+import SearchBox from '../../components/SearchBox/SearchBox';
+
 const Art = () => {
   const [text, setText] = useState('');
   const [hoveredElement, setHoveredElement] = useState(null);
@@ -59,28 +61,8 @@ const Art = () => {
           onMouseLeave={handleMouseLeave}
           onClick={() => handleClick('HEAD')}
         ></div>
-      </div>
-      <div
-        className='circle large-circle'
-        onMouseEnter={(event) => handleMouseEnter(event, 'LARGE')}
-        onMouseLeave={handleMouseLeave}
-        onClick={() => handleClick('LARGE')}
-      ></div>
-      <div
-        className='circle medium-circle'
-        onMouseEnter={(event) => handleMouseEnter(event, 'MEDIUM')}
-        onMouseLeave={handleMouseLeave}
-        onClick={() => handleClick('MEDIUM')}
-      ></div>
-      <div
-        className='circle small-circle'
-        onMouseEnter={(event) => handleMouseEnter(event, 'SMALL')}
-        onMouseLeave={handleMouseLeave}
-        onClick={() => handleClick('SMALL')}
-      ></div>
-      <div className='gold-band'></div>
-
-      <div className='tree-container'>
+          <div className="search-input"><SearchBox /></div>
+                <div className='tree-container'>
         <div
           className='tree'
           onMouseEnter={(event) => handleMouseEnter(event, 'BLOW ')}
@@ -258,6 +240,27 @@ const Art = () => {
           ></div>
         </div>
       </div>
+        </div>
+
+      <div
+        className='circle large-circle'
+        onMouseEnter={(event) => handleMouseEnter(event, 'LARGE')}
+        onMouseLeave={handleMouseLeave}
+        onClick={() => handleClick('LARGE')}
+      ></div>
+      <div
+        className='circle medium-circle'
+        onMouseEnter={(event) => handleMouseEnter(event, 'MEDIUM')}
+        onMouseLeave={handleMouseLeave}
+        onClick={() => handleClick('MEDIUM')}
+      ></div>
+      <div
+        className='circle small-circle'
+        onMouseEnter={(event) => handleMouseEnter(event, 'SMALL')}
+        onMouseLeave={handleMouseLeave}
+        onClick={() => handleClick('SMALL')}
+      ></div>
+      <div className='gold-band'></div>
       <div className='text-display'>{text}</div>
     </div>
   );

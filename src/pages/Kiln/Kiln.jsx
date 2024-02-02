@@ -10,13 +10,12 @@ const Kiln = () => {
 
   return (
     <div>
-      <div className="button-container">
+      <div className='button-container'>
         <button onClick={() => setSelectedTab('Glass')}>Glass</button>
         <button onClick={() => setSelectedTab('Ceramic')}>Ceramic</button>
       </div>
       {selectedTab === 'Glass' ? <KilnGlass /> : <KilnCeramic />}
-            {selectedTab === 'Glass' ? <KilnGlassHistory /> : <KilnCeramicHistory />}
-
+      {selectedTab === 'Glass' ? <KilnGlassHistory /> : <KilnCeramicHistory />}
     </div>
   );
 };

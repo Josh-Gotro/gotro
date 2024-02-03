@@ -12,21 +12,25 @@ const Kiln = () => {
     useFetchCeramicFirings();
 
   return (
-    <div>
+    <div className='kiln-wrapper'>
       <div className='button-container'>
         <button onClick={() => setSelectedTab('Glass')}>Glass</button>
         <button onClick={() => setSelectedTab('Ceramic')}>Ceramic</button>
       </div>
-      {selectedTab === 'Glass' ? (
-        <KilnGlass />
-      ) : (
-        <KilnCeramic setCeramicFirings={setCeramicFirings} />
-      )}
-      {selectedTab === 'Glass' ? (
-        <KilnGlassHistory />
-      ) : (
-        !isLoading && <KilnCeramicHistory ceramicFirings={ceramicFirings} />
-      )}
+      <div className='kiln-component'>
+        {selectedTab === 'Glass' ? (
+          <KilnGlass />
+        ) : (
+          <KilnCeramic setCeramicFirings={setCeramicFirings} />
+        )}
+      </div>
+      <div className='kiln-history-component'>
+        {selectedTab === 'Glass' ? (
+          <KilnGlassHistory />
+        ) : (
+          !isLoading && <KilnCeramicHistory ceramicFirings={ceramicFirings} />
+        )}
+      </div>
     </div>
   );
 };

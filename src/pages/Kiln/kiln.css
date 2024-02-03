@@ -75,6 +75,26 @@ textarea {
   font-size: 1.2rem;
 }
 
+.kiln-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  /* This will make the wrapper take the full height of the viewport */
+  padding: 20px;
+  /* Add some padding to prevent the content from sticking to the edges */
+}
+
+
+.kiln-component,
+.kiln-history-component {
+  flex: 1;
+  /* This will make the components take equal space */
+  margin: 60px 0;
+  /* This will add a gap between the components */
+}
+
 .notes-container {
   flex: 1 1 auto;
   display: flex;

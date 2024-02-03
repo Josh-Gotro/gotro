@@ -29,12 +29,17 @@ export function useFetchCurrentCeramicFiring() {
 
 export function useFetchCeramicFirings() {
   const [ceramicFirings, setCeramicFirings] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCeramicFirings = async () => {
       try {
         const response = await axios.get(`${backendApiUrl}/ceramic-firings`);
-        setCeramicFirings(response.data);
+        const sortedData = response.data.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        setCeramicFirings(sortedData);
+        setIsLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -43,7 +48,7 @@ export function useFetchCeramicFirings() {
     fetchCeramicFirings();
   }, []);
 
-  return ceramicFirings;
+  return { ceramicFirings, setCeramicFirings, isLoading }; // Return isLoading
 }
 
 export function usePostCeramicFiring() {

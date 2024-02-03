@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   useFetchCurrentCeramicFiring,
   usePostCeramicFiring,
@@ -6,16 +8,16 @@ import {
 
 import { questions } from './ceramicKilnQuestions';
 
-const KilnCeramic = () => {
+const KilnCeramic = ({ setCeramicFirings }) => {
   const [answers, setAnswers] = useState({ cone_type: '6' });
   const [recordId, setRecordId] = useState(null);
 
   const [currentCeramicFiring, isFetching] = useFetchCurrentCeramicFiring();
-  const postCeramicFiring = usePostCeramicFiring();
+  const postCeramicFiring = usePostCeramicFiring(setCeramicFirings);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [completedQuestions, setCompletedQuestions] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
   // populate the answers state with the currentCeramicFiring data
   const getCurrentTime = () => {
@@ -51,9 +53,12 @@ const KilnCeramic = () => {
       );
       if (firstUnansweredQuestionIndex !== -1) {
         setCurrentQuestionIndex(firstUnansweredQuestionIndex);
+        setIsInitialLoading(false); // Set isInitialLoading to false when the first question is shown
       }
+    } else if (!isFetching) {
+      setIsInitialLoading(false); // Also set isInitialLoading to false if the fetch is complete and currentCeramicFiring is null
     }
-  }, [currentCeramicFiring]);
+  }, [currentCeramicFiring, isFetching]);
 
   // const [records, setRecords] = useState([]);
 
@@ -69,8 +74,6 @@ const KilnCeramic = () => {
   );
 
   const handleNextQuestion = useCallback(async () => {
-    setIsLoading(true);
-
     // Save the answer
     setCompletedQuestions([
       ...completedQuestions,
@@ -92,21 +95,15 @@ const KilnCeramic = () => {
           if (!recordId && response.id) {
             setRecordId(response.id);
           }
-          setIsLoading(false); // Set loading state to false after successful operation
         })
         .catch((error) => {
           console.error(
             'Error updating or creating ceramic kiln firing record:',
             error
           );
-          setIsLoading(false); // Set loading state to false even if there was an error
         });
-    } else {
-      // If there are no answers to post, we still need to set loading to false
-      setIsLoading(false);
     }
 
-    // Check if the next question is a time question
     if (
       currentQuestionIndex + 1 < questions.length &&
       questions[currentQuestionIndex + 1].type === 'time'
@@ -137,7 +134,7 @@ const KilnCeramic = () => {
 
     postCeramicFiring(record)
       .then((response) => {
-        console.log(response.data);
+        console.log(response);
         // Update recordId with the id returned from the server
         if (!recordId && response.id) {
           setRecordId(response.id);
@@ -148,6 +145,17 @@ const KilnCeramic = () => {
         console.error(error);
       });
 
+    // Optimistically add the complete record to the state
+    setCeramicFirings((prevFirings) => {
+      const index = prevFirings.findIndex((firing) => firing.id === record.id);
+      if (index !== -1) {
+        prevFirings[index] = record;
+        return [...prevFirings];
+      } else {
+        return [record, ...prevFirings];
+      }
+    });
+
     setAnswers({});
     setCurrentQuestionIndex(0);
     setCompletedQuestions([]);
@@ -155,7 +163,7 @@ const KilnCeramic = () => {
 
   return (
     <div>
-      {isLoading || isFetching ? (
+      {isInitialLoading || isFetching ? (
         <p>Loading...</p>
       ) : (
         <div>
@@ -211,6 +219,10 @@ const KilnCeramic = () => {
       )}
     </div>
   );
+};
+
+KilnCeramic.propTypes = {
+  setCeramicFirings: PropTypes.func.isRequired,
 };
 
 export default KilnCeramic;

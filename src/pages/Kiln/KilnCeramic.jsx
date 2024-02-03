@@ -1,18 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   useFetchCurrentCeramicFiring,
   usePostCeramicFiring,
 } from '../../../useApi';
 
+import { questions } from './ceramicKilnQuestions';
+
 const KilnCeramic = () => {
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers] = useState({ cone_type: '6' });
   const [recordId, setRecordId] = useState(null);
 
-  const currentCeramicFiring = useFetchCurrentCeramicFiring();
+  const [currentCeramicFiring, isFetching] = useFetchCurrentCeramicFiring();
   const postCeramicFiring = usePostCeramicFiring();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [completedQuestions, setCompletedQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // populate the answers state with the currentCeramicFiring data
+  const getCurrentTime = () => {
+    const date = new Date();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  };
 
   useEffect(() => {
     if (currentCeramicFiring) {
@@ -44,80 +55,23 @@ const KilnCeramic = () => {
     }
   }, [currentCeramicFiring]);
 
-  // wrap in useMemo Hook
-  const questions = [
-    {
-      id: 1,
-      text: 'Select Cone',
-      options: ['020', '04', '05', '6', 'other'],
-      type: 'select',
-      key: 'cone_type',
-    },
-    {
-      id: 2,
-      text: 'What is the room temp?',
-      type: 'text',
-      key: 'room_temp',
-    },
-    {
-      id: 3,
-      text: 'What time did you start the low fire?',
-      type: 'time',
-      key: 'low_fire_start_time',
-    },
-    {
-      id: 4,
-      text: 'Loading Notes?',
-      type: 'textarea',
-      key: 'loading_notes',
-    },
-    {
-      id: 5,
-      text: 'What time did you start the medium fire?',
-      type: 'time',
-      key: 'medium_fire_start_time',
-    },
-    {
-      id: 6,
-      text: 'What time did you start the high fire?',
-      type: 'time',
-      key: 'high_fire_start_time',
-    },
-    {
-      id: 7,
-      text: 'About what time did the kiln turn off?',
-      type: 'text',
-      key: 'kiln_turn_off_time',
-    },
-    {
-      id: 8,
-      text: 'Unloading Notes?',
-      type: 'textarea',
-      key: 'unloading_notes',
-    },
-    {
-      id: 9,
-      text: 'Rate this firing',
-      type: 'select',
-      key: 'rating',
-      options: ['positive', 'neutral', 'negative'],
-    },
-  ];
-
   // const [records, setRecords] = useState([]);
 
-  const handleAnswerChange = (event) => {
-    setAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questions[currentQuestionIndex].key]: event.target.value,
-      id: recordId,
-    }));
-  };
+  const handleAnswerChange = useCallback(
+    (event) => {
+      setAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [questions[currentQuestionIndex].key]: event.target.value,
+        id: recordId,
+      }));
+    },
+    [recordId, currentQuestionIndex]
+  );
 
-  const handleNextQuestion = async () => {
+  const handleNextQuestion = useCallback(async () => {
+    setIsLoading(true);
+
     // Save the answer
-    console.log('Saving answer:', answers[questions[currentQuestionIndex].key]);
-
     setCompletedQuestions([
       ...completedQuestions,
       {
@@ -138,19 +92,41 @@ const KilnCeramic = () => {
           if (!recordId && response.id) {
             setRecordId(response.id);
           }
+          setIsLoading(false); // Set loading state to false after successful operation
         })
-        .catch((error) =>
+        .catch((error) => {
           console.error(
             'Error updating or creating ceramic kiln firing record:',
             error
-          )
-        );
+          );
+          setIsLoading(false); // Set loading state to false even if there was an error
+        });
+    } else {
+      // If there are no answers to post, we still need to set loading to false
+      setIsLoading(false);
+    }
+
+    // Check if the next question is a time question
+    if (
+      currentQuestionIndex + 1 < questions.length &&
+      questions[currentQuestionIndex + 1].type === 'time'
+    ) {
+      setAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [questions[currentQuestionIndex + 1].key]: getCurrentTime(),
+      }));
     }
 
     setCurrentQuestionIndex(currentQuestionIndex + 1);
-  };
+  }, [
+    postCeramicFiring,
+    answers,
+    completedQuestions,
+    currentQuestionIndex,
+    recordId,
+  ]);
 
-  const handleSubmitRecord = () => {
+  const handleSubmitRecord = useCallback(() => {
     const record = {
       ...answers,
       firing_complete: true,
@@ -175,51 +151,64 @@ const KilnCeramic = () => {
     setAnswers({});
     setCurrentQuestionIndex(0);
     setCompletedQuestions([]);
-  };
+  }, [answers, recordId, postCeramicFiring]);
 
   return (
     <div>
-      <div>
-        {completedQuestions.map((q, index) => (
-          <div key={index}>
-            <p>
-              {q.question}: {q.answer}
-            </p>
-          </div>
-        ))}
-        {currentQuestionIndex < questions.length ? (
+      {isLoading || isFetching ? (
+        <p>Loading...</p>
+      ) : (
+        <div>
           <div>
-            <label>{questions[currentQuestionIndex].text}</label>
-            {questions[currentQuestionIndex].type === 'select' ? (
-              <select
-                value={answers[questions[currentQuestionIndex].key] || ''}
-                onChange={handleAnswerChange}
-              >
-                <option value=''>Select...</option>
-                {questions[currentQuestionIndex].options.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            ) : questions[currentQuestionIndex].type === 'textarea' ? (
-              <textarea
-                value={answers[questions[currentQuestionIndex].key] || ''}
-                onChange={(event) => handleAnswerChange(event)}
-              />
+            {completedQuestions.map((q, index) => (
+              <div key={index} className='question-container'>
+                <div className='question-answer-container'>
+                  <p className='question-text'>{q.question}:</p>
+                  <p className='answer-text'>{q.answer}</p>
+                </div>
+              </div>
+            ))}
+            {currentQuestionIndex < questions.length ? (
+              <div className='question-input-container'>
+                <label className='question-text'>
+                  {questions[currentQuestionIndex].text}
+                </label>
+                {questions[currentQuestionIndex].type === 'select' ? (
+                  <select
+                    value={answers[questions[currentQuestionIndex].key] || ''}
+                    onChange={handleAnswerChange}
+                  >
+                    <option value=''>Select...</option>
+                    {questions[currentQuestionIndex].options.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                ) : questions[currentQuestionIndex].type === 'textarea' ? (
+                  <textarea
+                    value={answers[questions[currentQuestionIndex].key] || ''}
+                    onChange={(event) => handleAnswerChange(event)}
+                  />
+                ) : (
+                  <input
+                    type={questions[currentQuestionIndex].type}
+                    value={answers[questions[currentQuestionIndex].key] || ''}
+                    onChange={handleAnswerChange}
+                  />
+                )}
+                <div className='button-container'>
+                  <button onClick={handleNextQuestion}>Next</button>
+                </div>
+              </div>
             ) : (
-              <input
-                type={questions[currentQuestionIndex].type}
-                value={answers[questions[currentQuestionIndex].key] || ''}
-                onChange={handleAnswerChange}
-              />
+              <div className='button-container'>
+                <button onClick={handleSubmitRecord}>Submit Record</button>
+              </div>
             )}
-            <button onClick={handleNextQuestion}>Next</button>
           </div>
-        ) : (
-          <button onClick={handleSubmitRecord}>Submit Record</button>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

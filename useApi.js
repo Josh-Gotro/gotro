@@ -5,6 +5,7 @@ const backendApiUrl = import.meta.env.VITE_BACKEND_API_URL;
 
 export function useFetchCurrentCeramicFiring() {
   const [currentCeramicFiring, setCurrentCeramicFiring] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCurrentCeramicFiring = async () => {
@@ -15,13 +16,15 @@ export function useFetchCurrentCeramicFiring() {
         setCurrentCeramicFiring(response.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchCurrentCeramicFiring();
   }, []);
 
-  return currentCeramicFiring;
+  return [currentCeramicFiring, isLoading];
 }
 
 export function useFetchCeramicFirings() {

@@ -1,5 +1,4 @@
 .answer-text {
-  /* Add your styles here. For example: */
   color: rgb(89, 89, 152);
   font-weight: bold;
   text-align: right;
@@ -13,10 +12,45 @@
   justify-content: flex-end;
   align-items: center;
   padding-top: 1rem;
+  width: 100%;
+  margin-bottom: 4rem;
 }
 
 .button-container button {
   width: 100%;
+}
+
+.ceramic-button {
+  position: relative;
+  background-color: #cd853f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.ceramic-button:hover {
+  background-color: #8b4513;
+}
+
+.ceramic-button:focus,
+.glass-button:focus {
+  outline: none;
+}
+
+.ceramic-button.active::after,
+.glass-button.active::after
+{
+  content: "";
+  border: none;
+  display: block;
+  width: 80%;
+  height: 2px;
+  background: inherit;
+  position: absolute;
+  bottom: -15px;
+  left: 10%;
 }
 
 .card-header {
@@ -80,6 +114,20 @@ textarea {
   margin-top: 1rem;
 }
 
+.glass-button {
+  position: relative;
+  background-color: #75b0c8;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.glass-button:hover {
+  background-color: #1e90ff;
+}
+
 .kiln-wrapper {
   display: flex;
   flex-direction: column;
@@ -87,9 +135,7 @@ textarea {
   justify-content: space-between;
   height: 100vh;
   width: 100%;
-  /* This will make the wrapper take the full height of the viewport */
   padding: 20px;
-  /* Add some padding to prevent the content from sticking to the edges */
 }
 
 .kiln-history-component {
@@ -201,9 +247,7 @@ td {
 
   .table-notes-container table {
     width: 100%;
-    /* Make the table take the full width */
     box-sizing: border-box;
-    /* Include padding and border in the element's total width and height */
   }
 }
 

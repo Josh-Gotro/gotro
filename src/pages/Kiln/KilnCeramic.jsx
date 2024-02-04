@@ -162,62 +162,60 @@ const KilnCeramic = ({ setCeramicFirings }) => {
   }, [answers, recordId, postCeramicFiring]);
 
   return (
-    <div>
+    <>
       {isInitialLoading || isFetching ? (
         <p>Loading...</p>
       ) : (
-        <div>
-          <div>
-            {completedQuestions.map((q, index) => (
-              <div key={index} className='question-container'>
-                <div className='question-answer-container'>
-                  <p className='question-text'>{q.question}:</p>
-                  <p className='answer-text'>{q.answer}</p>
-                </div>
+        <>
+          {completedQuestions.map((q, index) => (
+            <div key={index} className='question-container'>
+              <div className='question-answer-container'>
+                <p className='question-text'>{q.question}</p>
+                <p className='answer-text'>{q.answer}</p>
               </div>
-            ))}
-            {currentQuestionIndex < questions.length ? (
-              <div className='question-input-container'>
-                <label className='question-text'>
-                  {questions[currentQuestionIndex].text}
-                </label>
-                {questions[currentQuestionIndex].type === 'select' ? (
-                  <select
-                    value={answers[questions[currentQuestionIndex].key] || ''}
-                    onChange={handleAnswerChange}
-                  >
-                    <option value=''>Select...</option>
-                    {questions[currentQuestionIndex].options.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                ) : questions[currentQuestionIndex].type === 'textarea' ? (
-                  <textarea
-                    value={answers[questions[currentQuestionIndex].key] || ''}
-                    onChange={(event) => handleAnswerChange(event)}
-                  />
-                ) : (
-                  <input
-                    type={questions[currentQuestionIndex].type}
-                    value={answers[questions[currentQuestionIndex].key] || ''}
-                    onChange={handleAnswerChange}
-                  />
-                )}
-                <div className='button-container'>
-                  <button onClick={handleNextQuestion}>Next</button>
-                </div>
-              </div>
-            ) : (
+            </div>
+          ))}
+          {currentQuestionIndex < questions.length ? (
+            <div className='question-input-container'>
+              <label className='question-text'>
+                {questions[currentQuestionIndex].text}
+              </label>
+              {questions[currentQuestionIndex].type === 'select' ? (
+                <select
+                  value={answers[questions[currentQuestionIndex].key] || ''}
+                  onChange={handleAnswerChange}
+                >
+                  <option value=''>Select...</option>
+                  {questions[currentQuestionIndex].options.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              ) : questions[currentQuestionIndex].type === 'textarea' ? (
+                <textarea
+                  value={answers[questions[currentQuestionIndex].key] || ''}
+                  onChange={(event) => handleAnswerChange(event)}
+                />
+              ) : (
+                <input
+                  type={questions[currentQuestionIndex].type}
+                  value={answers[questions[currentQuestionIndex].key] || ''}
+                  onChange={handleAnswerChange}
+                />
+              )}
               <div className='button-container'>
-                <button onClick={handleSubmitRecord}>Submit Record</button>
+                <button onClick={handleNextQuestion}>Next</button>
               </div>
-            )}
-          </div>
-        </div>
+            </div>
+          ) : (
+            <div className='button-container'>
+              <button onClick={handleSubmitRecord}>Submit Record</button>
+            </div>
+          )}
+        </>
       )}
-    </div>
+    </>
   );
 };
 

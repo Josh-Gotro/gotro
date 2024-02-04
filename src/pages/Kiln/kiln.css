@@ -4,6 +4,8 @@
   font-weight: bold;
   text-align: right;
   font-size: 1.2rem;
+  word-wrap: break-word;
+    max-width: 50%;
 }
 
 .button-container {
@@ -33,9 +35,10 @@
   color: #1a1a1a;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 600px;
-  box-sizing: border-box;/
+  min-width: fit-content;
+  width: 600px;
+  box-sizing: border-box;
+  max-height: fit-content;
 }
 
 .ceramic-history-card h2 {
@@ -70,9 +73,11 @@
 input,
 select,
 textarea {
-  height: 50px;
+  height: 100px;
+  width: 100%;
   text-align: center;
   font-size: 1.2rem;
+  margin-top: 1rem;
 }
 
 .kiln-wrapper {
@@ -81,18 +86,26 @@ textarea {
   align-items: center;
   justify-content: space-between;
   height: 100vh;
+  width: 100%;
   /* This will make the wrapper take the full height of the viewport */
   padding: 20px;
   /* Add some padding to prevent the content from sticking to the edges */
 }
 
-
-.kiln-component,
 .kiln-history-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex: 1;
-  /* This will make the components take equal space */
+}
+
+.kiln-component {
+  width: 100%;
+}
+.kiln-history-component {
+  max-width: 66.66%;
+  align-items: center;
   margin: 60px 0;
-  /* This will add a gap between the components */
 }
 
 .notes-container {
@@ -100,6 +113,13 @@ textarea {
   display: flex;
   flex-direction: column;
   margin-left: 10px;
+  flex-wrap: wrap;
+}
+
+.notes-container span {
+  display: block;
+  word-wrap: break-word;
+
 }
 
 .notes-container span:first-of-type {
@@ -111,8 +131,9 @@ textarea {
 }
 
 .outer-container {
-  display: flex;
+  display: block;
   justify-content: space-between;
+  max-height: fit-content;
   padding: 20px;
 }
 
@@ -124,16 +145,19 @@ textarea {
 
 .question-container {
   margin-bottom: 1.7em;
+  width: 100%;
 }
 
 .question-text {
   text-align: left;
+  max-width: 50%;
 }
 
 .question-input-container {
   display: flex;
   flex-direction: column;
   text-align: center;
+  width: 100%;
 }
 
 table {
@@ -161,9 +185,19 @@ td {
 
   .table-notes-container,
   .notes-container {
+    max-height: fit-content;
     margin: 10px 0;
     flex: 0 0 100%;
   }
+
+    .ceramic-history-card {
+      width: 100%;
+    }
+
+    .kiln-component,
+    .kiln-history-component {
+      max-width: 100%;
+    }
 
   .table-notes-container table {
     width: 100%;
@@ -172,3 +206,4 @@ td {
     /* Include padding and border in the element's total width and height */
   }
 }
+

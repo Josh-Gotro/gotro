@@ -22,7 +22,7 @@ const KilnCeramicHistory = ({ ceramicFirings }) => {
   console.log(ceramicFirings);
 
   return (
-    <div>
+    <>
       <h2>History</h2>
       {ceramicFirings.map((firing, index) => (
         <div
@@ -70,19 +70,19 @@ const KilnCeramicHistory = ({ ceramicFirings }) => {
                       </tr>
                     </tbody>
                   </table>
-                </div>
-                <div className='notes-container'>
-                  <p className='notes'>Loading Notes: </p>
-                  <span>{firing.loading_notes}</span>
-                  <p className='notes'>Unloading Notes:</p>
-                  <span>{firing.unloading_notes}</span>
+                  <div className='notes-container'>
+                    <p className='notes'>Loading Notes: </p>
+                    <span>{firing.loading_notes}</span>
+                    <p className='notes'>Unloading Notes:</p>
+                    <span>{firing.unloading_notes}</span>
+                  </div>
                 </div>
               </div>
             </>
           )}
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

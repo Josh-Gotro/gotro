@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useFetchCeramicFirings } from '../../../useApi.js';
+import { useFetchCeramicFirings } from '../../api/ceramicApi.js';
 import KilnGlass from './KilnGlass';
 import KilnCeramic from './KilnCeramic';
 import KilnGlassHistory from './KilnGlassHistory';

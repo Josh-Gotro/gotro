@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   useFetchCurrentCeramicFiring,
   usePostCeramicFiring,
-} from '../../../useApi';
+} from '../../api/ceramicApi.js';
 
 import { questions } from './ceramicKilnQuestions';
 

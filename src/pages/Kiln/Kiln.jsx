@@ -1,10 +1,14 @@
-import { useState } from 'react';
-import { useFetchCeramicFirings } from '../../api/ceramicApi.js';
-import KilnGlass from './KilnGlass';
-import KilnCeramic from './KilnCeramic';
-import KilnGlassHistory from './KilnGlassHistory';
-import KilnCeramicHistory from './KilnCeramicHistory';
+import { useState, Suspense, lazy } from 'react';
+import { useFetchCeramicFirings } from './Ceramic/useKilnCeramic.jsx';
 import './kiln.css';
+import loadingImage from '../../../public/assets/lion.webp';
+
+const KilnGlass = lazy(() => import('./Glass/KilnGlass.jsx'));
+const KilnCeramic = lazy(() => import('./Ceramic/KilnCeramic.jsx'));
+const KilnGlassHistory = lazy(() => import('./Glass/KilnGlassHistory.jsx'));
+const KilnCeramicHistory = lazy(
+  () => import('./Ceramic/KilnCeramicHistory.jsx')
+);
 
 const Kiln = () => {
   const [selectedTab, setSelectedTab] = useState('Ceramic');
@@ -27,20 +31,36 @@ const Kiln = () => {
           Ceramic
         </button>
       </div>
-      <div className='kiln-component'>
-        {selectedTab === 'Glass' ? (
-          <KilnGlass />
-        ) : (
-          <KilnCeramic setCeramicFirings={setCeramicFirings} />
-        )}
-      </div>
-      <div className='kiln-history-component'>
-        {selectedTab === 'Glass' ? (
-          <KilnGlassHistory ceramicFirings={ceramicFirings} />
-        ) : (
-          !isLoading && <KilnCeramicHistory ceramicFirings={ceramicFirings} />
-        )}
-      </div>
+      <Suspense
+        fallback={
+          <div className='loader'>
+            <img src={loadingImage} alt='Loading...' />
+          </div>
+        }
+      >
+        <div className='kiln-component'>
+          {selectedTab === 'Glass' ? (
+            <KilnGlass />
+          ) : (
+            <KilnCeramic setCeramicFirings={setCeramicFirings} />
+          )}
+        </div>
+      </Suspense>
+      <Suspense
+        fallback={
+          <div className='loader'>
+            <img src={loadingImage} alt='Loading...' />
+          </div>
+        }
+      >
+        <div className='kiln-history-component'>
+          {selectedTab === 'Glass' ? (
+            <KilnGlassHistory ceramicFirings={ceramicFirings} />
+          ) : (
+            !isLoading && <KilnCeramicHistory ceramicFirings={ceramicFirings} />
+          )}
+        </div>
+      </Suspense>
     </div>
   );
 };

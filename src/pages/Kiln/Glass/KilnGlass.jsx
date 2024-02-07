@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import {
   useFetchCurrentCeramicFiring,
   usePostCeramicFiring,
-} from '../../api/ceramicApi.js';
+} from '../Ceramic/useKilnCeramic.jsx';
 
-import { questions } from './ceramicKilnQuestions';
+import { questions } from '../Ceramic/ceramicKilnQuestions.js';
 
-const KilnCeramic = ({ setCeramicFirings }) => {
+const KilnGlass = ({ setCeramicFirings }) => {
   const [answers, setAnswers] = useState({ cone_type: '6' });
   const [recordId, setRecordId] = useState(null);
 
@@ -19,6 +19,7 @@ const KilnCeramic = ({ setCeramicFirings }) => {
   const [completedQuestions, setCompletedQuestions] = useState([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
 
+  // #region [ Blue ]
   // populate the answers state with the currentCeramicFiring data
   const getCurrentTime = () => {
     const date = new Date();
@@ -26,7 +27,8 @@ const KilnCeramic = ({ setCeramicFirings }) => {
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   };
-
+  //#endregion
+  // #region [ Grey]
   useEffect(() => {
     if (currentCeramicFiring) {
       setRecordId(currentCeramicFiring.id);
@@ -59,9 +61,8 @@ const KilnCeramic = ({ setCeramicFirings }) => {
       setIsInitialLoading(false); // Also set isInitialLoading to false if the fetch is complete and currentCeramicFiring is null
     }
   }, [currentCeramicFiring, isFetching]);
-
-  // const [records, setRecords] = useState([]);
-
+  //#endregion
+  // #region [ Purple ]
   const handleAnswerChange = useCallback(
     (event) => {
       setAnswers((prevAnswers) => ({
@@ -72,7 +73,8 @@ const KilnCeramic = ({ setCeramicFirings }) => {
     },
     [recordId, currentQuestionIndex]
   );
-
+  //#endregion
+  // #region [ Yellow ]
   const handleNextQuestion = useCallback(async () => {
     // Save the answer
     setCompletedQuestions([
@@ -82,7 +84,6 @@ const KilnCeramic = ({ setCeramicFirings }) => {
         answer: answers[questions[currentQuestionIndex].key],
       },
     ]);
-
     // Update or create the ceramic kiln firing record
     if (Object.keys(answers).length > 0) {
       const data = { ...answers };
@@ -122,6 +123,7 @@ const KilnCeramic = ({ setCeramicFirings }) => {
     currentQuestionIndex,
     recordId,
   ]);
+  //#endregion
 
   const handleSubmitRecord = useCallback(() => {
     const record = {
@@ -219,8 +221,8 @@ const KilnCeramic = ({ setCeramicFirings }) => {
   );
 };
 
-KilnCeramic.propTypes = {
+KilnGlass.propTypes = {
   setCeramicFirings: PropTypes.func.isRequired,
 };
 
-export default KilnCeramic;
+export default KilnGlass;

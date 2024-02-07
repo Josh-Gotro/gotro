@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import {
   useFetchCurrentCeramicFiring,
   usePostCeramicFiring,
-} from '../../api/ceramicApi.js';
+} from './useKilnCeramic.jsx';
 
-import { questions } from './ceramicKilnQuestions';
+import { questions } from './ceramicKilnQuestions.js';
 
-const KilnGlass = ({ setCeramicFirings }) => {
+const KilnCeramic = ({ setCeramicFirings }) => {
   const [answers, setAnswers] = useState({ cone_type: '6' });
   const [recordId, setRecordId] = useState(null);
 
@@ -219,8 +219,8 @@ const KilnGlass = ({ setCeramicFirings }) => {
   );
 };
 
-KilnGlass.propTypes = {
+KilnCeramic.propTypes = {
   setCeramicFirings: PropTypes.func.isRequired,
 };
 
-export default KilnGlass;
+export default KilnCeramic;

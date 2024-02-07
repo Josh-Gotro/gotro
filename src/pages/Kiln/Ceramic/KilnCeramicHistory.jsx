@@ -1,8 +1,8 @@
-import './kiln.css';
+import '../kiln.css';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const KilnGlassHistory = ({ ceramicFirings }) => {
+const KilnCeramicHistory = ({ ceramicFirings }) => {
   const [openCards, setOpenCards] = useState({}); // New state
 
   function convertTo12HrFormat(time) {
@@ -86,8 +86,8 @@ const KilnGlassHistory = ({ ceramicFirings }) => {
   );
 };
 
-KilnGlassHistory.propTypes = {
+KilnCeramicHistory.propTypes = {
   ceramicFirings: PropTypes.array.isRequired,
 };
 
-export default KilnGlassHistory;
+export default KilnCeramicHistory;

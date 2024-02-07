@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-
-const backendApiUrl = import.meta.env.VITE_BACKEND_API_URL;
+import { backendApiUrl } from '../../api/useApi';
 
 export function useFetchPlasterCalculations() {
   const [plasterCalculations, setPlasterCalculations] = useState([]);

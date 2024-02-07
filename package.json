@@ -28,5 +28,13 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "prettier": "^3.2.4",
     "vite": "^5.0.8"
+  },
+  "coloredRegions.namedColors": {
+    "Green": "rgba(26, 204, 113, 0.15)",
+    "Brown": "rgba(231, 204, 113, 0.15)",
+    "Blue": "rgba(52, 152, 219, 0.15)",
+    "Grey": "rgba(236, 240, 241, 0.15)",
+    "Purple": "rgba(79, 44, 115, 0.5) ",
+    "Yellow": "rgba(241, 196, 15, 0.15)"
   }
 }

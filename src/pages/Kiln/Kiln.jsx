@@ -1,5 +1,6 @@
 import { useState, Suspense, lazy } from 'react';
 import { useFetchCeramicFirings } from './Ceramic/useKilnCeramic.jsx';
+import { useFetchAllKilnGlassRecords } from './Glass/useKilnGlass.jsx';
 import './kiln.css';
 import loadingImage from '../../../public/assets/lion.webp';
 
@@ -14,6 +15,8 @@ const Kiln = () => {
   const [selectedTab, setSelectedTab] = useState('Ceramic');
   const { ceramicFirings, setCeramicFirings, isLoading } =
     useFetchCeramicFirings();
+
+  const {kilnGlassRecords, setKilnGlassRecords, glassRecordsLoading } = useFetchAllKilnGlassRecords
 
   return (
     <div className='kiln-wrapper'>
@@ -40,7 +43,7 @@ const Kiln = () => {
       >
         <div className='kiln-component'>
           {selectedTab === 'Glass' ? (
-            <KilnGlass />
+            <KilnGlass setKilnGlassRecords={setKilnGlassRecords} />
           ) : (
             <KilnCeramic setCeramicFirings={setCeramicFirings} />
           )}
@@ -55,7 +58,7 @@ const Kiln = () => {
       >
         <div className='kiln-history-component'>
           {selectedTab === 'Glass' ? (
-            <KilnGlassHistory ceramicFirings={ceramicFirings} />
+            !glassRecordsLoading && <KilnGlassHistory kilnGlassRecords={kilnGlassRecords} />
           ) : (
             !isLoading && <KilnCeramicHistory ceramicFirings={ceramicFirings} />
           )}

@@ -98,7 +98,7 @@ export function useDeleteProTableRecord(id) {
 // GET all records from kiln_glass_records
 export function useFetchAllKilnGlassRecords() {
   const [kilnGlassRecords, setKilnGlassRecords] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [glassRecordsLoading, setGlassRecordsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllKilnGlassRecords = async () => {
@@ -108,14 +108,14 @@ export function useFetchAllKilnGlassRecords() {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+        setGlassRecordsLoading(false);
       }
     };
 
     fetchAllKilnGlassRecords();
   }, []);
 
-  return { kilnGlassRecords, isLoading };
+  return { kilnGlassRecords, glassRecordsLoading };
 }
 
 // GET a single record from kiln_glass_records by id

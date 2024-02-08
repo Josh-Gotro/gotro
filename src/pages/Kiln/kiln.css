@@ -69,9 +69,15 @@
   color: #1a1a1a;
   display: flex;
   flex-direction: column;
-  min-width: fit-content;
+  min-width: -moz-fit-content;
+      /* Firefox */
+  min-width: -webkit-fill-available;
+      /* Samsung Internet */
+   min-width: fit-content;
   width: 600px;
   box-sizing: border-box;
+  max-height: -moz-fit-content;
+      /* Firefox */
   max-height: fit-content;
 }
 
@@ -187,6 +193,8 @@ textarea {
 .outer-container {
   display: block;
   justify-content: space-between;
+  max-height: -moz-fit-content;
+      /* Firefox */
   max-height: fit-content;
   padding: 20px;
 }

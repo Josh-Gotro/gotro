@@ -1,6 +1,9 @@
 import { useState, Suspense, lazy } from 'react';
 import { useFetchCeramicFirings } from './Ceramic/useKilnCeramic.jsx';
-import { useFetchAllKilnGlassRecords } from './Glass/useKilnGlass.jsx';
+import {
+  useFetchAllKilnGlassRecords,
+  useFetchAllProTableRecords,
+} from './Glass/useKilnGlass.jsx';
 import './kiln.css';
 import loadingImage from '../../../public/assets/lion.webp';
 
@@ -16,7 +19,9 @@ const Kiln = () => {
   const { ceramicFirings, setCeramicFirings, isLoading } =
     useFetchCeramicFirings();
 
-  const {kilnGlassRecords, setKilnGlassRecords, glassRecordsLoading } = useFetchAllKilnGlassRecords
+  const { kilnGlassRecords, setKilnGlassRecords, glassRecordsLoading } =
+    useFetchAllKilnGlassRecords();
+  const [proTableRecords, proTablesLoading] = useFetchAllProTableRecords();
 
   return (
     <div className='kiln-wrapper'>
@@ -43,7 +48,14 @@ const Kiln = () => {
       >
         <div className='kiln-component'>
           {selectedTab === 'Glass' ? (
-            <KilnGlass setKilnGlassRecords={setKilnGlassRecords} />
+            proTablesLoading || glassRecordsLoading ? (
+              <div>Loading...</div>
+            ) : (
+              <KilnGlass
+                setKilnGlassRecords={setKilnGlassRecords}
+                proTableRecords={proTableRecords}
+              />
+            )
           ) : (
             <KilnCeramic setCeramicFirings={setCeramicFirings} />
           )}
@@ -57,11 +69,13 @@ const Kiln = () => {
         }
       >
         <div className='kiln-history-component'>
-          {selectedTab === 'Glass' ? (
-            !glassRecordsLoading && <KilnGlassHistory kilnGlassRecords={kilnGlassRecords} />
-          ) : (
-            !isLoading && <KilnCeramicHistory ceramicFirings={ceramicFirings} />
-          )}
+          {selectedTab === 'Glass'
+            ? !glassRecordsLoading && (
+                <KilnGlassHistory kilnGlassRecords={kilnGlassRecords} />
+              )
+            : !isLoading && (
+                <KilnCeramicHistory ceramicFirings={ceramicFirings} />
+              )}
         </div>
       </Suspense>
     </div>

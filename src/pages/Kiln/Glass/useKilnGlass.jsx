@@ -6,7 +6,7 @@ import { backendApiUrl } from '../../../api/useApi';
 // GET all records from pro_table
 export function useFetchAllProTableRecords() {
   const [proTableRecords, setProTableRecords] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [proTablesLoading, setProTablesLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllProTableRecords = async () => {
@@ -16,14 +16,14 @@ export function useFetchAllProTableRecords() {
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+        setProTablesLoading(false);
       }
     };
 
     fetchAllProTableRecords();
   }, []);
 
-  return { proTableRecords, isLoading };
+  return [proTableRecords, proTablesLoading];
 }
 
 // GET a single record from pro_table by id

@@ -19,8 +19,6 @@ const KilnCeramicHistory = ({ ceramicFirings }) => {
     setOpenCards((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
-  console.log(ceramicFirings);
-
   return (
     <>
       <h2>History</h2>

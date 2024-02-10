@@ -11,9 +11,18 @@ import image9 from '../../assets/skull.JPG';
 
 import './glass.css';
 
-
 const Glass = () => {
-  const images = [image1, image2, image3, image4, image5, image6, image7, image8, image9];
+  const images = [
+    image1,
+    image2,
+    image3,
+    image4,
+    image5,
+    image6,
+    image7,
+    image8,
+    image9,
+  ];
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const nextImage = () => {
@@ -21,21 +30,27 @@ const Glass = () => {
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((currentImageIndex - 1 + images.length) % images.length);
+    setCurrentImageIndex(
+      (currentImageIndex - 1 + images.length) % images.length
+    );
   };
 
   return (
     <div>
       <h1>Glass</h1>
-      <div className="carousel">
-        <img className="glass-image" src={images[currentImageIndex]} alt={`Glass ${currentImageIndex + 1}`} />
-        <div className="button-container">
+      <div className='carousel'>
+        <img
+          className='glass-image'
+          src={images[currentImageIndex]}
+          alt={`Glass ${currentImageIndex + 1}`}
+        />
+        <div className='button-container'>
           <button onClick={prevImage}>Previous</button>
           <button onClick={nextImage}>Next</button>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Glass;

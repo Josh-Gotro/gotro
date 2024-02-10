@@ -1,26 +1,20 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
+import loadingImage from '../../../assets/lion.webp';
 
 import ProTable from './ProTable.jsx';
 
-// import {
-// useFetchAllProTableRecords,
-// useFetchProTableRecordById,
-// usePostProTableRecord,
-// usePutProTableRecord,
-// useDeleteProTableRecord,
-// useFetchAllKilnGlassRecords,
-// useFetchKilnGlassRecordById,
-// usePostKilnGlassRecord,
-// usePutKilnGlassRecord,
-// useDeleteKilnGlassRecord,
-// } from '../Glass/useKilnGlass.jsx';
+import './kiln-glass.css';
 
-const KilnGlass = ({ setKilnGlassRecords, proTableRecords }) => {
+import { usePostKilnGlassRecord } from './useKilnGlass.jsx';
+
+const KilnGlass = ({ setKilnGlassRecord, proTableRecords }) => {
   // const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [showFiringSchedule, setShowFiringSchedule] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { postKilnGlassRecord } = usePostKilnGlassRecord(setKilnGlassRecord);
 
   useEffect(() => {
     if (proTableRecords.length > 0) {
@@ -39,38 +33,46 @@ const KilnGlass = ({ setKilnGlassRecords, proTableRecords }) => {
     },
   });
 
-  const onSubmit = (data) => {
-    setKilnGlassRecords(data);
+  const onSubmit = async (data) => {
+    console.log(data);
+    await postKilnGlassRecord(data);
   };
 
   const watchMode = watch('mode');
-  const watchGlassType = watch('glassType', '');
-  const selectedFiringScheduleName = watch('firingSchedule');
+  const watchGlassType = watch('glass_type', '');
+  const selectedFiringScheduleName = watch('pro_table_id');
 
   const selectedFiringSchedule = proTableRecords.find(
     (record) => record.name === selectedFiringScheduleName
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className='loader'>
+        <img src={loadingImage} alt='Loading...' />
+      </div>
+    );
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h3>Record Firing</h3>
+      <form className='form-grid' onSubmit={handleSubmit(onSubmit)}>
         <label>
           Mode:
           <select {...register('mode')}>
-            <option value='PRO'>PRO</option>
-            <option value='AUTO'>AUTO</option>
+            <option value='PRO'>Pro</option>
+            <option value='AUTO'>Auto</option>
           </select>
         </label>
         {watchMode === 'PRO' && (
           <label>
             Firing Schedule:
-            <select {...register('firingSchedule')}>
+            <select {...register('pro_table_id')}>
+              <option value='0'>{' Choose'}</option>
+
               {proTableRecords.map((record) => (
-                <option key={record.id} value={record.name}>
+                <option key={record.id} value={record.id}>
                   {record.name}
                 </option>
               ))}
@@ -87,14 +89,16 @@ const KilnGlass = ({ setKilnGlassRecords, proTableRecords }) => {
           <>
             <label>
               Speed:
-              <select {...register('speed')}>
+              <select {...register('auto_speed')}>
+                <option value='none'>-</option>
                 <option value='SLo'>SLo</option>
                 <option value='MEd'>MEd</option>
               </select>
             </label>
             <label>
               Process:
-              <select {...register('process')}>
+              <select {...register('auto_process')}>
+                <option value='none'>-</option>
                 <option value='SLP'>SLP</option>
                 <option value='tAC'>tAC</option>
                 <option value='FULL'>FULL</option>
@@ -102,24 +106,24 @@ const KilnGlass = ({ setKilnGlassRecords, proTableRecords }) => {
             </label>
             <label>
               Adjust Temp:
-              <input type='text' {...register('adjustTemp')} />
+              <input type='text' {...register('auto_mod_temp')} />
             </label>
             <label>
               Adjust Time:
-              <div>
+              <div className='time-inputs'>
                 <input
                   type='number'
                   min='0'
                   max='23'
                   placeholder='HH'
-                  {...register('adjustTimeHours')}
+                  {...register('auto_mod_hr')}
                 />
                 <input
                   type='number'
                   min='0'
                   max='59'
                   placeholder='MM'
-                  {...register('adjustTimeMinutes')}
+                  {...register('auto_mod_m')}
                 />
               </div>
             </label>
@@ -127,18 +131,18 @@ const KilnGlass = ({ setKilnGlassRecords, proTableRecords }) => {
         )}
         <label>
           Room Temp:
-          <input type='number' {...register('roomTemp')} />
+          <input type='number' {...register('room_temp')} />
         </label>
         <label>
           Glass Type:
-          <select {...register('glassType')}>
-            <option value='WINE'>WINE</option>
-            <option value='BEER'>BEER</option>
-            <option value='STAINED'>STAINED</option>
-            <option value='96COE'>96COE</option>
-            <option value='90COE'>90COE</option>
-            <option value='MIXED'>MIXED</option>
-            <option value='OTHER'>OTHER</option>
+          <select {...register('glass_type')}>
+            <option value='WINE'>Wine Bottle</option>
+            <option value='BEER'>Beer Bottle</option>
+            <option value='STAINED'>Stained Glass</option>
+            <option value='96COE'>96 COE</option>
+            <option value='90COE'>90 COE</option>
+            <option value='MIXED'>Mixed</option>
+            <option value='OTHER'>Other</option>
           </select>
         </label>
 
@@ -146,33 +150,37 @@ const KilnGlass = ({ setKilnGlassRecords, proTableRecords }) => {
           (watchGlassType === 'MIXED' && (
             <label>
               Other:
-              <input type='text' name='other' {...register('other')} />
+              <input
+                type='text'
+                name='other'
+                {...register('glass_type_other')}
+              />
             </label>
           ))}
         <label>
           Loading Notes:
-          <textarea name='loadingNotes' {...register('loadingNotes')} />
+          <textarea name='loadingNotes' {...register('loading_notes')} />
         </label>
         <label>
           Unloading Notes:
-          <textarea name='unloadingNotes' {...register('unloadingNotes')} />
+          <textarea name='unloadingNotes' {...register('unloading_notes')} />
         </label>
         <label>
           Total Fire Time:
-          <div>
+          <div className='time-inputs'>
             <input
               type='number'
               min='0'
               max='23'
               placeholder='HH'
-              {...register('totalFireTimeHours')}
+              {...register('fire_time_hr')}
             />
             <input
               type='number'
               min='0'
               max='59'
               placeholder='MM'
-              {...register('totalFireTimeMinutes')}
+              {...register('fire_time_m')}
             />
           </div>
         </label>
@@ -183,7 +191,7 @@ const KilnGlass = ({ setKilnGlassRecords, proTableRecords }) => {
 };
 
 KilnGlass.propTypes = {
-  setKilnGlassRecords: PropTypes.func,
+  setKilnGlassRecord: PropTypes.func,
   proTableRecords: PropTypes.arrayOf(
     PropTypes.shape({
       add_time_hr: PropTypes.number,

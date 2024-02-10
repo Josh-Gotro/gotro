@@ -5,7 +5,7 @@ import {
   useFetchAllProTableRecords,
 } from './Glass/useKilnGlass.jsx';
 import './kiln.css';
-import loadingImage from '../../../public/assets/lion.webp';
+import loadingImage from '../../assets/lion.webp';
 
 const KilnGlass = lazy(() => import('./Glass/KilnGlass.jsx'));
 const KilnCeramic = lazy(() => import('./Ceramic/KilnCeramic.jsx'));
@@ -19,7 +19,7 @@ const Kiln = () => {
   const { ceramicFirings, setCeramicFirings, isLoading } =
     useFetchCeramicFirings();
 
-  const { kilnGlassRecords, setKilnGlassRecords, glassRecordsLoading } =
+  const { kilnGlassRecords, setKilnGlassRecord, glassRecordsLoading } =
     useFetchAllKilnGlassRecords();
   const [proTableRecords, proTablesLoading] = useFetchAllProTableRecords();
 
@@ -52,7 +52,7 @@ const Kiln = () => {
               <div>Loading...</div>
             ) : (
               <KilnGlass
-                setKilnGlassRecords={setKilnGlassRecords}
+                setKilnGlassRecord={setKilnGlassRecord}
                 proTableRecords={proTableRecords}
               />
             )

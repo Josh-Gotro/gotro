@@ -15,6 +15,7 @@ Currently, two official plugins are available:
 - push the changes up.
 - restart the dynos using the heroku cli or from the dashboard.
 
+
 ### restart dynos
 1. `heroku login`
 2. `heroku apps`

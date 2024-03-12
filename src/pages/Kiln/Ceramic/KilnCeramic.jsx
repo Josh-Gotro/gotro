@@ -159,6 +159,7 @@ const KilnCeramic = ({ setCeramicFirings }) => {
     setAnswers({});
     setCurrentQuestionIndex(0);
     setCompletedQuestions([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers, recordId, postCeramicFiring]);
 
   return (

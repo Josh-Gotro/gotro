@@ -79,19 +79,16 @@ background-color: #FFFFFF;
 .tree-container {
   position: relative;
   width: auto;
-  height: 100vh;
-  /* Adjust this as needed */
+  height: 55vh;
 }
 
 .tree {
   position: absolute;
   top: 55%;
-  /* Adjust this as needed */
   left: 50%;
   height: 12vh;
   width: 5px;
   background-color: #3D75FD;
-  /* Adjust this line */
 }
 
 .branch {
@@ -164,16 +161,10 @@ background-color: #FFFFFF;
 
 @media (max-width: 500px) {
   .tree {
-    top: 50%;
+    top: 80%;
     left: 80%;
-    @media (max-width: 500px) {
-  .tree {
-    top: 50%;
-    left: 99%;
     height: 20vh;
     width: 5px;
-  }
-}
   }
 }
 

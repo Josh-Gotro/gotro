@@ -26,7 +26,9 @@ const SearchBox = () => {
     if (value === import.meta.env.VITE_NAME1 || value === import.meta.env.VITE_NAME2) {
       setShowInfo(true);
     } else if (value === 'glass') {
-      navigate('/glass');
+      // TODO uncomment this line when glass is ready
+      // navigate('/glass');
+      navigate('kiln');
     } else if (value === 'plaster') {
       navigate('/plaster-calculator');
     } else if (value === 'kiln') {

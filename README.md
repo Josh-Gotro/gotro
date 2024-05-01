@@ -10,7 +10,6 @@ Currently, two official plugins are available:
 ## Updating Heroku Environment Variables
 
 - update the environment variable in heroku settings > config vars
-- rebuild the app locally by running `npm run build` and ensure the build succeeds.
 - restart the dynos using the heroku cli or from the dashboard.
 
 ### Restart Dynos

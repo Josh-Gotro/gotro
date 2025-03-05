@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import FallingLetter from '../../components/FallingLetter/FallingLetter';
 import './portfolio.css';
-import SearchBox from '../../components/SearchBox/SearchBox';
+// import SearchBox from '../../components/SearchBox/SearchBox';
 import { AiOutlineHome } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ const Portfolio = () => {
       const left = Math.random() * 100;
       setLetters((prevLetters) => [...prevLetters, { id: nextId, left }]);
       setNextId((prevId) => prevId + 1);
-    }, 100); // Create a new letter every 1000 milliseconds
+    }, 2000); //  2 seconds between drops
 
     return () => {
       clearInterval(interval);
@@ -29,14 +29,7 @@ const Portfolio = () => {
 
   return (
     <>
-      <div
-        style={{
-          position: 'relative',
-          height: '100vh',
-          width: '100vw',
-          overflow: 'visible',
-        }}
-      >
+      <div className="letters-container">
         {letters.map((letter) => (
           <FallingLetter
             key={letter.id}
@@ -44,7 +37,7 @@ const Portfolio = () => {
             removeLetter={removeLetter}
           />
         ))}
-        <SearchBox />
+        {/* <SearchBox /> */}
       </div>
       <Link to="/" className="home-icon">
         <AiOutlineHome size={24} />

@@ -6,7 +6,7 @@ const FallingLetter = ({ left, removeLetter, id }) => {
   const letterRef = useRef(null);
 
   useEffect(() => {
-    const delay = Math.random() * 5000; // Delay between 0 and 5000 milliseconds
+    const delay = Math.random() * 5000;
 
     const transitionEnd = () => {
       removeLetter(id);
@@ -17,8 +17,8 @@ const FallingLetter = ({ left, removeLetter, id }) => {
 
     const timeout = setTimeout(() => {
       if (letterRef.current) {
-        letterRef.current.style.transition = 'top 5s linear';
-        letterRef.current.style.top = '100%';
+        letterRef.current.style.transition = 'transform 5s linear';
+        letterRef.current.style.transform = 'translateY(100vh)';
         letterRef.current.addEventListener('transitionend', transitionEnd);
       }
     }, delay);
@@ -31,30 +31,14 @@ const FallingLetter = ({ left, removeLetter, id }) => {
     };
   }, [removeLetter, id]);
 
-  useEffect(() => {
-    const updateAnimation = () => {
-      if (letterRef.current) {
-        letterRef.current.style.animation = `fall ${5}s linear infinite`;
-        letterRef.current.style.animationName = 'none'; // Force a reflow
-        setTimeout(() => {
-          letterRef.current.style.animationName = '';
-        }, 0);
-      }
-    };
-
-    window.addEventListener('resize', updateAnimation);
-    updateAnimation();
-
-    return () => {
-      window.removeEventListener('resize', updateAnimation);
-    };
-  }, []);
-
   return (
     <div
       ref={letterRef}
       className="falling-letter"
-      style={{ left: `${left}%`, top: '-10%' }}
+      style={{
+        left: `${left}%`,
+        transform: 'translateY(-100%)', // Start completely above viewport
+      }}
     >
       LOL
     </div>
@@ -64,7 +48,7 @@ const FallingLetter = ({ left, removeLetter, id }) => {
 FallingLetter.propTypes = {
   left: PropTypes.number.isRequired,
   removeLetter: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired, // Change this line
+  id: PropTypes.number.isRequired,
 };
 
 export default FallingLetter;

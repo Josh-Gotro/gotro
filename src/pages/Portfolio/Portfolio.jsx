@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import FallingLetter from '../../components/FallingLetter/FallingLetter';
-import './Portfolio.css';
+import './portfolio.css';
 import SearchBox from '../../components/SearchBox/SearchBox';
 import { AiOutlineHome } from 'react-icons/ai';
 import { Link } from 'react-router-dom';

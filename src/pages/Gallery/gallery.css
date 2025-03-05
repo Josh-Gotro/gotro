@@ -1,0 +1,108 @@
+.glass-container {
+  position: relative;
+  padding-top: 60px;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.glass-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 10px 0;
+  margin-bottom: 30px;  /* Add space below the title */
+}
+
+.carousel {
+  width: 100%;
+  max-width: 800px; /* Limit maximum width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  margin-top: 15px;
+}
+
+.glass-image {
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - 200px);
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+button {
+  margin: 5px 0;
+}
+
+.button-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-51%); /* Center the button container */
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  background-color: rgba(36, 36, 36, 0.8);
+  width: 100%;
+  max-width: 100vw; /* Prevent horizontal overflow */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Update home icon position - move this outside the media query */
+.home-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: #e0cd1fc4;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  z-index: 1000; /* Ensure it stays on top */
+  width: 24px; /* Add fixed width */
+  height: 24px; /* Add fixed height */
+}
+
+/* Media query for screens smaller than 600px */
+@media (max-width: 600px) {
+  .glass-container {
+    padding-top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .carousel {
+    padding: 0 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .glass-image {
+    max-height: calc(100vh - 300px);
+    margin-bottom: 80px;
+  }
+
+  .button-container {
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+  }
+
+  .home-icon {
+    top: 20px; /* Only change the position in mobile */
+    bottom: auto;
+  }
+}
+
+

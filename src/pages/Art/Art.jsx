@@ -1,15 +1,42 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './art.css';
+import Tree from './Tree';
 
-import SearchBox from '../../components/SearchBox/SearchBox';
+// import SearchBox from '../../components/SearchBox/SearchBox';
 
 const Art = () => {
   const [text, setText] = useState('');
   const [hoveredElement, setHoveredElement] = useState(null);
+  const navigate = useNavigate();
 
   const handleClick = (size) => {
     console.log('Clicked:', size);
-    setText(size);
+    switch (size) {
+      case 'GALLERY':
+        setText(size);
+        navigate('/gallery');
+        break;
+      case 'PORTFOLIO':
+        setText(size);
+        navigate('/portfolio');
+        break;
+      case 'PLASTER CALC':
+        setText(size);
+        navigate('/plaster-calculator');
+        break;
+      case 'KILN':
+        setText(size);
+        navigate('/kiln');
+        break;
+      case 'SMALL':
+        setText(size);
+        // TODO: add small page
+        navigate('/portfolio');
+        break;
+      default:
+        setText('');
+    }
   };
 
   const handleMouseEnter = (event, size) => {
@@ -19,9 +46,9 @@ const Art = () => {
     }
 
     let tree;
-    if (size === 'BLOW') {
+    if (size === 'PORTFOLIO') {
       tree = event.currentTarget.parentNode;
-    } else if (size === 'BLOW ') {
+    } else if (size === 'PORTFOLIO ') {
       tree = event.currentTarget;
     }
 
@@ -53,215 +80,42 @@ const Art = () => {
   };
 
   return (
-    <div className='art-container'>
-      <div className='figure'>
+    <div className="art-container">
+      <div className="figure">
         <div
-          className='head'
-          onMouseEnter={(event) => handleMouseEnter(event, 'HEAD')}
+          className="head"
+          onMouseEnter={(event) => handleMouseEnter(event, 'GALLERY')}
           onMouseLeave={handleMouseLeave}
-          onClick={() => handleClick('HEAD')}
+          onClick={() => handleClick('GALLERY')}
         ></div>
-          <div className="search-input"><SearchBox /></div>
-                <div className='tree-container'>
-        <div
-          className='tree'
-          onMouseEnter={(event) => handleMouseEnter(event, 'BLOW ')}
+        {/* <div className="search-input"><SearchBox /></div> */}
+        <Tree
+          onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClick={() => handleClick('BLOW')}
-        >
-          <div
-            className='branch'
-            style={{ transform: 'rotate(-60deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(-50deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(-40deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(-30deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(-20deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(-10deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(0deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(10deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(20deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(30deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(40deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(50deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-          <div
-            className='branch'
-            style={{ transform: 'rotate(60deg)' }}
-            onMouseEnter={(event) => {
-              event.stopPropagation();
-              handleMouseEnter(event, 'BLOW');
-            }}
-            onMouseLeave={(event) => {
-              event.stopPropagation();
-              handleMouseLeave(event);
-            }}
-            onClick={() => handleClick('BLOW')}
-          ></div>
-        </div>
+          onClick={() => handleClick('PORTFOLIO')}
+        />
       </div>
-        </div>
 
       <div
-        className='circle large-circle'
-        onMouseEnter={(event) => handleMouseEnter(event, 'LARGE')}
+        className="circle large-circle"
+        onMouseEnter={(event) => handleMouseEnter(event, 'PLASTER CALC')}
         onMouseLeave={handleMouseLeave}
-        onClick={() => handleClick('LARGE')}
+        onClick={() => handleClick('PLASTER CALC')}
       ></div>
       <div
-        className='circle medium-circle'
-        onMouseEnter={(event) => handleMouseEnter(event, 'MEDIUM')}
+        className="circle medium-circle"
+        onMouseEnter={(event) => handleMouseEnter(event, 'KILN')}
         onMouseLeave={handleMouseLeave}
-        onClick={() => handleClick('MEDIUM')}
+        onClick={() => handleClick('KILN')}
       ></div>
       <div
-        className='circle small-circle'
+        className="circle small-circle"
         onMouseEnter={(event) => handleMouseEnter(event, 'SMALL')}
         onMouseLeave={handleMouseLeave}
         onClick={() => handleClick('SMALL')}
       ></div>
-      <div className='gold-band'></div>
-      <div className='text-display'>{text}</div>
+      <div className="gold-band"></div>
+      <div className="text-display">{text}</div>
     </div>
   );
 };

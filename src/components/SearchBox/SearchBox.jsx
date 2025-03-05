@@ -8,9 +8,8 @@ const SearchBox = () => {
   const [showInfo, setShowInfo] = useState(false);
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    const placeholders = ['glass', 'plaster', 'kiln'];
+    const placeholders = ['gallery', 'plaster', 'kiln'];
     let i = 0;
     const intervalId = setInterval(() => {
       setPlaceholder(placeholders[i]);
@@ -23,17 +22,18 @@ const SearchBox = () => {
   const handleChange = (event) => {
     const value = event.target.value.toLowerCase();
     setInput(value);
-    if (value === import.meta.env.VITE_NAME1 || value === import.meta.env.VITE_NAME2) {
+    if (
+      value === import.meta.env.VITE_NAME1 ||
+      value === import.meta.env.VITE_NAME2
+    ) {
       setShowInfo(true);
-    } else if (value === 'glass') {
-      // TODO uncomment this line when glass is ready
-      // navigate('/glass');
-      navigate('kiln');
+    } else if (value === 'gallery') {
+      navigate('/gallery');
     } else if (value === 'plaster') {
       navigate('/plaster-calculator');
     } else if (value === 'kiln') {
       navigate('kiln');
-    }else {
+    } else {
       setShowInfo(false);
     }
   };
@@ -41,15 +41,24 @@ const SearchBox = () => {
   return (
     <div className="center-container">
       <div className="input-container">
-        <input className="center-input" value={input} onChange={handleChange} placeholder={placeholder} />
+        <input
+          className="center-input"
+          value={input}
+          onChange={handleChange}
+          placeholder={placeholder}
+        />
       </div>
-      {showInfo &&
+      {showInfo && (
         <div className="info-container">
-          <p className="info-text">Door: {import.meta.env.VITE_DOOR}<br />Wifi: {import.meta.env.VITE_WIFI}</p>
+          <p className="info-text">
+            Door: {import.meta.env.VITE_DOOR}
+            <br />
+            Wifi: {import.meta.env.VITE_WIFI}
+          </p>
         </div>
-      }
+      )}
     </div>
   );
-}
+};
 
 export default SearchBox;

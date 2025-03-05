@@ -56,6 +56,19 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.home-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: #e0cd1fc4;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.home-icon:hover {
+  opacity: 1;
+}
+
 .loader {
   display: flex;
   justify-content: center;

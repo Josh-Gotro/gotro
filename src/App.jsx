@@ -5,20 +5,22 @@ const Welcome = lazy(() => import('./pages/Welcome/Welcome.jsx'));
 const PlasterCalculator = lazy(
   () => import('./pages/Plaster/PlasterCalculator.jsx')
 );
-// const Glass = lazy(() => import('./pages/Glass/Glass.jsx'));
 const Kiln = lazy(() => import('./pages/Kiln/Kiln.jsx'));
 const Art = lazy(() => import('./pages/Art/Art.jsx'));
+const Portfolio = lazy(() => import('./pages/Portfolio/Portfolio.jsx'));
+const Gallery = lazy(() => import('./pages/Gallery/Gallery.jsx'));
 
 function App() {
   return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
-          <Route path='/' element={<Art />} />
-          <Route path='/plaster-calculator' element={<PlasterCalculator />} />
-          {/* <Route path='/glass' element={<Glass />} /> */}
-          <Route path='/kiln' element={<Kiln />} />
-          <Route path='/lol' element={<Welcome />} />
+          <Route path="/" element={<Art />} />
+          <Route path="/plaster-calculator" element={<PlasterCalculator />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/kiln" element={<Kiln />} />
+          <Route path="/lol" element={<Welcome />} />
+          <Route path="/portfolio" element={<Portfolio />} />
         </Routes>
       </Suspense>
     </Router>

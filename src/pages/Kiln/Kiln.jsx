@@ -6,6 +6,8 @@ import {
 } from './Glass/useKilnGlass.jsx';
 import './kiln.css';
 import loadingImage from '../../assets/lion.webp';
+import { AiOutlineHome } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 const KilnGlass = lazy(() => import('./Glass/KilnGlass.jsx'));
 const KilnCeramic = lazy(() => import('./Ceramic/KilnCeramic.jsx'));
@@ -24,8 +26,8 @@ const Kiln = () => {
   const [proTableRecords, proTablesLoading] = useFetchAllProTableRecords();
 
   return (
-    <div className='kiln-wrapper'>
-      <div className='button-container'>
+    <div className="kiln-wrapper">
+      <div className="button-container">
         <button
           className={`glass-button ${selectedTab === 'Glass' ? 'active' : ''}`}
           onClick={() => setSelectedTab('Glass')}
@@ -41,12 +43,12 @@ const Kiln = () => {
       </div>
       <Suspense
         fallback={
-          <div className='loader'>
-            <img src={loadingImage} alt='Loading...' />
+          <div className="loader">
+            <img src={loadingImage} alt="Loading..." />
           </div>
         }
       >
-        <div className='kiln-component'>
+        <div className="kiln-component">
           {selectedTab === 'Glass' ? (
             proTablesLoading || glassRecordsLoading ? (
               <div>Loading...</div>
@@ -63,12 +65,12 @@ const Kiln = () => {
       </Suspense>
       <Suspense
         fallback={
-          <div className='loader'>
-            <img src={loadingImage} alt='Loading...' />
+          <div className="loader">
+            <img src={loadingImage} alt="Loading..." />
           </div>
         }
       >
-        <div className='kiln-history-component'>
+        <div className="kiln-history-component">
           {selectedTab === 'Glass'
             ? !glassRecordsLoading && (
                 <KilnGlassHistory kilnGlassRecords={kilnGlassRecords} />
@@ -78,6 +80,9 @@ const Kiln = () => {
               )}
         </div>
       </Suspense>
+      <Link to="/" className="home-icon">
+        <AiOutlineHome size={24} />
+      </Link>
     </div>
   );
 };

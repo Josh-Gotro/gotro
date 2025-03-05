@@ -1,0 +1,86 @@
+@import "@/scss/colors.scss";
+
+.benefit-selection {
+  width: 100%;
+}
+
+.dependents-callout {
+  margin-top: 10px;
+  max-width: 90%;
+  // width: 100%;
+}
+
+.dependents-input {
+  width: 100%;
+}
+
+.happy-check {
+  color: $card-header;
+}
+
+.info-circle {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.italic-text {
+  font-style: italic;
+}
+
+.premium-label {
+  font-weight: bold;
+}
+
+.premium-amount {
+  font-size: 1.5em;
+  font-weight: bold;
+  opacity: 75%;
+}
+
+.review-benefits {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.total-monthly-premium {
+  text-align: right;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .stepper-container {
+    height: 100%;
+  }
+
+  .step-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+  .stepper-container {
+    height: 100%;
+  }
+
+  .step-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; // Center children vertically
+    align-items: center; // Center children horizontally
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.subscriber-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 20px;
+}

@@ -1,0 +1,87 @@
+@import "@scss/colors.scss";
+
+.stepper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+
+  .button-group {
+      margin-top: auto;
+      padding-top: 2rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+  .step-indicators {
+    height: 100px;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    padding-left: 60px;
+    padding-right: 60px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+     .step-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 22%;
+    }
+
+    .step-indicator {
+    width: 30%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border-radius: 32px;
+
+      &.active {
+        background-color: $drb-light-blue;
+        color: white;
+        width: -moz-fit-content;
+        width: fit-content;
+      }
+
+      &.completed {
+        color: $drb-light-blue;
+
+        .step-number {
+          color: $drb-light-blue;
+        }
+      }
+
+    .step-title {
+        line-height: 1;
+        // height: 30px;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+       }
+      }
+    }
+
+  .step-content {
+    flex-grow: 1;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 80px;
+  }
+}

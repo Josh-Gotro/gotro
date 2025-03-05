@@ -1,0 +1,437 @@
+@import "@/scss/colors.scss";
+
+h2 {
+  font-size: 1.5em;
+}
+
+.accordion-button {
+  background-color: $drb-light-blue;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  outline: none;
+  padding: 18px;
+  text-align: center;
+  transition: 0.4s;
+  width: 100%;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: $accordion-header;
+  color: #FFF;
+}
+
+.alert-info {
+  background-color: $happy-green;
+  border: none;
+}
+
+.alert-warn{
+    background-color: $warn-yellow;
+    border: none;
+}
+
+.benefit-card {
+  box-sizing: border-box;
+  background: #fff;
+  display: flex;
+  flex: 1 0 calc(50% - 20px);
+  flex-direction: column;
+  gap: 1em;
+  height: 100%;
+  width: 100%;
+}
+
+.benefit-review-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #000;
+  border-radius: 8px;
+  position: relative;
+  transform: translate(0);
+  transform-style: preserve-3d;
+  height: 80px;
+
+  &.green.shadow:before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    transform: translate3d(10px, 8px, -1px);
+    background: conic-gradient(from 90deg at 40% -25%,
+        $sidebar-color,
+        $hover,
+        $drb-gold );
+    filter: blur(10px);
+  }
+
+  &.yellow.shadow:before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    transform: translate3d(10px, 8px, -1px);
+    background: conic-gradient(from 90deg at 40% -25%, #ffd3d3, #ffe9e9);
+    filter: blur(10px);
+  }
+}
+
+.benefit-review-card.green {
+  background-color: #3f78a7;
+  color: white;
+}
+
+.benefit-review-card.yellow {
+  background-color: #ffffe0;
+}
+
+.benefit-review-coverage-level {
+  align-self: flex-start;
+}
+
+.benefit-review-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.benefit-review-monthly-premium {
+  margin-top: auto;
+  align-self: flex-end;
+}
+
+.benefit-review-title {
+  font-weight: bold;
+  align-self: flex-start;
+}
+
+.button-container {
+  display: flex;
+  gap: 20px;
+  flex-shrink: 1;
+  margin-top: auto;
+  text-align: center;
+  padding-top: 20px;
+  margin-top: auto;
+}
+
+.button-group {
+  margin-top: auto;
+  padding-top: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 20px;
+}
+
+.button:not(:disabled):hover {
+  background-color: #0056b3;
+}
+
+.bttngroup {
+  display: flex;
+  gap: 20px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.coverageCard {
+  width: 32rem;
+  padding-left: 0;
+  padding-right: 0;
+
+  .card-header-standard {
+      // background-color: $card-header;
+      background-color: $drb-blue;
+      color: white;
+    }
+
+  .card-header-open-enrollment {
+    background-color: $danger-red;
+    color: white;
+  }
+
+  .card-header-current {
+    background-color: $card-header;
+      color: white;
+      p {
+        color: white !important;
+      }
+  }
+
+  .card-header-upcoming {
+  background-color: $card-header-companion;
+    color: white;
+    p {
+      color: white !important;
+    }
+  }
+
+  .card-header-pending {
+    background-color: $card-header-companion;
+    color: white;
+    p {
+      color: white !important;
+    }
+  }
+
+  .headerContent {
+    display: flex;
+    flex-direction: column;
+
+    p {
+      margin: 0;
+      color: #5c5c5c;
+    }
+  }
+
+  .split-header-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%; // Ensure the container takes full width
+
+    .title-right {
+      margin-left: auto; // This pushes the element to the right
+    }
+
+    p {
+      margin: 0;
+      color: #5c5c5c;
+    }
+  }
+}
+
+.dashboard-card {
+  box-sizing: border-box;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  flex: 1 0 calc(50% - 20px);
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  position: relative;
+}
+
+.dependent-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding-left: 10px;
+}
+
+.dependent-info+.dependent-info {
+  margin-top: 20px;
+}
+
+.dependents {
+  color: white;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+
+  .base {
+    box-shadow: 4px 3px 4px 2px $drb-blue;
+  }
+
+  .content {
+    background-color: $drb-light-blue;
+    border-radius: 5px;
+    padding: 12px;
+    width: 100%;
+    position: relative;
+  }
+}
+
+.icon-text-wrapper {
+  height: 40vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 4rem;
+  margin-left: 4rem;
+  gap: 1rem;
+}
+
+.input-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: end;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.input-container input[type="number"] {
+  margin-right: 10px;
+}
+
+.modern-select {
+  width: 100%;
+  height: 35px;
+  border: 1px solid $drb-light-blue;
+  border-radius: 5px;
+  padding: 5px 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+/* Add a custom arrow for the dropdown */
+.modern-select::-ms-expand {
+  display: none;
+  /* for IE 10 and 11 */
+}
+
+/* Style for hover and focus */
+.modern-select:not(:disabled):hover,
+.modern-select:not(:disabled):focus {
+  box-shadow: 0px 0px 10px 0px $sidebar-color;
+}
+
+.monthly-premium {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: $drb-light-blue;
+  justify-content: flex-end;
+    margin-right: 10px;
+}
+
+.no-coverage-text {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.noWrap {
+  white-space: nowrap;
+}
+
+.opt-out-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: auto;
+  display: inline-block;
+}
+
+.opt-out-text {
+  color: $drb-light-blue;
+  font-weight: bold;
+  text-align: center;
+  margin: auto;
+}
+
+.premium-label {
+  font-weight: bold;
+  text-align: right;
+}
+
+.premium-amount {
+  font-size: 1.5em;
+  font-weight: bold;
+  opacity: 75%;
+  text-align: right;
+}
+
+.select-benefits-button {
+  height: 40px
+}
+
+.single-line-tooltip .tooltip-inner {
+  white-space: nowrap;
+}
+
+.single-line-tooltip .tooltip-inner {
+  white-space: nowrap;
+  max-width: 650px;
+}
+
+.multi-line-tooltip .tooltip-inner {
+  white-space: normal;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+.status {
+  align-self: start;
+  justify-self: end;
+  border-radius: 5px;
+  color: white;
+}
+.status-icon-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid;
+  padding: 5px;
+  padding-right: 10px;
+  border-radius: 25px;
+  color: inherit;
+  margin-left: 5px;
+  margin-right: 5px;
+  min-width: 180px;
+  background-color: rgb(63, 91, 114);
+}
+
+.verified {
+  color: rgb(78, 255, 78);
+}
+
+.status.terminated {
+  color: rgb(236, 168, 168);
+}
+
+.status.other {
+  color: rgb(241, 241, 141);
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.waived-text {
+  font-weight: normal;
+}
+
+@media (max-width: 768px) {
+  .benefit-review-card {
+    position: static;
+    transform: translate(0);
+    transform-style: none;
+  }
+
+  .shadow:before {
+    content: "";
+    position: static;
+    inset: 0;
+    transform: translate3d(0px, 0px, 0px);
+    filter: blur(0px);
+  }
+}

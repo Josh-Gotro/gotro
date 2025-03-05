@@ -1,0 +1,295 @@
+@import "bootstrap/scss/bootstrap";
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import "@scss/colors.scss";
+
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-size: 1em;
+  background-color: #f2f2f2;
+  background-image: url(https://webcontent.alaska.gov/style/soa/20170315/images/2016-background.jpg);
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 -40px;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+a {
+  color: #0056b3;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background-color: #eceaea;
+  color: #666;
+  border-color: #eceaea;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.center {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.column-left {
+  color: $sidebar-color;
+  background: $drb-blue;
+  padding: 5px;
+  height: 93vh;
+  min-width: 250px;
+  max-width: 250px;
+}
+
+.column-right {
+  color: $drb-blue;
+  padding: 5px;
+  height: 93vh;
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.not-found-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f2f6f9;
+  text-align: center;
+
+  .content {
+    max-width: 1200px;
+    padding: 60px;
+    background-color: #fff;
+    position: relative;
+  }
+
+.base {
+  box-shadow: 10px 8px 10px 5px $drb-gold;
+}
+
+  .title {
+    font-size: 8.5em;
+    color: $drb-gold;
+  }
+
+  .message {
+    font-size: 2.4em;
+    color: #808080;
+    margin: 30px 0;
+  }
+
+  .home-link {
+    display: inline-block;
+    font-size: 1.8em;
+    padding: 20px 40px;
+    color: #fff;
+    background-color: $drb-blue;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+
+    &:hover {
+    background-color: $drb-light-blue;
+    }
+  }
+}
+
+.input-select {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-select-date {
+  width: 100%;
+}
+
+
+
+.number {
+  font-size: 18px;
+  background-color: #fc6;
+  padding: 5px;
+  border: 2px solid #960;
+  width: 30px;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.lite-link {
+  color: #fff;
+}
+
+a.lite-link:hover {
+  color: #82bbe1;
+}
+
+.nopadding {
+  padding: 0;
+  margin: 0;
+}
+
+.pad-link {
+  padding: 0 0.5rem;
+}
+
+.titlecopy {
+  color: #003;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.subtitle {
+  color: #003366;
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.subtitlecopy {
+  color: #333;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+
+.global-nav-menu a:hover,
+a:hover {
+  text-decoration: underline;
+}
+
+.global-nav-menu {
+  background: #072f49;
+  padding: 5px;
+  border-top: 3px solid #edbd03;
+}
+
+.global-nav-menu .inline-div>ul {
+  display: inline-block;
+  font-size: 0.75em;
+  line-height: 1em;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  max-width: 960px;
+  width: 100%;
+  vertical-align: bottom;
+}
+
+.global-nav-menu a {
+  color: #fff;
+  padding: 0 0.63em;
+  letter-spacing: 1px;
+  font-weight: 400;
+}
+
+.global-nav-menu .inline-div>ul>li {
+  display: none;
+  overflow: hidden;
+  padding: 10px 0 7px;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.global-nav-menu .inline-div>ul>li:last-child {
+  display: inline-block;
+}
+
+.global-nav-menu .inline-div>ul>li:first-child {
+  display: block;
+  margin: 0 0 0 10px;
+  padding: 0;
+  position: absolute;
+  text-align: left;
+  width: 12em;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: #000000;
+}
+
+.navbar-light:hover .navbar-nav:hover .nav-link:hover {
+  color: #0065d0;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #ffffff;
+}
+
+.navbar-dark .navbar-toggler {
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.navbar-light .navbar-toggler {
+  font-size: 1rem;
+  color: #000000;
+}
+
+.navbar-dark:hover .navbar-nav:hover .nav-link:hover {
+  color: #ffdd00;
+}
+
+/* Separate readonly classes for nav links needed because of rules above*/
+.readonly-nav-link {
+  align-self: center;
+  color: #ffffff;
+  opacity: 0.5;
+}
+
+.readonly-nav-link {
+  cursor: default;
+}
+
+.validation {
+  color: $danger-red;
+}
+
+.global-nav-menu .inline-div>ul>li:first-child a {
+  background-image: url(https://webcontent.alaska.gov/style/soa/20170315/images/2016-soa-logo.png);
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 138px 33px;
+  display: inline-block;
+  text-indent: -999999px;
+  width: inherit;
+  padding: 12px 0;
+}
+
+@media only screen and (min-width: 48em) {
+  .global-nav-menu .inline-div>ul>li {
+    display: inline-block;
+    padding: 20px 0 3px;
+  }
+
+  .global-nav-menu .inline-div>ul>li:last-child {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 48em) {
+  .global-nav-menu .inline-div>ul>li:first-child a {
+    background-image: url(https://webcontent.alaska.gov/style/soa/20170315/images/2016-soa-logo.png);
+  }
+
+  #menu-statewide-navigation,
+  #soafoot,
+  .global-nav-menu,
+  .col-md-9.pt-4 {
+    min-width: 100%;
+  }
+
+  .row.mx-0 {
+    display: block;
+  }
+}

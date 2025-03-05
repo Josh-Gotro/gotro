@@ -1,0 +1,48 @@
+/*
+This CSS file is used to style a custom checkbox for the "accept terms" section.
+When the checkbox is checked,  the background image is set to an SVG icon from the Heroicons library and has been converted to a URL for use in the CSS.
+
+To URL encode an SVG, use JavaScript's buillt-in `encodeURIComponent` function. For example, add this to  any compnent, with the SVG you want to encode as the value of the `svg` variable:
+
+(i used heroicons.com `check` for this example)
+
+const svg=`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>`;
+const encodedSvg=encodeURIComponent(svg);
+console.log(encodedSvg);
+
+*/
+
+@import "@scss/colors.scss";
+
+.accept-terms input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.accept-terms input[type="checkbox"]+span:before {
+  content: "";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  vertical-align: text-bottom;
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 3px;
+}
+
+.accept-terms input[type="checkbox"]:checked+span:before {
+  background: $drb-light-blue;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white' class='w-6 h-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  content: "";
+  color: white;
+  text-align: center;
+  line-height: 16px;
+  display: inline-block;
+}

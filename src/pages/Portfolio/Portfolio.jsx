@@ -39,6 +39,21 @@ const Portfolio = () => {
         ))}
         {/* <SearchBox /> */}
       </div>
+
+      <div className="floating-card">
+        <div className="tiles-container">
+          <Link to="/portfolio/benefits" className="tile" title="benefits">
+            1
+          </Link>
+          <Link to="/portfolio/tbd" className="tile" title="tbd">
+            2
+          </Link>
+          <Link to="/portfolio/alsotbd" className="tile" title="alsotbd">
+            3
+          </Link>
+        </div>
+      </div>
+
       <Link to="/" className="home-icon">
         <AiOutlineHome size={24} />
       </Link>

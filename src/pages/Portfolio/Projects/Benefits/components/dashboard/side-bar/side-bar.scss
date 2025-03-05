@@ -1,0 +1,41 @@
+.edit-icon {
+  cursor: pointer;
+  margin-right: 0.3rem;
+}
+
+.info-edit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.side-bar {
+  min-width: 100%;
+  max-width: 100%;
+  word-wrap: break-word;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  height: 100%;
+}
+
+.side-bar h1 {
+  font-size: 1.25rem;
+}
+
+.side-bar ul {
+  font-size: 0.85rem;
+  padding-left: 1.25rem;
+  list-style: none;
+}
+
+.side-bar ul ul {
+  padding-left: 1rem;
+}
+
+/* Add this selector */
+.side-bar>div:nth-child(2) {
+  flex-grow: 1;
+}

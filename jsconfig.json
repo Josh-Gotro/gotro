@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "public/*": ["src/pages/Portfolio/Projects/Benefits/*"],
+      "@/*": ["src/pages/Portfolio/Projects/Benefits/*"],
+      "@scss/*": ["src/pages/Portfolio/Projects/Benefits/scss/*"],
+      "~bootstrap/*": ["node_modules/bootstrap/*"],
+      "@/components/*": ["src/pages/Portfolio/Projects/Benefits/components/*"]
+    },
+    "lib": ["ES2015", "DOM"],
+    "target": "ES2015"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "node_modules"]
+}

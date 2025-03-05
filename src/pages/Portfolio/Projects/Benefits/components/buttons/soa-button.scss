@@ -1,0 +1,70 @@
+@import "@scss/colors.scss";
+
+
+//  Bootstrap requires !important to override the default CSS (or alternatively use inline <style> tag)
+// (https: //react-bootstrap.netlify.app/docs/getting-started/theming/)
+
+
+.btn-primary {
+  background-color: $drb-blue !important;
+  border: none;
+  color: $white;
+}
+
+.btn-primary:not(:disabled):hover {
+  background-color: $drb-light-blue !important;
+}
+
+.btn-secondary {
+  background-color: $danger-red !important;
+  border: none;
+  color: $white;
+}
+
+.btn-secondary:not(:disabled):hover {
+  background-color: $secondary-danger !important;
+  ;
+}
+
+.btn-tertiary {
+  background-color: $drb-blue !important;
+  border: none;
+  color: $white !important;
+}
+
+.btn-tertiary:not(:disabled):hover {
+  background-color: $drb-blue !important;
+}
+
+.btn-quaternary {
+  border: 1px solid $danger-red !important;
+  color: $danger-red !important;
+  ;
+}
+
+.btn-quaternary:not(:disabled):hover {
+  background-color: $secondary-danger !important;
+  border: none;
+  color: $white !important;
+}
+
+.btn-outline {
+  border: 1px solid $drb-blue !important;
+  color: $drb-blue;
+}
+
+.btn:disabled {
+  background-color: $hover;
+  border: none;
+  color: $white;
+}
+
+.button-premium-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 1em;
+  width: 100%;
+  font-weight: bold;
+  height: 40px;
+}

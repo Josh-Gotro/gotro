@@ -1,0 +1,31 @@
+@import "@/scss/colors.scss";
+
+.cost-column {
+  width: 75px; // Adjust as needed
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hfsa-input {
+  width: 400px;
+}
+
+.selection-column {
+  width: 100px; // Adjust as needed
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.summary-column {
+  width: 200px; // Adjust as needed
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.validation-message {
+  color: $danger-red;
+  margin-top: 5px;
+}

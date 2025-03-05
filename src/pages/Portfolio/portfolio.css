@@ -49,3 +49,67 @@
   overflow: hidden;
   z-index: 0;
 }
+
+.floating-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #56D1BE;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 300px;
+  max-width: 900px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.tiles-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.tile {
+  width: 80px;
+  height: 80px;
+  border: 1px solid white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tile:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #FF69B4;
+}
+
+.tile-wrapper {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.tile-wrapper:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}

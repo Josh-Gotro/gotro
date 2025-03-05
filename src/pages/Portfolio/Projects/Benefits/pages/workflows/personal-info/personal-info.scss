@@ -1,0 +1,82 @@
+
+// Accept Terms
+.accept-terms {
+  display: block;
+  margin: 10px 0;
+  font-size: 0.9em;
+  color: #333;
+
+  input[type="checkbox"] {
+    margin-right: 5px;
+  }
+
+  a {
+    color: #0056b3;
+    text-decoration: underline;
+
+    &:hover {
+      color: #007bff;
+    }
+  }
+}
+
+.accept-terms div {
+  margin-top: 20px;
+}
+
+.accept-terms-container {
+  max-width: 50%;
+}
+
+.button-group {
+  display: flex;
+  margin-top: 20px;
+}
+
+.button-group button {
+  margin: 0 10px;
+  /* This will add 10px space to the left and right of each button */
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.terms {
+  display: block;
+  margin-bottom: 20px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .step-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+  .accept-terms-container {
+    max-width: 90%; // Limit the width to 90% of the parent
+    margin: 0 auto; // Center the element within its parent
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+    .step-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; // Center children vertically
+        align-items: center; // Center children horizontally
+        height: 100%;
+        width: 100%;
+      }
+  .accept-terms-container {
+    max-width: 50%; // Limit the width to 50% of the parent
+    margin: 0 auto; // Center the element within its parent
+    background: url('path-to-left-pattern.png') left center no-repeat, url('path-to-right-pattern.png') right center no-repeat;
+  }
+}

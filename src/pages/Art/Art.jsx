@@ -83,7 +83,7 @@ const Art = () => {
     <div className="art-container">
       <div className="figure">
         <div
-          className="head"
+          className="head moon-face"
           onMouseEnter={(event) => handleMouseEnter(event, 'GALLERY')}
           onMouseLeave={handleMouseLeave}
           onClick={() => handleClick('GALLERY')}

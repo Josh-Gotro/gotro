@@ -9,7 +9,7 @@ import { useValidationErrors } from '@/config/ErrorContext';
 
 import { SubscriberContext } from '../../../config/SubscriberContext';
 
-import '.portfolio/benefits/terms-personal-info.scss';
+import './terms-personal-info.scss';
 
 const TermsPersonalInfo = () => {
   const { user, setUser, acceptTerms } = useContext(SubscriberContext);

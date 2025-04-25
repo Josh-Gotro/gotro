@@ -34,11 +34,20 @@
 .head {
   position: absolute;
   top: 10%;
-  left: calc(50% - 25px);
-  width: 50px;
-  height: 50px;
-  background-color: #56D1BE;
+  left: calc(50% - 45px);
+  width: 90px;
+  height: 90px;
+  background: radial-gradient(circle at 40% 40%,
+    #ffffff 0%,
+    #f0f0e4 30%,
+    #d8d8cc 60%,
+    #c0c0b6 100%);
   border-radius: 50%;
+  transition: all 0.4s ease;
+  box-shadow:
+    inset -4px -4px 8px rgba(0,0,0,0.1),
+    0 0 15px rgba(255,255,255,0.3),  /* Reduced glow */
+    0 0 30px rgba(255,255,255,0.15);
 }
 
 /* CIRCLE */
@@ -175,4 +184,57 @@ background-color: #FFFFFF;
   width: 100%;
   transform: translate(-50%, -50%);
   z-index: 1000;
+}
+
+/* Add new moon face styles */
+.moon-face {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Enhanced crater texture */
+.moon-face::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    /* Larger craters */
+    radial-gradient(circle at 30% 20%, rgba(0,0,0,0.05) 3px, transparent 8px),
+    radial-gradient(circle at 70% 30%, rgba(0,0,0,0.05) 4px, transparent 9px),
+    radial-gradient(circle at 40% 60%, rgba(0,0,0,0.05) 5px, transparent 10px),
+    /* Medium craters */
+    radial-gradient(circle at 25% 35%, rgba(0,0,0,0.03) 2px, transparent 5px),
+    radial-gradient(circle at 65% 65%, rgba(0,0,0,0.03) 2px, transparent 6px),
+    radial-gradient(circle at 80% 40%, rgba(0,0,0,0.03) 3px, transparent 7px),
+    /* Small craters */
+    radial-gradient(circle at 45% 25%, rgba(0,0,0,0.02) 1px, transparent 3px),
+    radial-gradient(circle at 75% 55%, rgba(0,0,0,0.02) 1px, transparent 3px),
+    radial-gradient(circle at 20% 70%, rgba(0,0,0,0.02) 1px, transparent 3px),
+    radial-gradient(circle at 60% 85%, rgba(0,0,0,0.02) 1px, transparent 3px),
+    /* Highlight spots */
+    radial-gradient(circle at 35% 15%, rgba(255,255,255,0.6) 1px, transparent 3px),
+    radial-gradient(circle at 85% 25%, rgba(255,255,255,0.6) 1px, transparent 3px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.moon-face:hover::before {
+  opacity: 1;
+}
+
+/* Softer glow effect on hover */
+.moon-face:hover {
+  background: radial-gradient(circle at 40% 40%,
+    #ffffff 0%,
+    #f8f8f0 40%,
+    #e8e8dc 70%,
+    #d0d0c8 100%);
+  box-shadow:
+    inset -6px -6px 12px rgba(0,0,0,0.15),
+    0 0 20px rgba(255,255,255,0.4),  /* Reduced glow */
+    0 0 40px rgba(255,255,255,0.2),
+    0 0 60px rgba(255,255,255,0.1);  /* Reduced outer glow */
 }

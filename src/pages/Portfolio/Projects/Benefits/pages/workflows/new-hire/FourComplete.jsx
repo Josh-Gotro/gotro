@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { SubscriberContext } from "@/config/SubscriberContext";
 import { StaticSiteDataContext } from "@/config/StaticSiteDataContext";
 import SOAButton from "@/components/buttons/SOAButton";
+import DemoBanner from "@/components/demo-banner/DemoBanner";
 
 import "./new-hire-workflow.scss";
 
@@ -21,13 +22,13 @@ const FourComplete = ({ goFinish }) => {
   };
 
   const handleComplete = () => {
-    if (!loading && user.hasPendingChoices) {
-      goFinish();
-    }
+    // Navigate back to portfolio instead of calling goFinish
+    navigate("/portfolio");
   };
 
   return (
     <div className="step-container">
+      <DemoBanner />
       <div className="happy-check">
         <CheckCircleIcon height="400" width="400" />
       </div>

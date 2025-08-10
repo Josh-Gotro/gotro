@@ -12,7 +12,7 @@ import ValidationErrors from "@/components/benefits-selection/components/Validat
 import { StaticSiteDataContext } from "@/config/StaticSiteDataContext";
 import { SubscriberContext } from "@/config/SubscriberContext";
 
-import { postCoverageOptions } from "../../../api/coverage/coverageService";
+import { postCoverageOptions } from "../../../mockServices/mockCoverageService";
 import "./open-enrollment-workflow.scss";
 
 const OneWorkInfo = ({

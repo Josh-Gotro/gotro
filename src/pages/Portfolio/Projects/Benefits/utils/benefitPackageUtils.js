@@ -3,6 +3,19 @@ import PropTypes from "prop-types";
 import { cleanBenefitPlanTitle } from "./cleanBenefitPlanTitle";
 
 export function transformBenefits(serverBenefits) {
+  // Add safety check for undefined or empty benefits array
+  if (!serverBenefits || !Array.isArray(serverBenefits)) {
+    console.warn('transformBenefits received invalid serverBenefits:', serverBenefits);
+    return {
+      benefits: [],
+      lookupBenefitById: () => null,
+      defaultSelections: [],
+      getBenefitSelectionSummary: () => null,
+      computeTotalPremium: () => 0,
+      isBenefitTypeHfsa,
+    };
+  }
+  
   const benefits = serverBenefits.map((b) => processBenefit(b));
   const defaultSelections = getDefaultSelections(serverBenefits);
 
@@ -55,12 +68,24 @@ function findDefaultOption(options) {
 }
 
 function getInitialAffirmativeOption(options, defaultOption, optOutOptionId) {
-  return defaultOption?.benefitOptionId !== optOutOptionId
+  const affirmativeOption = defaultOption?.benefitOptionId !== optOutOptionId
     ? defaultOption
     : options.find((o) => o.benefitOptionId !== optOutOptionId);
+  
+  // If no affirmative option found, return the first available option (could be opt-out)
+  return affirmativeOption || options[0];
 }
 
 function optionToSelection(benefitTypeId, option) {
+  // Handle case where option might be undefined
+  if (!option) {
+    return {
+      benefitTypeId,
+      optionId: null,
+      electedMonthlyRate: null,
+    };
+  }
+  
   return {
     benefitTypeId,
     optionId: option.benefitOptionId,
@@ -105,6 +130,10 @@ function findOptionByPlanAndLevel(options, planId, levelId) {
 }
 
 function getOptionDescription(benefitTypeId, option) {
+  if (!option) {
+    return "No Option Selected";
+  }
+  
   const { benefitPlanTitle, benefitLevelTitle } = option;
 
   return isOptionOptOut(option)
@@ -123,6 +152,36 @@ function processBenefit(benefit) {
     maxMonthlyRate,
   } = benefit;
 
+  // Add safety check for benefitOptions
+  if (!benefitOptions || !Array.isArray(benefitOptions) || benefitOptions.length === 0) {
+    console.warn('processBenefit received benefit with invalid options:', benefit);
+    // Create a dummy option to satisfy PropTypes requirements
+    const dummyOption = {
+      benefitOptionId: -1,
+      benefitPlanId: null,
+      benefitPlanTitle: 'No Plan Available',
+      benefitLevelId: null,
+      benefitLevelTitle: 'No Options',
+      monthlyCost: 0,
+      defaultOptionIndicator: true
+    };
+    return {
+      benefitTypeId,
+      title: benefitTypeTitle,
+      optOutOptionId: null,
+      defaultOption: dummyOption,
+      initialAffirmativeSelection: { benefitTypeId, optionId: -1, electedMonthlyRate: null },
+      getOptionById: () => dummyOption,
+      getOptionByPlanAndLevel: () => dummyOption,
+      calculatePremium: () => 0,
+      minMonthlyRate,
+      maxMonthlyRate,
+      plans: [],
+      levels: [],
+      getBenefitSelectionSummary: () => ({ benefitTypeId, optionId: -1, title: benefitTypeTitle, description: 'No options available', premium: 0 }),
+    };
+  }
+
   const optionMap = new Map(benefitOptions.map((o) => [o.benefitOptionId, o]));
   const defaultOption = findDefaultOption(benefitOptions);
   const optOutOptionId = findOptOutOption(benefitOptions)?.benefitOptionId;
@@ -132,7 +191,7 @@ function processBenefit(benefit) {
     findOptionByPlanAndLevel(benefitOptions, planId, levelId);
 
   const calculatePremium = ({ optionId, electedMonthlyRate }) =>
-    electedMonthlyRate ?? getOptionById(optionId).monthlyCost ?? 0;
+    electedMonthlyRate ?? getOptionById(optionId)?.monthlyCost ?? 0;
   const firstAffirmativeOption = getInitialAffirmativeOption(
     benefitOptions,
     defaultOption,

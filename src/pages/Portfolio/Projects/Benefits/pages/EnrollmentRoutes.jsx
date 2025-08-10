@@ -1,5 +1,5 @@
-import { lazy, useContext, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { lazy, useContext, useEffect, useRef } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { SubscriberContext } from '@/config/SubscriberContext';
@@ -18,9 +18,9 @@ const OpenEnrollmentWorkflow = lazy(
 const PersonalInfoWorkflow = lazy(
   () => import('@/pages/workflows/personal-info/PersonalInfoWorkflow')
 );
-// const CardContainer = lazy(
-//   () => import('@/components/dashboard/card-container/CardContainer')
-// );
+const CardContainer = lazy(
+  () => import('@/components/dashboard/card-container/CardContainer')
+);
 
 const ChangeCoverageWorkflow = lazy(
   () => import('@/pages/workflows/change-coverage/ChangeCoverageWorkflow')
@@ -31,36 +31,40 @@ const PageNotFound = lazy(() => import('./PageNotFound'));
 const EnrollmentRoutes = () => {
   const { user, loading } = useContext(SubscriberContext);
   const navigate = useNavigate();
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
-    if (!loading && user) {
-      const isKnownUser = Boolean(user.employmentId);
+    // Cleanup function to track if component is still mounted
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
-      if (!isKnownUser) {
-        if (!user.subscriberAccountId || !user.acceptedTermsDate) {
-          navigate('portfolio/benefits/terms');
-        } else if (
-          user.subscriberAccountId &&
-          user.acceptedTermsDate &&
-          !user.hasPendingChoices
-        ) {
-          navigate('/new-enrollment');
-        }
-      } else {
-        if (!user.acceptedTermsDate) {
-          navigate('portfolio/benefits/terms');
+  useEffect(() => {
+    if (!loading && user && isMountedRef.current) {
+      try {
+        // For demo purposes, always redirect to new-hire workflow
+        // This bypasses the dashboard and goes directly to the enrollment stepper
+        navigate('new-hire', { replace: true });
+      } catch (error) {
+        console.error('Navigation error:', error);
+        // Fallback to new-hire on navigation errors
+        if (isMountedRef.current) {
+          navigate('new-hire', { replace: true });
         }
       }
     }
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="new-hire" replace />} />
       <Route path="terms" element={<TermsPersonalInfoWorkflow />} />
-      <Route path="new-hire" element={<NewHireWorkflow />} />
+      <Route path="new-hire/*" element={<NewHireWorkflow />} />
       <Route path="open-enrollment/*" element={<OpenEnrollmentWorkflow />} />
       <Route path="change-coverage/*" element={<ChangeCoverageWorkflow />} />
       <Route path="user-info/*" element={<PersonalInfoWorkflow />} />
+      <Route path="dashboard" element={<CardContainer />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

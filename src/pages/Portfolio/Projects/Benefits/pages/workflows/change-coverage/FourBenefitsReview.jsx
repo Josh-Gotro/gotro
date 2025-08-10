@@ -7,7 +7,7 @@ import { SubscriberContext } from "@/config/SubscriberContext";
 import { StaticSiteDataContext } from "@/config/StaticSiteDataContext";
 import { toDollarAmount } from "@/utils/formatters";
 
-import { postCoverageChoices } from "../../../api/coverage/coverageService";
+import { postCoverageChoices } from "../../../mockServices/mockCoverageService";
 
 const FourBenefitsReview = ({
   benefitPackage,

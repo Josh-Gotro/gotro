@@ -8,7 +8,7 @@ import ValidationErrors from "@/components/benefits-selection/components/Validat
 import { BenefitPackagePropTypes } from "@/utils/benefitPackageUtils";
 import { useValidationErrors } from "@/config/ErrorContext";
 
-import { validateCoverageChoices } from "../../../api/coverage/coverageService";
+import { validateCoverageChoices } from "../../../mockServices/mockCoverageService";
 
 import "./open-enrollment-workflow.scss";
 

@@ -9,7 +9,7 @@ const UpdatePersonalInfoCard = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/user-info");
+    navigate("user-info");
   };
 
   return (

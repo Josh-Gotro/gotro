@@ -121,15 +121,10 @@ const SideBar = () => {
                   <li>{"Email: " + user?.contactEmail}</li>
                 )}
                 {user && user.ssn && (
-                  <li
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}>
+                  <li>
                     {"SSN: "}
-                    <span
-                      style={{
-                        cursor: "pointer",
-                      }}>
-                      {isHovered ? formatSSN(user.ssn) : redactSSN(user.ssn)}
+                    <span>
+                      {user.ssn.includes('*') ? user.ssn : redactSSN(user.ssn)}
                     </span>
                   </li>
                 )}
@@ -170,9 +165,9 @@ const SideBar = () => {
       <div>
         <span>Contact Us</span>
         <ul>
-          <li>Phone: (800) 821-2251</li>
-          <li>Juneau: (907) 465-4460</li>
-          <li>Email: doa.drb.benefits@alaska.gov</li>
+          <li>Phone: (555) 123-DEMO</li>
+          <li>Local: (555) 456-7890</li>
+          <li>Email: support@democompany.com</li>
         </ul>
       </div>
       <SOAButton onClick={handleClick} secondary text="Return to RnB" />

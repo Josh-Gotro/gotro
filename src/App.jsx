@@ -7,7 +7,7 @@ const PlasterCalculator = lazy(
 );
 const Kiln = lazy(() => import('./pages/Kiln/Kiln.jsx'));
 const Art = lazy(() => import('./pages/Art/Art.jsx'));
-// const Portfolio = lazy(() => import('./pages/Portfolio/Portfolio.jsx'));
+const Portfolio = lazy(() => import('./pages/Portfolio/Portfolio.jsx'));
 const Gallery = lazy(() => import('./pages/Gallery/Gallery.jsx'));
 const Benefits = lazy(
   () => import('./pages/Portfolio/Projects/Benefits/index.jsx')
@@ -23,7 +23,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/kiln" element={<Kiln />} />
           <Route path="/lol" element={<Welcome />} />
-          {/* <Route path="/portfolio" element={<Portfolio />} /> */}
+          <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/portfolio/benefits/*" element={<Benefits />} />
         </Routes>
       </Suspense>

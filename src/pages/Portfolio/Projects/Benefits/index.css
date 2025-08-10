@@ -1,3 +1,58 @@
+/* Benefits App Root Container - Override portfolio styles for full width */
+.benefits-app-container {
+  width: 100vw !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  /* Isolate styles to prevent bleeding to parent app */
+  isolation: isolate;
+  contain: style;
+  background: #ffffff;
+}
+
+/* Ensure Bootstrap containers are full width */
+.benefits-app-container .container-fluid {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 15px !important;
+}
+
+/* Override any portfolio container constraints */
+.benefits-app-container * {
+  box-sizing: border-box;
+}
+
+/* Reset background for benefits app to prevent inheritance */
+.benefits-app-container,
+.benefits-app-container body,
+.benefits-app-container #root {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+/* HSA input field styling - lighter color for demo */
+.benefits-app-container .hfsa-input,
+.benefits-app-container input[type="number"],
+.benefits-app-container .form-control {
+  background-color: #f8f9fa !important;
+  border: 1px solid #ced4da !important;
+  color: #495057 !important;
+}
+
+.benefits-app-container .hfsa-input:focus,
+.benefits-app-container input[type="number"]:focus,
+.benefits-app-container .form-control:focus {
+  background-color: #ffffff !important;
+  border-color: #80bdff !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

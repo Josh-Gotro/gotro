@@ -9,7 +9,7 @@ import { toDollarAmount } from "@/utils/formatters";
 import { useValidationErrors } from "@/config/ErrorContext";
 import { StaticSiteDataContext } from "@/config/StaticSiteDataContext";
 
-import { postCoverageChoices } from "../../../api/coverage/coverageService";
+import { postCoverageChoices } from "../../../mockServices/mockCoverageService";
 import { BenefitPackagePropTypes } from "@/utils/benefitPackageUtils";
 
 const ThreeBenefitsReview = ({

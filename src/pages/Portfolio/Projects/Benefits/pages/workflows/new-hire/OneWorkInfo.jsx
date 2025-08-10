@@ -10,8 +10,9 @@ import WorkInfo from "@/components/steps/WorkInfo";
 import { useValidationErrors } from "@/config/ErrorContext";
 import ValidationErrors from "@/components/benefits-selection/components/ValidationErrors";
 import { getAlaskaDateString } from "@/utils/formatters";
+import DemoBanner from "@/components/demo-banner/DemoBanner";
 
-import { postCoverageOptions } from "../../../api/coverage/coverageService";
+import { postCoverageOptions } from "../../../mockServices/mockCoverageService";
 import "./new-hire-workflow.scss";
 
 const OneWorkInfo = ({
@@ -128,6 +129,7 @@ const OneWorkInfo = ({
 
   return (
     <div className="step-container">
+      <DemoBanner />
       <div>
         <WorkInfo
           errors={errors}

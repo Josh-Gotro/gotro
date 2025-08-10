@@ -4,13 +4,16 @@ import {
   getSystemStatus,
   logout,
   STATUS_NORMAL,
-} from "../api/session/sessionService";
+} from "../mockServices/mockSessionService";
 
 const WARN_TIME_MINUTES = 30;
 const LOGOUT_AFTER_WARN_TIME_MINUTES = 3;
 const KEEP_ALIVE_CHECK_INTERVAL_MINUTES = 3;
 
 const useSessionTracking = () => {
+  // Track if component is mounted
+  const isMountedRef = useRef(true);
+  
   // Calculate time intervals in milliseconds
   const warningTime = 1000 * 60 * WARN_TIME_MINUTES;
   const signoutTime =
@@ -22,8 +25,10 @@ const useSessionTracking = () => {
   let keepAliveInterval = useRef(null);
 
   const logoutFunc = useCallback(() => {
-    if (keepAliveInterval.current) clearInterval(keepAliveInterval.current);
-    logout();
+    if (isMountedRef.current) {
+      if (keepAliveInterval.current) clearInterval(keepAliveInterval.current);
+      logout();
+    }
   }, []);
 
   const checkStatus = useCallback(() => {
@@ -35,22 +40,26 @@ const useSessionTracking = () => {
         }
       })
       .catch((err) => {
-        console.error("System status check error: ", err); // eslint-disable-line no-console
-        toast.warn("Your session has expired and you have been logged out.");
-        setTimeout(logoutFunc, 3000);
+        if (isMountedRef.current) {
+          console.error("System status check error: ", err); // eslint-disable-line no-console
+          toast.warn("Your session has expired and you have been logged out.");
+          setTimeout(logoutFunc, 3000);
+        }
       });
   }, [logoutFunc]);
 
   const warn = useCallback(() => {
-    toast.warn(
-      `You will be logged out automatically due to inactivity in ${LOGOUT_AFTER_WARN_TIME_MINUTES} minute${
-        LOGOUT_AFTER_WARN_TIME_MINUTES !== 1 ? "s" : ""
-      }`,
-      {
-        autoClose: LOGOUT_AFTER_WARN_TIME_MINUTES * 60 * 1000,
-        closeOnClick: true,
-      },
-    );
+    if (isMountedRef.current) {
+      toast.warn(
+        `You will be logged out automatically due to inactivity in ${LOGOUT_AFTER_WARN_TIME_MINUTES} minute${
+          LOGOUT_AFTER_WARN_TIME_MINUTES !== 1 ? "s" : ""
+        }`,
+        {
+          autoClose: LOGOUT_AFTER_WARN_TIME_MINUTES * 60 * 1000,
+          closeOnClick: true,
+        },
+      );
+    }
   }, []);
 
   const clearTimeoutFunc = useCallback(() => {
@@ -90,6 +99,7 @@ const useSessionTracking = () => {
     startKeepAlive();
 
     return () => {
+      isMountedRef.current = false;
       events.forEach((evt) => {
         window.removeEventListener(evt, resetTimer);
       });

@@ -7,7 +7,7 @@ import OptOutModal from "@/components/modal/OptOutModal";
 import ValidationErrors from "@/components/benefits-selection/components/ValidationErrors";
 import { useValidationErrors } from "@/config/ErrorContext";
 
-import { validateCoverageChoices } from "../../../api/coverage/coverageService";
+import { validateCoverageChoices } from "../../../mockServices/mockCoverageService";
 
 import "./change-coverage-workflow.scss";
 

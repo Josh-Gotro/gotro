@@ -19,7 +19,7 @@ const NewHireCard = ({ completedNewHire }) => {
       coverageChangeReasonId: 1,
       title: "Hire/Rehire",
     });
-    navigate("/new-enrollment");
+    navigate("new-hire");
   };
   const tooltipContent = (
     <Tooltip id="header-tooltip">

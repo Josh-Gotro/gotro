@@ -62,7 +62,7 @@ const Portfolio = () => {
               2
             </a>
             <div className="tooltip">
-              Juneau Pathfinder —  Progressive web app that helps visitors quickly locate frequently requested destinations in Juneau, Alaska, and provides precise GPS coordinates for hard-to-find trailheads. Trailhead entries include parking and mile‑marker details and are available offline beyond cellular coverage.
+              Juneau Pathfinder —  Progressive web app that helps locals quickly quickly share directions to tourists to frequently requested destinations in Juneau, Alaska, and provides precise GPS coordinates for hard-to-find trailheads. Trailhead entries include parking and mile‑marker details and are available offline beyond cellular coverage.
             </div>
           </div>
 

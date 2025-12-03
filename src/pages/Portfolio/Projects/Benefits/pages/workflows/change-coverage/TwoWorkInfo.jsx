@@ -10,7 +10,7 @@ import ValidationErrors from "@/components/benefits-selection/components/Validat
 import { useValidationErrors } from "@/config/ErrorContext";
 import { getAlaskaDateString } from "@/utils/formatters";
 
-import { postCoverageOptions } from "../../../api/coverage/coverageService";
+import { postCoverageOptions } from "../../../mockServices/mockCoverageService";
 
 import "./change-coverage-workflow.scss";
 

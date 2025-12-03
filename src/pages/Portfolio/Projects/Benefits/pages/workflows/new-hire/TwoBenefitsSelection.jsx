@@ -7,8 +7,9 @@ import SOAButton from "@/components/buttons/SOAButton";
 import ValidationErrors from "@/components/benefits-selection/components/ValidationErrors";
 import { BenefitPackagePropTypes } from "@/utils/benefitPackageUtils";
 import { useValidationErrors } from "@/config/ErrorContext";
+import DemoBanner from "@/components/demo-banner/DemoBanner";
 
-import { validateCoverageChoices } from "../../../api/coverage/coverageService";
+import { validateCoverageChoices } from "../../../mockServices/mockCoverageService";
 
 import "./new-hire-workflow.scss";
 
@@ -94,6 +95,7 @@ const TwoBenefitsSelection = ({
       />
 
       <div className="step-container">
+        <DemoBanner />
         <div className="benefit-selection">
           <BenefitsSelection
             benefitPackage={benefitPackage}

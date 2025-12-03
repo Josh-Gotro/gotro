@@ -7,9 +7,9 @@ import {
   postAcceptTerms,
   upsertSubscriberAccount,
   getSubscriberEmploymentInfo,
-} from "../api/subscriber/subscriberService";
+} from "../mockServices/mockSubscriberService";
 
-import { getUserDependents } from "../api/dependents/dependentsService";
+import { getUserDependents } from "../mockServices/mockDependentsService";
 
 const SubscriberContext = React.createContext();
 

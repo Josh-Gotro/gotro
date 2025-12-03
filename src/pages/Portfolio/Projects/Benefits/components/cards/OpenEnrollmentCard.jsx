@@ -19,7 +19,7 @@ const OpenEnrollmentCard = ({ completedOpenEnroll }) => {
   const handleClick = () => {
     setValidationErrors(null);
     setCoverageChangeReason(openEnrollment);
-    navigate("/open-enrollment");
+    navigate("open-enrollment");
   };
 
   const tooltipContent = (

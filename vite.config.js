@@ -13,6 +13,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        // Suppress deprecation warnings from dependencies
+        quietDeps: true,
         // If you need any global SCSS variables or mixins
         // additionalData: `@import "@scss/variables.scss";`
       },

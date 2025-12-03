@@ -256,14 +256,11 @@ a:hover {
 }
 
 .global-nav-menu .inline-div>ul>li:first-child a {
-  background-image: url(https://webcontent.alaska.gov/style/soa/20170315/images/2016-soa-logo.png);
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  background-size: 138px 33px;
   display: inline-block;
-  text-indent: -999999px;
   width: inherit;
   padding: 12px 0;
+  text-decoration: none;
+  color: #0056b3;
 }
 
 @media only screen and (min-width: 48em) {
@@ -279,7 +276,7 @@ a:hover {
 
 @media only screen and (max-width: 48em) {
   .global-nav-menu .inline-div>ul>li:first-child a {
-    background-image: url(https://webcontent.alaska.gov/style/soa/20170315/images/2016-soa-logo.png);
+    /* Logo removed for demo */
   }
 
   #menu-statewide-navigation,

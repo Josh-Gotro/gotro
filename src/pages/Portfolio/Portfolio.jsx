@@ -42,15 +42,44 @@ const Portfolio = () => {
 
       <div className="floating-card">
         <div className="tiles-container">
-          <Link to="/portfolio/benefits" className="tile" title="benefits">
-            1
-          </Link>
-          <Link to="/portfolio/tbd" className="tile" title="tbd">
-            2
-          </Link>
-          <Link to="/portfolio/alsotbd" className="tile" title="alsotbd">
-            3
-          </Link>
+          <div className="tile-wrapper">
+            <Link to="/portfolio/benefits" className="tile" title="Benefits Enrollment Demo">
+              1
+            </Link>
+            <div className="tooltip">
+              Benefits Enrollment Demo — Demos a small portion of a benefits enrollment system featuring a breadcrumb stepper and an accordion-based benefit selector, showcasing advanced state management and coordinated component interactions.
+            </div>
+          </div>
+
+          <div className="tile-wrapper">
+            <a
+              href="https://juneau-pathfinder.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile"
+              title="Juneau Pathfinder"
+            >
+              2
+            </a>
+            <div className="tooltip">
+              Juneau Pathfinder —  Progressive web app that helps locals quickly quickly share directions to tourists to frequently requested destinations in Juneau, Alaska, and provides precise GPS coordinates for hard-to-find trailheads. Trailhead entries include parking and mile‑marker details and are available offline beyond cellular coverage.
+            </div>
+          </div>
+
+          <div className="tile-wrapper">
+            <a
+              href="https://flippinbirds.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tile"
+              title="KOBA"
+            >
+              3
+            </a>
+            <div className="tooltip">
+              Bird Strike Tracker — A university employee asked for a simple tool to track bird strikes on campus so the information could be used to request funding for prevention efforts.
+            </div>
+          </div>
         </div>
       </div>
 

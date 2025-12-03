@@ -34,7 +34,7 @@ const UpdateCoverageCard = () => {
     });
   };
   const handleClick = () => {
-    navigate("/change-coverage");
+    navigate("change-coverage");
   };
 
   return (

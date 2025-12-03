@@ -1,24 +1,28 @@
 import React from "react";
 
 export const SOAHeader = () => {
+  const handleNavigation = () => {
+    window.location.href = '/portfolio';
+  };
+
   return (
     <nav className="global-nav-menu">
       <div className="inline-div">
         <ul id="menu-statewide-navigation">
           <li>
-            <a href="https://alaska.gov">State of Alaska</a>
+            <a href="/portfolio" onClick={handleNavigation}>Company Portal</a>
           </li>
           <li>
-            <a href="https://my.alaska.gov">myAlaska</a>
+            <a href="/portfolio" onClick={handleNavigation}>My Account</a>
           </li>
           <li>
-            <a href="https://alaska.gov/akdir1.html">Departments</a>
+            <a href="/portfolio" onClick={handleNavigation}>Departments</a>
           </li>
           <li>
-            <a href="https://alaska.gov/employeeHome.html">State Employees</a>
+            <a href="/portfolio" onClick={handleNavigation}>Employees</a>
           </li>
           <li>
-            <a href="#SOAfooterlinks">Statewide Links</a>
+            <a href="/portfolio" onClick={handleNavigation}>Resources</a>
           </li>
         </ul>
       </div>

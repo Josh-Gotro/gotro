@@ -8,8 +8,9 @@ import { SubscriberContext } from "@/config/SubscriberContext";
 import { toDollarAmount } from "@/utils/formatters";
 import { useValidationErrors } from "@/config/ErrorContext";
 import { StaticSiteDataContext } from "@/config/StaticSiteDataContext";
+import DemoBanner from "@/components/demo-banner/DemoBanner";
 
-import { postCoverageChoices } from "../../../api/coverage/coverageService";
+import { postCoverageChoices } from "../../../mockServices/mockCoverageService";
 import { BenefitPackagePropTypes } from "@/utils/benefitPackageUtils";
 
 const ThreeBenefitsReview = ({
@@ -53,6 +54,7 @@ const ThreeBenefitsReview = ({
 
   return (
     <div className="step-container">
+      <DemoBanner />
       <div className="step-five">
         <h3>Review Benefits</h3>
         {selectionSummaries.map((summary, idx) => (

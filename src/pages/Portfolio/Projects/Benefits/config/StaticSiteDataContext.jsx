@@ -6,9 +6,9 @@ import { SubscriberContext } from "@/config/SubscriberContext";
 import {
   getBartainingUnits,
   getCoverageChangeReasons,
-} from "../api/static/staticService";
+} from "../mockServices/mockStaticService";
 
-import { getIsOeStale } from "../api/coverage/coverageService";
+import { getIsOeStale } from "../mockServices/mockCoverageService";
 
 const StaticSiteDataContext = React.createContext();
 

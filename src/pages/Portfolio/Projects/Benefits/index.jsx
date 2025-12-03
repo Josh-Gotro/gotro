@@ -4,6 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 import AppProvider from './config/AppProvider';
 import ConfigureInterceptors from './api/interceptors';
+import ErrorBoundary from './components/ErrorBoundary';
 import {
   useValidationErrors,
   ValidationErrorProvider,
@@ -13,22 +14,30 @@ function BenefitsContent() {
   const { setValidationErrors } = useValidationErrors();
 
   useEffect(() => {
-    ConfigureInterceptors(setValidationErrors);
-  }, []);
+    try {
+      ConfigureInterceptors(setValidationErrors);
+    } catch (error) {
+      console.error('Failed to configure interceptors:', error);
+    }
+  }, [setValidationErrors]);
 
   return (
     <React.StrictMode>
-      <AppProvider />
-      <ToastContainer autoClose={2500} transition={Slide} hideProgressBar />
+      <div className="benefits-app-container">
+        <AppProvider />
+        <ToastContainer autoClose={2500} transition={Slide} hideProgressBar />
+      </div>
     </React.StrictMode>
   );
 }
 
 function Benefits() {
   return (
-    <ValidationErrorProvider>
-      <BenefitsContent />
-    </ValidationErrorProvider>
+    <ErrorBoundary>
+      <ValidationErrorProvider>
+        <BenefitsContent />
+      </ValidationErrorProvider>
+    </ErrorBoundary>
   );
 }
 

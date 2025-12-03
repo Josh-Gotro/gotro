@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 import Modal from "../modal/Modal";
 import SOAButton from "../buttons/SOAButton";
-import { deleteCoverageChoice } from "../../api/coverage/coverageService";
+import { deleteCoverageChoice } from "../../mockServices/mockCoverageService";
 
 import "./cards.scss";
 

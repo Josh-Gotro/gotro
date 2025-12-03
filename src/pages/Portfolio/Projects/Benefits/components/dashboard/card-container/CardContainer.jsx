@@ -4,7 +4,7 @@ import { SubscriberContext } from "@/config/SubscriberContext";
 
 import ActionItemsCardGroup from "../../card-group/ActionItemsCardGroup";
 import UpdateInfoCardGroup from "../../card-group/UpdateInfoCardGroup";
-import { getUserCoverage } from "../../../api/coverage/coverageService";
+import { getUserCoverage } from "../../../mockServices/mockCoverageService";
 
 import "./card-container.scss";
 
@@ -34,15 +34,21 @@ const CardContainer = () => {
   }, [user]);
 
   useEffect(() => {
-    const hasOpenEnrollment = userCoverage?.pending.some(
-      (coverage) => coverage.coverageChangeReason === "Open Enrollment",
-    );
-    setCompletedOpenEnroll(hasOpenEnrollment);
+    if (userCoverage && Array.isArray(userCoverage.pending)) {
+      const hasOpenEnrollment = userCoverage.pending.some(
+        (coverage) => coverage.coverageChangeReason === "Open Enrollment",
+      );
+      setCompletedOpenEnroll(hasOpenEnrollment);
 
-    const hasHireRehire = userCoverage?.pending.some(
-      (coverage) => coverage.coverageChangeReason === "Hire/Rehire",
-    );
-    setCompletedNewHire(hasHireRehire);
+      const hasHireRehire = userCoverage.pending.some(
+        (coverage) => coverage.coverageChangeReason === "Hire/Rehire",
+      );
+      setCompletedNewHire(hasHireRehire);
+    } else {
+      // Default to false if no pending coverage or invalid structure
+      setCompletedOpenEnroll(false);
+      setCompletedNewHire(false);
+    }
   }, [userCoverage]);
 
   if (isLoading) {
@@ -71,7 +77,7 @@ const CardContainer = () => {
               <CoverageCardGroup coverage={userCoverage} />
             </Suspense>
           )}
-          {userCoverage.pending.length > 0 && (
+          {userCoverage?.pending?.length > 0 && (
             <Suspense fallback={<div>Loading...</div>}>
               <PendingCoverageCardGroup coverage={userCoverage.pending} />
             </Suspense>

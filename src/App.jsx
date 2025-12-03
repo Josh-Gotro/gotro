@@ -12,6 +12,10 @@ const Gallery = lazy(() => import('./pages/Gallery/Gallery.jsx'));
 const Benefits = lazy(
   () => import('./pages/Portfolio/Projects/Benefits/index.jsx')
 );
+const Spotify = lazy(() => import('./pages/Spotify/Spotify.jsx'));
+const SpotifyCallback = lazy(
+  () => import('./pages/Spotify/SpotifyCallback.jsx')
+);
 
 function App() {
   return (
@@ -25,6 +29,8 @@ function App() {
           <Route path="/lol" element={<Welcome />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/portfolio/benefits/*" element={<Benefits />} />
+          <Route path="/spotify" element={<Spotify />} />
+          <Route path="/spotify/callback" element={<SpotifyCallback />} />
         </Routes>
       </Suspense>
     </Router>

@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 const Portfolio = () => {
   const [letters, setLetters] = useState([]);
   const [nextId, setNextId] = useState(0);
+  const [hoveredTile, setHoveredTile] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,6 +28,62 @@ const Portfolio = () => {
     );
   };
 
+  const handleTileHover = (tileId) => {
+    setHoveredTile(tileId);
+  };
+
+  const handleTileLeave = () => {
+    setHoveredTile(null);
+  };
+
+  const renderGifPreview = () => {
+    if (!hoveredTile) {
+      return (
+        <div className="gif-preview-default">
+          <p>Hover over each number below to see a demo preview</p>
+          <p>Click to redirect to demo or live version</p>
+        </div>
+      );
+    }
+
+    // For now using placeholder content - you can replace with actual GIF URLs later
+    const gifs = {
+      1: {
+        url: '/demo-gifs/benefits-demo.gif', // Placeholder path
+        alt: 'Benefits Enrollment Demo Preview'
+      },
+      2: {
+        url: '/demo-gifs/pathfinder-demo.gif', // Placeholder path  
+        alt: 'Juneau Pathfinder Demo Preview'
+      },
+      3: {
+        url: '/demo-gifs/bird-tracker-demo.gif', // Placeholder path
+        alt: 'Bird Strike Tracker Demo Preview'
+      }
+    };
+
+    const currentGif = gifs[hoveredTile];
+    
+    return (
+      <div className="gif-preview-active">
+        <img 
+          src={currentGif?.url} 
+          alt={currentGif?.alt}
+          className="demo-gif"
+          onError={(e) => {
+            // Fallback to placeholder if GIF doesn't exist
+            e.target.style.display = 'none';
+            e.target.nextSibling.style.display = 'block';
+          }}
+        />
+        <div className="gif-placeholder" style={{ display: 'none' }}>
+          <p>Demo GIF Preview</p>
+          <p>({currentGif?.alt})</p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <div className="letters-container">
@@ -41,9 +98,19 @@ const Portfolio = () => {
       </div>
 
       <div className="floating-card">
+        <div className="gif-preview-container">
+          {renderGifPreview()}
+        </div>
+        
         <div className="tiles-container">
           <div className="tile-wrapper">
-            <Link to="/portfolio/benefits" className="tile" title="Benefits Enrollment Demo">
+            <Link 
+              to="/portfolio/benefits" 
+              className="tile" 
+              title="Benefits Enrollment Demo"
+              onMouseEnter={() => handleTileHover(1)}
+              onMouseLeave={handleTileLeave}
+            >
               1
             </Link>
             <div className="tooltip">
@@ -58,6 +125,8 @@ const Portfolio = () => {
               rel="noopener noreferrer"
               className="tile"
               title="Juneau Pathfinder"
+              onMouseEnter={() => handleTileHover(2)}
+              onMouseLeave={handleTileLeave}
             >
               2
             </a>
@@ -73,6 +142,8 @@ const Portfolio = () => {
               rel="noopener noreferrer"
               className="tile"
               title="KOBA"
+              onMouseEnter={() => handleTileHover(3)}
+              onMouseLeave={handleTileLeave}
             >
               3
             </a>

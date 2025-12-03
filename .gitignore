@@ -25,3 +25,7 @@ dist-ssr
 
 # .env files
 .env
+spotify-config.json
+
+# Agent instructions
+AGENTS.md

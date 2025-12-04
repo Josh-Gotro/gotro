@@ -54,6 +54,24 @@ const SpotifyCallback = () => {
         localStorage.setItem('spotify_refresh_token', data.refresh_token);
         localStorage.setItem('spotify_token_expires_at', Date.now() + data.expires_in * 1000);
 
+        // Also store tokens in backend for MCP access
+        try {
+          await fetch(`${backendUrl}/spotify/mcp-token`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              access_token: data.access_token,
+              refresh_token: data.refresh_token,
+              expires_in: data.expires_in,
+            }),
+          });
+        } catch (mcpError) {
+          console.warn('Failed to store token for MCP:', mcpError);
+          // Don't fail the flow if MCP storage fails
+        }
+
         setStatus('success');
         setTimeout(() => {
           navigate('/spotify');

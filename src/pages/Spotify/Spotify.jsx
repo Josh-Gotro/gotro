@@ -3,11 +3,9 @@ import { useState, useEffect } from 'react';
 const SPOTIFY_CLIENT_ID = 'c694c1ae79724f1aa39ff2127dbc82bd';
 const SPOTIFY_SCOPES = [
   'user-library-read',
-  'user-library-modify',
   'user-read-playback-state',
   'user-modify-playback-state',
   'user-read-currently-playing',
-  'user-top-read',
   'playlist-read-private',
   'playlist-read-collaborative',
   'playlist-modify-private',

@@ -35,6 +35,12 @@ const Discobard = () => {
         );
 
         if (response.data.success) {
+          if (response.data.returnUrl) {
+            setStatus('success');
+            setMessage('Warcraft Logs connected! Redirecting...');
+            window.location.href = response.data.returnUrl;
+            return;
+          }
           setStatus('success');
           setMessage(
             'Warcraft Logs connected successfully. You can close this tab.'

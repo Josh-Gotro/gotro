@@ -16,6 +16,7 @@ const Spotify = lazy(() => import('./pages/Spotify/Spotify.jsx'));
 const SpotifyCallback = lazy(
   () => import('./pages/Spotify/SpotifyCallback.jsx')
 );
+const Discobard = lazy(() => import('./pages/Discobard/Discobard.jsx'));
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/portfolio/benefits/*" element={<Benefits />} />
           <Route path="/spotify" element={<Spotify />} />
           <Route path="/spotify/callback" element={<SpotifyCallback />} />
+          <Route path="/discobard" element={<Discobard />} />
         </Routes>
       </Suspense>
     </Router>

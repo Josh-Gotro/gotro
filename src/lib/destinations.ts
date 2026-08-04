@@ -14,7 +14,10 @@ export interface Destination {
   /** One-liner shown on hover/focus. */
   hint: string;
   external?: boolean;
-  /** Hidden from the map but still routable (OAuth pages, easter eggs). */
+  /**
+   * Excluded from the fallback text nav (OAuth pages, easter eggs, or
+   * destinations reachable only through their scene region).
+   */
   unlisted?: boolean;
 }
 
@@ -24,6 +27,8 @@ export const destinations: Destination[] = [
     label: 'Gallery',
     href: '/gallery',
     hint: 'Sculpture and other art',
+    // Reachable only via the moon — Josh: no corner-nav duplicate (2026-08-04).
+    unlisted: true,
   },
   {
     slug: 'plaster',

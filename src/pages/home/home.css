@@ -1,60 +1,395 @@
-/* Home map — placeholder styling.
+/* The map — faithful recreation of v1's Art page, interaction logic in CSS.
  *
- * The real scene (Phase 2) replaces the layout here, but the interaction
- * contract stays: reveal-on-hover/focus is CSS (:hover, :focus-within),
- * never component state. Honor prefers-reduced-motion for any animation. */
+ * Modern CSS in use here:
+ * - `:has()`            scene-level hover label + dimming, zero JS
+ * - `:is()`             hover/focus-visible treated identically everywhere
+ * - `@property`         registered custom properties → animatable gradient
+ *                       (the gold band shimmer) and label fade
+ * - `color-mix(oklch)`  derived tints that don't go muddy
+ * - `clip-path`         circular hit areas on the circles (v1's were square)
+ * - `sibling-index()`   branch fan angles with no per-child styles, where
+ *                       supported (inline --i fallback everywhere else)
+ * - `@layer`            page styles slot into the app's cascade layers
+ * - `text-wrap`         balance on the label
+ */
 
-.home {
-  min-height: 100dvh;
-  display: grid;
-  place-content: center;
-  padding: var(--space-4);
+@property --shine {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
 }
 
-.home-map {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-3);
-}
+@layer page {
+  .scene {
+    /* v1 palette, verbatim */
+    --sky-top: #f03d3e;
+    --sky-bottom: #ef3d3e;
+    --ink: #313131;
+    --tree-blue: #3d75fd;
+    --gold-1: #e88623;
+    --gold-2: #feba4d;
+    --gold-3: #ffed8d;
 
-.home-region a {
-  display: grid;
-  gap: var(--space-1);
-  padding: var(--space-3);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-2);
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 150ms ease;
-}
+    /* Derived in perceptual space instead of hand-picked hexes */
+    --tree-pink: color-mix(in oklch, var(--sky-top) 25%, white);
+    --label-ink: color-mix(in oklch, white 92%, var(--sky-top));
 
-.home-region a:hover,
-.home-region a:focus-visible {
-  border-color: var(--color-accent);
-}
+    /* Written by :has() rules below; read by .scene-label */
+    --label: '';
 
-.home-label {
-  font-size: var(--text-2);
-}
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    overflow: clip;
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
+  }
 
-/* Hidden until pointed at — the map's reveal behavior, in CSS. */
-.home-hint {
-  font-size: var(--text-0);
-  color: var(--color-muted);
-  opacity: 0;
-  transition: opacity 150ms ease;
-}
+  /* ---- hover/focus label — v1's useState + onMouseEnter, now :has() ---- */
 
-.home-region a:hover .home-hint,
-.home-region a:focus-visible .home-hint {
-  opacity: 1;
-}
+  .scene:has(.to-gallery:is(:hover, :focus-visible)) {
+    --label: 'GALLERY';
+  }
+  .scene:has(.to-plaster:is(:hover, :focus-visible)) {
+    --label: 'PLASTER CALC';
+  }
+  .scene:has(.to-kiln:is(:hover, :focus-visible)) {
+    --label: 'KILN';
+  }
+  .scene:has(.slot:hover) {
+    --label: '???';
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .home-region a,
-  .home-hint {
-    transition: none;
+  .scene-label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translateX(-5%);
+    font-family: 'Helvetica', sans-serif;
+    font-size: 6em;
+    color: var(--label-ink);
+    text-align: center;
+    text-wrap: balance;
+    pointer-events: none;
+  }
+
+  .scene-label::after {
+    content: var(--label);
+  }
+
+  /* Everything not being pointed at steps back a touch. :has() + :not(). */
+  .scene:has(.region:is(:hover, :focus-visible))
+    .region:not(:hover, :focus-visible) {
+    opacity: 0.85;
+  }
+
+  /* ---- figure ---- */
+
+  .figure {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 400px;
+    background-color: var(--ink);
+    z-index: 1;
+  }
+
+  /* ---- moon head → /gallery ---- */
+
+  .head {
+    position: absolute;
+    top: 10%;
+    left: calc(50% - 45px);
+    width: 90px;
+    height: 90px;
+    display: block;
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f0f0e4 30%,
+      #d8d8cc 60%,
+      #c0c0b6 100%
+    );
+    border-radius: 50%;
+    transition: all 0.4s ease;
+    box-shadow:
+      inset -4px -4px 8px rgb(0 0 0 / 0.1),
+      0 0 15px rgb(255 255 255 / 0.3),
+      0 0 30px rgb(255 255 255 / 0.15);
+    z-index: 2;
+  }
+
+  .moon-face {
+    overflow: clip;
+  }
+
+  /* Crater texture, revealed on hover/focus */
+  .moon-face::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 30% 20%,
+        rgb(0 0 0 / 0.05) 3px,
+        transparent 8px
+      ),
+      radial-gradient(
+        circle at 70% 30%,
+        rgb(0 0 0 / 0.05) 4px,
+        transparent 9px
+      ),
+      radial-gradient(
+        circle at 40% 60%,
+        rgb(0 0 0 / 0.05) 5px,
+        transparent 10px
+      ),
+      radial-gradient(
+        circle at 25% 35%,
+        rgb(0 0 0 / 0.03) 2px,
+        transparent 5px
+      ),
+      radial-gradient(
+        circle at 65% 65%,
+        rgb(0 0 0 / 0.03) 2px,
+        transparent 6px
+      ),
+      radial-gradient(
+        circle at 80% 40%,
+        rgb(0 0 0 / 0.03) 3px,
+        transparent 7px
+      ),
+      radial-gradient(
+        circle at 45% 25%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 75% 55%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 20% 70%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 60% 85%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 35% 15%,
+        rgb(255 255 255 / 0.6) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 85% 25%,
+        rgb(255 255 255 / 0.6) 1px,
+        transparent 3px
+      );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .moon-face:is(:hover, :focus-visible)::before {
+    opacity: 1;
+  }
+
+  .moon-face:is(:hover, :focus-visible) {
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f8f8f0 40%,
+      #e8e8dc 70%,
+      #d0d0c8 100%
+    );
+    box-shadow:
+      inset -6px -6px 12px rgb(0 0 0 / 0.15),
+      0 0 20px rgb(255 255 255 / 0.4),
+      0 0 40px rgb(255 255 255 / 0.2),
+      0 0 60px rgb(255 255 255 / 0.1);
+  }
+
+  /* ---- tree (open slot — was /portfolio in v1) ---- */
+
+  .tree-container {
+    position: relative;
+    height: 55vh;
+  }
+
+  .tree {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    height: 12vh;
+    width: 5px;
+    background-color: var(--tree-blue);
+    z-index: 2;
+  }
+
+  .branch {
+    position: absolute;
+    bottom: 100%;
+    height: 10vh;
+    width: 5px;
+    background-color: var(--tree-blue);
+    transform-origin: bottom;
+    /* v1 fanned branches -60°…+60° with 13 inline styles from JS */
+    rotate: calc((var(--i) - 6) * 10deg);
+  }
+
+  /* Same fan, no inline --i needed, where sibling-index() exists */
+  @supports (rotate: calc(sibling-index() * 1deg)) {
+    .branch {
+      rotate: calc((sibling-index() - 7) * 10deg);
+    }
+  }
+
+  /* v1 turned the tree pink by walking the DOM in a mouse handler. */
+  .tree:hover,
+  .tree:hover .branch {
+    background-color: var(--tree-pink);
+  }
+
+  /* ---- circles ---- */
+
+  .circle {
+    border-radius: 50%;
+    position: absolute;
+    background-color: transparent;
+    border: 5px solid #ffffff;
+    display: block;
+    z-index: 2;
+    /* v1's hit areas were the square bounding boxes; clip to the shape */
+    clip-path: circle(50%);
+  }
+
+  .circle:is(:hover, :focus-visible) {
+    background-color: #ffffff;
+  }
+
+  .large-circle {
+    width: 200px;
+    height: 200px;
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .medium-circle {
+    width: 150px;
+    height: 150px;
+    bottom: 30px;
+    left: 30px;
+  }
+
+  .small-circle {
+    width: 100px;
+    height: 100px;
+    bottom: 40px;
+    left: 40px;
+  }
+
+  /* ---- gold band ---- */
+
+  .gold-band {
+    position: absolute;
+    top: 55%;
+    left: 0;
+    width: 100%;
+    height: 66px;
+    z-index: 0;
+    /* Registered --shine makes the gradient itself animatable (@property) */
+    background: linear-gradient(
+      to right,
+      var(--gold-1),
+      var(--gold-2) calc(35% + var(--shine)),
+      var(--gold-3) calc(65% + var(--shine)),
+      var(--gold-1)
+    );
+    animation: shine 7s ease-in-out infinite alternate;
+  }
+
+  @keyframes shine {
+    to {
+      --shine: 15%;
+    }
+  }
+
+  /* ---- focus & fallback nav ---- */
+
+  .scene a:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+  }
+
+  /* Hidden until keyboard-focused, then surfaces top-left. */
+  .scene-nav a {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .scene-nav a:focus-visible {
+    width: auto;
+    height: auto;
+    clip-path: none;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: 10;
+    padding: var(--space-2) var(--space-3);
+    background: var(--ink);
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .scene-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ---- motion & viewport ---- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .gold-band {
+      animation: none;
+    }
+    .head,
+    .moon-face::before {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .scene-label {
+      top: 0;
+      left: 0;
+      bottom: initial;
+      right: initial;
+      font-size: 4em;
+      transform: none;
+    }
+    .gold-band {
+      top: 60%;
+    }
+    .tree {
+      top: 50%;
+      left: 50%;
+      height: 20vh;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .tree {
+      top: 80%;
+      left: 80%;
+      height: 20vh;
+    }
   }
 }

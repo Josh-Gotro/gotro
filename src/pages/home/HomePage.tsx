@@ -14,10 +14,10 @@ import './home.css';
  *   triggers the same reveals as hover.
  *
  * Region → destination mapping (v1 → v2):
- * - moon head      → /gallery (unchanged)
+ * - moon head      → /gallery (unchanged; sole path to the gallery)
  * - large circle   → /plaster-calculator (unchanged)
  * - medium circle  → /kiln (unchanged)
- * - tree           → OPEN SLOT (was /portfolio, cut in v2)
+ * - tree           → Substack, external (was /portfolio, cut in v2)
  * - small circle   → OPEN SLOT (was a TODO in v1)
  * Open slots are decorative until assigned; hover shows '???'.
  */
@@ -27,6 +27,7 @@ const branches = Array.from({ length: BRANCH_COUNT }, (_, i) => i);
 
 export default function HomePage() {
   const listed = destinations.filter((d) => !d.unlisted);
+  const substack = destinations.find((d) => d.slug === 'substack')!;
 
   return (
     <main className="scene">
@@ -52,9 +53,14 @@ export default function HomePage() {
           className="region head moon-face to-gallery"
           aria-label="Gallery — sculpture and other art"
         />
-        <div className="tree-container" aria-hidden="true">
-          {/* Open slot: not a link until it has somewhere to go. */}
-          <div className="tree slot">
+        <div className="tree-container">
+          <a
+            href={substack.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="region tree to-substack"
+            aria-label="substack — writing on Substack"
+          >
             {branches.map((i) => (
               <span
                 key={i}
@@ -62,7 +68,7 @@ export default function HomePage() {
                 style={{ '--i': i } as CSSProperties}
               />
             ))}
-          </div>
+          </a>
         </div>
       </div>
 

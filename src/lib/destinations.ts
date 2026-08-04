@@ -43,6 +43,16 @@ export const destinations: Destination[] = [
     hint: 'Ceramic and glass firing records',
   },
   {
+    slug: 'substack',
+    // Lowercase on purpose — the scene label renders it verbatim.
+    label: 'substack',
+    href: 'https://substack.com/@gotrox',
+    hint: 'Writing on Substack',
+    external: true,
+    // Reachable only via the tree region (2026-08-04).
+    unlisted: true,
+  },
+  {
     slug: 'spotify',
     label: 'Spotify',
     href: '/spotify',

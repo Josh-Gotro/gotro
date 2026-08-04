@@ -55,6 +55,10 @@
   .scene:has(.to-kiln:is(:hover, :focus-visible)) {
     --label: 'KILN';
   }
+  .scene:has(.to-substack:is(:hover, :focus-visible)) {
+    /* lowercase on purpose */
+    --label: 'substack';
+  }
   .scene:has(.slot:hover) {
     --label: '???';
   }
@@ -213,7 +217,7 @@
       0 0 60px rgb(255 255 255 / 0.1);
   }
 
-  /* ---- tree (open slot — was /portfolio in v1) ---- */
+  /* ---- tree → Substack (was /portfolio in v1) ---- */
 
   .tree-container {
     position: relative;
@@ -226,6 +230,7 @@
     left: 50%;
     height: 12vh;
     width: 5px;
+    display: block;
     background-color: var(--tree-blue);
     z-index: 2;
   }
@@ -249,8 +254,8 @@
   }
 
   /* v1 turned the tree pink by walking the DOM in a mouse handler. */
-  .tree:hover,
-  .tree:hover .branch {
+  .tree:is(:hover, :focus-visible),
+  .tree:is(:hover, :focus-visible) .branch {
     background-color: var(--tree-pink);
   }
 

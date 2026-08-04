@@ -1,0 +1,60 @@
+/* Home map — placeholder styling.
+ *
+ * The real scene (Phase 2) replaces the layout here, but the interaction
+ * contract stays: reveal-on-hover/focus is CSS (:hover, :focus-within),
+ * never component state. Honor prefers-reduced-motion for any animation. */
+
+.home {
+  min-height: 100dvh;
+  display: grid;
+  place-content: center;
+  padding: var(--space-4);
+}
+
+.home-map {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.home-region a {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-2);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 150ms ease;
+}
+
+.home-region a:hover,
+.home-region a:focus-visible {
+  border-color: var(--color-accent);
+}
+
+.home-label {
+  font-size: var(--text-2);
+}
+
+/* Hidden until pointed at — the map's reveal behavior, in CSS. */
+.home-hint {
+  font-size: var(--text-0);
+  color: var(--color-muted);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.home-region a:hover .home-hint,
+.home-region a:focus-visible .home-hint {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-region a,
+  .home-hint {
+    transition: none;
+  }
+}

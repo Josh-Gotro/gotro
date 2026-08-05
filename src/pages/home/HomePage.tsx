@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { Link } from 'react-router';
+import { contacts } from '@/lib/contacts';
 import { destinations } from '@/lib/destinations';
 import './home.css';
 
@@ -18,8 +19,12 @@ import './home.css';
  * - large circle   → /plaster-calculator (unchanged)
  * - medium circle  → /kiln (unchanged)
  * - tree           → Substack, external (was /portfolio, cut in v2)
- * - small circle   → OPEN SLOT (was a TODO in v1)
- * Open slots are decorative until assigned; hover shows '???'.
+ * - small circle   → CONTACT (was a TODO in v1)
+ *
+ * Contact is a CSS-only `:target` toggle — no JS, no state. Two stacked
+ * anchors sit over the circle: the "open" one points at #contact, the
+ * "close" one points at a non-existent fragment. `:has()` swaps which is
+ * clickable, so the circle stays visible and toggles on repeat clicks.
  */
 
 const BRANCH_COUNT = 13;
@@ -82,11 +87,43 @@ export default function HomePage() {
         className="region circle medium-circle to-kiln"
         aria-label="Kiln — ceramic and glass firing records"
       />
-      {/* Open slot: was a TODO in v1, keeps its place in the composition. */}
-      <div className="circle small-circle slot" aria-hidden="true" />
+      {/* Contact toggle. The circle is the visual; the two anchors stacked on
+          top of it swap roles via :has() so it reads as one toggling circle. */}
+      <div className="circle small-circle" aria-hidden="true" />
+      <a
+        href="#contact"
+        className="region contact-toggle open"
+        aria-label="Contact"
+      />
+      <a
+        href="#contact-closed"
+        className="region contact-toggle close"
+        aria-label="Close contact details"
+      />
 
       {/* Driven entirely by CSS :has() — see home.css. */}
       <div className="scene-label" aria-hidden="true" />
+
+      <aside id="contact" className="contact" aria-label="Contact details">
+        <div className="contact-veil" aria-hidden="true" />
+        <div className="contact-body">
+          <h2>contact</h2>
+          <ul>
+            {contacts.map((c, i) => (
+              <li key={c.label} style={{ '--i': i } as CSSProperties}>
+                <a
+                  href={c.href}
+                  {...(c.external
+                    ? { target: '_blank', rel: 'noopener noreferrer' }
+                    : {})}
+                >
+                  {c.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
     </main>
   );
 }

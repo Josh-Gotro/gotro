@@ -19,6 +19,14 @@
   initial-value: 0%;
 }
 
+/* Registered so the melt mask can actually animate — an unregistered custom
+   property would snap from 0% to 50% instead of interpolating. */
+@property --melt {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
 @layer page {
   .scene {
     /* v1 palette, verbatim */
@@ -59,6 +67,13 @@
     /* lowercase on purpose */
     --label: 'substack';
   }
+  .scene:has(.contact-toggle.open:is(:hover, :focus-visible)) {
+    --label: 'CONTACT';
+  }
+  .scene:has(.contact-toggle.close:is(:hover, :focus-visible)) {
+    --label: 'CLOSE';
+  }
+  /* Convention kept for future unassigned regions. */
   .scene:has(.slot:hover) {
     --label: '???';
   }
@@ -323,6 +338,193 @@
     }
   }
 
+  /* ---- contact: a CSS-only :target panel that melts the screen to black ----
+   *
+   * The circle itself is decorative; two anchors stack on top of it. `:has()`
+   * decides which one is clickable, so clicking the same circle opens and then
+   * closes the panel — and the circle stays visible above the veil throughout.
+   */
+
+  .contact-toggle {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    clip-path: circle(50%);
+    /* Above the veil so the circle remains clickable while open. */
+    z-index: 41;
+  }
+
+  /* Only one of the two is live at a time. `visibility` rather than
+     `pointer-events` so the dormant one also leaves the tab order — otherwise
+     Tab lands on a dead "Close" link while the panel is shut. */
+  .contact-toggle.close {
+    visibility: hidden;
+  }
+
+  .scene:has(#contact:target) .contact-toggle.open {
+    visibility: hidden;
+  }
+
+  .scene:has(#contact:target) .contact-toggle.close {
+    visibility: visible;
+  }
+
+  /* Hovering either toggle fills the circle, exactly as the other regions do. */
+  .scene:has(.contact-toggle:is(:hover, :focus-visible)) .small-circle {
+    background-color: #ffffff;
+  }
+
+  /* Keep the circle above the black veil so it never disappears. */
+  .small-circle {
+    z-index: 41;
+  }
+
+  .contact {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    visibility: hidden;
+    pointer-events: none;
+    /* Hold visibility until the melt has run backwards, so closing is
+       animated rather than an instant cut. */
+    transition: visibility 0s linear 0.9s;
+  }
+
+  .contact:target {
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  /* The melt. A gradient mask is the alpha channel: opaque black out to --melt,
+     then dissolving over the next ~14%. Animating --melt drags that soft edge
+     across half the screen.
+
+     Five stacked gradients each mask one horizontal band (mask-size +
+     mask-position), and each runs a few percent ahead of or behind the others.
+     Unioned together (mask-composite: add) the edge reads as an uneven, drippy
+     melt line rather than a clean wipe — while the body of the veil stays
+     fully opaque, which a single composited texture layer would not do. */
+  .contact-veil {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    mask-image:
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) + 5%),
+        transparent calc(var(--melt) + 17%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) - 3%),
+        transparent calc(var(--melt) + 10%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) + 2%),
+        transparent calc(var(--melt) + 15%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) - 6%),
+        transparent calc(var(--melt) + 7%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) + 3%),
+        transparent calc(var(--melt) + 16%)
+      );
+    /* Slight overlap on the band height hides seams between them. */
+    mask-size: 100% 20.4%;
+    mask-position:
+      0 0,
+      0 25%,
+      0 50%,
+      0 75%,
+      0 100%;
+    mask-repeat: no-repeat;
+    mask-composite: add;
+    transition: --melt 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .contact:target .contact-veil {
+    --melt: 52%;
+  }
+
+  .contact-body {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: min(52%, 34rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-6) var(--space-5) var(--space-6) clamp(2rem, 8vw, 6rem);
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+
+  .contact:target .contact-body {
+    opacity: 1;
+    transition-delay: 0.35s;
+  }
+
+  .contact-body h2 {
+    margin: 0;
+    font-family: 'Helvetica', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+    color: color-mix(in oklch, #ffffff 82%, var(--sky-top));
+  }
+
+  .contact-body ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .contact-body li {
+    /* Staggered entrance, one line of CSS instead of a rule per child. */
+    translate: -0.75rem 0;
+    opacity: 0;
+    transition:
+      translate 0.5s ease,
+      opacity 0.5s ease;
+    transition-delay: calc(0.4s + var(--i) * 0.08s);
+  }
+
+  .contact:target .contact-body li {
+    translate: 0 0;
+    opacity: 1;
+  }
+
+  .contact-body a {
+    font-family: 'Helvetica', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: #ffffff;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    transition:
+      border-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .contact-body a:is(:hover, :focus-visible) {
+    color: var(--gold-3);
+    border-bottom-color: var(--gold-3);
+  }
+
   /* ---- focus & fallback nav ---- */
 
   .scene a:focus-visible {
@@ -369,6 +571,13 @@
     .moon-face::before {
       transition: none;
     }
+    /* Panel still opens — it just arrives instead of melting. */
+    .contact,
+    .contact-veil,
+    .contact-body,
+    .contact-body li {
+      transition-duration: 0s;
+    }
   }
 
   @media (max-width: 900px) {
@@ -395,6 +604,52 @@
       top: 80%;
       left: 80%;
       height: 20vh;
+    }
+  }
+
+  /* Narrow screens: melt downward and use the full width, since a left-half
+     panel would leave no room to read. */
+  @media (max-width: 700px) {
+    /* Same idea rotated: bands run as vertical columns so the melt drips down. */
+    .contact-veil {
+      mask-image:
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) + 4%),
+          transparent calc(var(--melt) + 15%)
+        ),
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) - 4%),
+          transparent calc(var(--melt) + 8%)
+        ),
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) + 2%),
+          transparent calc(var(--melt) + 13%)
+        ),
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) - 2%),
+          transparent calc(var(--melt) + 10%)
+        );
+      mask-size: 25.4% 100%;
+      mask-position:
+        0 0,
+        33.33% 0,
+        66.66% 0,
+        100% 0;
+    }
+
+    .contact:target .contact-veil {
+      --melt: 58%;
+    }
+
+    .contact-body {
+      inset: 0 0 auto 0;
+      width: auto;
+      height: 58%;
+      padding: var(--space-5) var(--space-4);
     }
   }
 }

@@ -56,7 +56,7 @@ export default function GalleryPage() {
       <header className="gallery-header">
         <Link to="/" className="gallery-moon" aria-label="Back to the map" />
         <h1>gallery</h1>
-        <p>stained glass — pattern, foil, solder, light</p>
+        <p>stained glass: pattern, foil, solder, light</p>
       </header>
 
       <div
@@ -120,7 +120,7 @@ export default function GalleryPage() {
         <div key={w.slug} id={`view-${w.slug}`} className="viewer" popover="">
           <img src={w.src} alt={w.alt} loading="lazy" decoding="async" />
           <p>
-            {w.title} — {w.phase}
+            {w.title} · {w.phase}
           </p>
           <button
             popoverTarget={`view-${w.slug}`}

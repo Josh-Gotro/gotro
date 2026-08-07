@@ -11,7 +11,7 @@ export default function SpotifyPage() {
   return (
     <main className="page-placeholder">
       <h1>Spotify</h1>
-      <p>Not wired up yet — coming in Phase 5. Use v1 to connect Spotify.</p>
+      <p>Not wired up yet, coming in Phase 5. Use v1 to connect Spotify.</p>
       <Link to="/">Back to the map</Link>
     </main>
   );

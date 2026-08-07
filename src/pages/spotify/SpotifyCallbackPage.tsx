@@ -10,7 +10,7 @@ export default function SpotifyCallbackPage() {
   return (
     <main className="page-placeholder">
       <h1>Spotify Callback</h1>
-      <p>Not wired up yet — this route is handled by v1 in production.</p>
+      <p>Not wired up yet. This route is handled by v1 in production.</p>
     </main>
   );
 }

@@ -35,7 +35,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(response.status, detail);
   }
 
-  return response.json() as Promise<T>;
+  // Some endpoints 200 with an empty body (e.g. /current-ceramic-firing when
+  // no firing is in progress — res.json(undefined) server-side).
+  const text = await response.text();
+  return (text === '' ? undefined : JSON.parse(text)) as T;
 }
 
 export const api = {

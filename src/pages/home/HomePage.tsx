@@ -56,7 +56,7 @@ export default function HomePage() {
         <Link
           to="/gallery"
           className="region head moon-face to-gallery"
-          aria-label="Gallery — sculpture and other art"
+          aria-label="Gallery: sculpture and other art"
         />
         <div className="tree-container">
           <a
@@ -64,7 +64,7 @@ export default function HomePage() {
             target="_blank"
             rel="noopener noreferrer"
             className="region tree to-substack"
-            aria-label="substack — writing on Substack"
+            aria-label="substack: writing on Substack"
           >
             {branches.map((i) => (
               <span
@@ -85,7 +85,7 @@ export default function HomePage() {
       <Link
         to="/kiln"
         className="region circle medium-circle to-kiln"
-        aria-label="Kiln — ceramic and glass firing records"
+        aria-label="Kiln: ceramic and glass firing records"
       />
       {/* Contact toggle. The circle is the visual; the two anchors stacked on
           top of it swap roles via :has() so it reads as one toggling circle. */}

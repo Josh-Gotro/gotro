@@ -1,0 +1,537 @@
+/* Kiln — the kiln room. Charcoal warmed by an ember glow at the floor.
+ *
+ * Modern CSS in use:
+ * - :has() + radios        the ceramic/glass tab switch, zero JS
+ * - clip-path + rotate     the pyrometric cone that bends with progress
+ * - color-mix(oklch)       ember tints on schedule rows via a --heat variable
+ * - <details name=…>       history cards as an exclusive accordion
+ * - @property              the ember glow breathes without repainting layout
+ */
+
+@property --ember {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0.5;
+}
+
+@layer page {
+  .kiln-room {
+    --sky: #f03d3e;
+    --gold-1: #e88623;
+    --gold-2: #feba4d;
+    --gold-3: #ffed8d;
+    --char: color-mix(in oklch, #141110 95%, var(--gold-1));
+    --char-lift: color-mix(in oklch, #221c18 92%, var(--gold-1));
+    --ink-soft: color-mix(in oklch, white 74%, var(--char));
+
+    position: relative;
+    min-height: 100dvh;
+    background: linear-gradient(to bottom, var(--char), var(--char-lift));
+    color: var(--ink-soft);
+    font-family: 'Helvetica', sans-serif;
+    padding-bottom: var(--space-5);
+    overflow-x: clip;
+  }
+
+  /* The ember floor: fixed glow that slowly breathes. */
+  .ember {
+    position: fixed;
+    inset: auto 0 0 0;
+    height: 30dvh;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 100% at 50% 120%,
+      color-mix(in oklch, var(--sky) calc(var(--ember) * 55%), transparent),
+      color-mix(in oklch, var(--gold-1) calc(var(--ember) * 30%), transparent)
+        45%,
+      transparent 75%
+    );
+    animation: ember-breathe 9s ease-in-out infinite alternate;
+  }
+
+  @keyframes ember-breathe {
+    from {
+      --ember: 0.35;
+    }
+    to {
+      --ember: 0.8;
+    }
+  }
+
+  /* ---- header ---- */
+
+  .kiln-header {
+    position: relative;
+    text-align: center;
+    padding: var(--space-4) 4rem var(--space-3);
+  }
+
+  .kiln-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    background: linear-gradient(
+      100deg,
+      var(--gold-3),
+      var(--gold-2) 45%,
+      var(--sky)
+    );
+    background-clip: text;
+    color: transparent;
+  }
+
+  .kiln-header p {
+    margin-top: var(--space-1);
+    font-size: var(--text-0);
+    letter-spacing: 0.14em;
+    color: color-mix(in oklch, var(--ink-soft) 70%, var(--char));
+  }
+
+  .kiln-moon {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f0f0e4 40%,
+      #c0c0b6 100%
+    );
+    box-shadow:
+      0 0 12px rgb(255 255 255 / 0.25),
+      0 0 28px rgb(255 255 255 / 0.12);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .kiln-moon:is(:hover, :focus-visible) {
+    box-shadow:
+      0 0 16px rgb(255 255 255 / 0.45),
+      0 0 40px rgb(255 255 255 / 0.2);
+  }
+
+  /* ---- tabs: radios + :has(), no JS ---- */
+
+  .kiln-tabs {
+    border: 0;
+    padding: 0;
+    margin: 0 auto var(--space-4);
+    width: fit-content;
+    display: flex;
+    gap: var(--space-1);
+    background: color-mix(in oklch, black 30%, var(--char-lift));
+    border-radius: 999px;
+    padding: 4px;
+  }
+
+  .kiln-tabs input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .kiln-tabs label {
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    color: var(--ink-soft);
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .kiln-tabs input:checked + label {
+    background: linear-gradient(120deg, var(--gold-1), var(--gold-2));
+    color: var(--char);
+  }
+
+  .kiln-tabs input:focus-visible + label {
+    outline: 2px solid var(--gold-2);
+    outline-offset: 2px;
+  }
+
+  .kiln-panel {
+    max-width: 46rem;
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+  }
+
+  .kiln-room:has(#tab-glass:checked) .panel-ceramic,
+  .kiln-room:has(#tab-ceramic:checked) .panel-glass {
+    display: none;
+  }
+
+  /* ---- shared bits ---- */
+
+  .kiln-note {
+    font-size: var(--text-0);
+    letter-spacing: 0.08em;
+    color: color-mix(in oklch, var(--ink-soft) 70%, var(--char));
+    margin-block: var(--space-2);
+  }
+
+  .kiln-button {
+    border: 1.5px solid var(--gold-2);
+    background: transparent;
+    color: var(--gold-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  .kiln-button:not(:disabled):is(:hover, :focus-visible) {
+    background: var(--gold-2);
+    color: var(--char);
+  }
+
+  .kiln-button-fill {
+    background: linear-gradient(120deg, var(--gold-1), var(--gold-2));
+    border: 0;
+    color: var(--char);
+  }
+
+  .kiln-button:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  h3 {
+    font-size: var(--text-1);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: color-mix(in oklch, var(--ink-soft) 80%, var(--char));
+    margin-block: var(--space-4) var(--space-2);
+  }
+
+  /* ---- ceramic wizard ---- */
+
+  .wizard {
+    background: color-mix(in oklch, black 18%, var(--char-lift));
+    border: 1px solid color-mix(in oklch, var(--gold-1) 18%, transparent);
+    border-radius: var(--radius-2);
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+
+  .wizard-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Pyrometric cone: bends further as the firing progresses. */
+  .cone {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+  }
+
+  .cone-shape {
+    width: 18px;
+    height: 34px;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    background: linear-gradient(to top, var(--gold-1), var(--gold-3));
+    transform-origin: 50% 95%;
+    rotate: calc(var(--progress, 0) * 55deg);
+    transition: rotate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(
+      0 0 calc(var(--progress, 0) * 10px)
+        color-mix(in oklch, var(--sky) 60%, transparent)
+    );
+  }
+
+  .cone-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: color-mix(in oklch, var(--ink-soft) 65%, var(--char));
+  }
+
+  .wizard-done {
+    list-style: none;
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .done-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    background: none;
+    border: 0;
+    border-left: 2px solid color-mix(in oklch, var(--gold-1) 45%, transparent);
+    padding: var(--space-1) var(--space-2);
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .done-row:is(:hover, :focus-visible) {
+    border-left-color: var(--gold-2);
+    background: color-mix(in oklch, var(--gold-1) 8%, transparent);
+  }
+
+  .done-question {
+    font-size: var(--text-0);
+    letter-spacing: 0.08em;
+    color: color-mix(in oklch, var(--ink-soft) 65%, var(--char));
+  }
+
+  .done-answer {
+    font-variant-numeric: tabular-nums;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .wizard-current {
+    margin-top: var(--space-3);
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+
+  .wizard-current label,
+  .wizard-finish p {
+    letter-spacing: 0.1em;
+    color: var(--gold-2);
+  }
+
+  .wizard-current :is(input, select, textarea) {
+    width: min(100%, 22rem);
+    background: color-mix(in oklch, black 25%, var(--char-lift));
+    border: 1px solid color-mix(in oklch, var(--ink-soft) 25%, transparent);
+    border-radius: var(--radius-1);
+    color: inherit;
+    padding: var(--space-2);
+    transition: border-color 0.2s ease;
+  }
+
+  .wizard-current :is(input, select, textarea):focus-visible {
+    outline: none;
+    border-color: var(--gold-2);
+  }
+
+  /* ---- glass form ---- */
+
+  .glass-form {
+    background: color-mix(in oklch, black 18%, var(--char-lift));
+    border: 1px solid color-mix(in oklch, var(--gold-1) 18%, transparent);
+    border-radius: var(--radius-2);
+    padding: var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .mode-toggle {
+    border: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .mode-toggle label {
+    cursor: pointer;
+  }
+
+  .mode-toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mode-toggle span {
+    display: inline-block;
+    padding: var(--space-1) var(--space-3);
+    border: 1.5px solid color-mix(in oklch, var(--ink-soft) 30%, transparent);
+    border-radius: 999px;
+    letter-spacing: 0.14em;
+    transition:
+      border-color 0.2s ease,
+      background 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .mode-toggle input:checked + span {
+    border-color: var(--gold-2);
+    background: color-mix(in oklch, var(--gold-1) 20%, transparent);
+    color: var(--gold-3);
+  }
+
+  .mode-toggle input:focus-visible + span {
+    outline: 2px solid var(--gold-2);
+    outline-offset: 2px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+  }
+
+  .field > span:first-child {
+    font-size: var(--text-0);
+    letter-spacing: 0.1em;
+    color: color-mix(in oklch, var(--ink-soft) 70%, var(--char));
+  }
+
+  .field :is(input, select, textarea) {
+    background: color-mix(in oklch, black 25%, var(--char-lift));
+    border: 1px solid color-mix(in oklch, var(--ink-soft) 25%, transparent);
+    border-radius: var(--radius-1);
+    color: inherit;
+    padding: var(--space-2);
+    width: 100%;
+    transition: border-color 0.2s ease;
+  }
+
+  .field :is(input, select, textarea):focus-visible {
+    outline: none;
+    border-color: var(--gold-2);
+  }
+
+  .hm-pair {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .hm-pair input {
+    width: 5rem;
+  }
+
+  /* schedule preview: rows heat up as the ramp climbs */
+  .schedule {
+    border-left: 2px solid color-mix(in oklch, var(--gold-1) 40%, transparent);
+    padding-left: var(--space-3);
+  }
+
+  .schedule-meta {
+    font-size: var(--text-0);
+    letter-spacing: 0.1em;
+    color: var(--gold-2);
+    margin-bottom: var(--space-2);
+  }
+
+  .schedule table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .schedule th {
+    font-weight: 400;
+    font-size: var(--text-0);
+    letter-spacing: 0.06em;
+    color: color-mix(in oklch, var(--ink-soft) 65%, var(--char));
+    text-align: right;
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .schedule td {
+    text-align: right;
+    padding: var(--space-1) var(--space-2);
+    background: color-mix(
+      in oklch,
+      var(--sky) calc(var(--heat, 0) * 14%),
+      transparent
+    );
+    border-bottom: 1px solid color-mix(in oklch, white 6%, transparent);
+  }
+
+  /* ---- history cards (shared) ---- */
+
+  .kiln-history {
+    margin-top: var(--space-4);
+  }
+
+  .firing-card {
+    background: color-mix(in oklch, black 14%, var(--char-lift));
+    border: 1px solid color-mix(in oklch, white 8%, transparent);
+    border-left: 3px solid
+      var(--rating, color-mix(in oklch, white 20%, transparent));
+    border-radius: var(--radius-1);
+    margin-bottom: var(--space-2);
+  }
+
+  .firing-card.rating-positive {
+    --rating: color-mix(in oklch, #7ec97e 80%, var(--gold-3));
+  }
+  .firing-card.rating-neutral {
+    --rating: var(--gold-2);
+  }
+  .firing-card.rating-negative {
+    --rating: var(--sky);
+  }
+
+  .firing-card summary {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    list-style: none;
+    letter-spacing: 0.08em;
+  }
+
+  .firing-card summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .firing-cone {
+    color: color-mix(in oklch, var(--ink-soft) 70%, var(--char));
+  }
+
+  .firing-card dl {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0 var(--space-3) var(--space-3);
+  }
+
+  .firing-card dl div {
+    display: grid;
+    grid-template-columns: 8em 1fr;
+    gap: var(--space-2);
+  }
+
+  .firing-card dt {
+    font-size: var(--text-0);
+    letter-spacing: 0.08em;
+    color: color-mix(in oklch, var(--ink-soft) 65%, var(--char));
+  }
+
+  .firing-card dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+
+  /* ---- motion ---- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .ember {
+      animation: none;
+    }
+    .cone-shape {
+      transition: none;
+    }
+  }
+}

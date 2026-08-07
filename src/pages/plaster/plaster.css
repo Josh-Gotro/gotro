@@ -1,0 +1,546 @@
+/* Plaster — the bone-white room. Counterpart to the gallery's dark one.
+ *
+ * Modern CSS in use:
+ * - CSS 3D transforms      the mold: a live box whose proportions track the
+ *                          inputs via custom properties, gently turning
+ * - @property              --turn registered so the idle rotation interpolates
+ * - <details name=…>       native exclusive accordions, zero JS
+ * - field-sizing: content  dimension inputs grow as you type
+ * - color-mix(oklch)       bone tones warmed from the site's red
+ * - :has()                 the stage lights up once results exist
+ */
+
+@property --turn {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: -28deg;
+}
+
+@layer page {
+  .plaster-room {
+    --sky: #f03d3e;
+    --gold-1: #e88623;
+    --gold-2: #feba4d;
+    --gold-3: #ffed8d;
+    --bone: color-mix(in oklch, #f6f3ec 97%, var(--sky));
+    --bone-deep: color-mix(in oklch, #e9e4d8 94%, var(--sky));
+    --ink: #313131;
+    --ink-soft: color-mix(in oklch, var(--ink) 72%, var(--bone));
+
+    min-height: 100dvh;
+    background:
+      radial-gradient(110% 60% at 50% -10%, #fffdf7, transparent 70%),
+      linear-gradient(to bottom, var(--bone), var(--bone-deep));
+    color: var(--ink);
+    font-family: 'Helvetica', sans-serif;
+    padding-bottom: var(--space-5);
+  }
+
+  /* ---- header ---- */
+
+  .plaster-header {
+    position: relative;
+    text-align: center;
+    padding: var(--space-4) 4rem var(--space-3);
+  }
+
+  .plaster-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    background: linear-gradient(
+      100deg,
+      var(--gold-1),
+      var(--gold-2) 45%,
+      var(--gold-1)
+    );
+    background-clip: text;
+    color: transparent;
+  }
+
+  .plaster-header p {
+    margin-top: var(--space-1);
+    font-size: var(--text-0);
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    text-wrap: balance;
+  }
+
+  .plaster-moon {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f0f0e4 40%,
+      #c9c9bd 100%
+    );
+    box-shadow:
+      0 2px 10px rgb(49 49 49 / 0.18),
+      inset -3px -3px 6px rgb(49 49 49 / 0.08);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .plaster-moon:is(:hover, :focus-visible) {
+    box-shadow:
+      0 2px 14px rgb(49 49 49 / 0.3),
+      inset -3px -3px 6px rgb(49 49 49 / 0.08);
+  }
+
+  /* ---- bench: mold, inputs, results ---- */
+
+  .bench {
+    max-width: 56rem;
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+    display: grid;
+    gap: var(--space-4);
+    justify-items: center;
+  }
+
+  .mold-stage {
+    width: min(320px, 70vw);
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    perspective: 900px;
+    /* Lights up when the room has results — :has() at page scope. */
+    transition: filter 0.6s ease;
+    filter: saturate(0.75) opacity(0.75);
+  }
+
+  .plaster-room:has(.stat) .mold-stage {
+    filter: none;
+  }
+
+  /* The box. 1 unit = --scale px; proportions come from the inputs. */
+  .mold {
+    --scale: 170px;
+    --lx: calc(var(--l) * var(--scale));
+    --wy: calc(var(--w) * var(--scale));
+    --hz: calc(var(--h) * var(--scale));
+    width: var(--lx);
+    height: var(--hz);
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-18deg) rotateY(var(--turn));
+    animation: mold-idle 14s ease-in-out infinite alternate;
+    transition:
+      width 0.35s ease,
+      height 0.35s ease;
+  }
+
+  @keyframes mold-idle {
+    from {
+      --turn: -48deg;
+    }
+    to {
+      --turn: -12deg;
+    }
+  }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in oklch, #ffffff 88%, var(--gold-2));
+    border: 1.5px solid color-mix(in oklch, var(--ink) 55%, var(--gold-1));
+    opacity: 0.85;
+    transition: transform 0.35s ease;
+  }
+
+  .face.front {
+    transform: translateZ(calc(var(--wy) / 2));
+  }
+  .face.back {
+    transform: translateZ(calc(var(--wy) / -2));
+  }
+  .face.left {
+    width: var(--wy);
+    left: calc(50% - var(--wy) / 2);
+    transform: rotateY(90deg) translateZ(calc(var(--lx) / 2));
+  }
+  .face.right {
+    width: var(--wy);
+    left: calc(50% - var(--wy) / 2);
+    transform: rotateY(90deg) translateZ(calc(var(--lx) / -2));
+  }
+  .face.top {
+    height: var(--wy);
+    top: calc(50% - var(--wy) / 2);
+    transform: rotateX(90deg) translateZ(calc(var(--hz) / 2));
+    background: color-mix(in oklch, #ffffff 80%, var(--gold-3));
+  }
+  .face.bottom {
+    height: var(--wy);
+    top: calc(50% - var(--wy) / 2);
+    transform: rotateX(90deg) translateZ(calc(var(--hz) / -2));
+  }
+
+  /* ---- dimension inputs ---- */
+
+  .dims fieldset {
+    border: 0;
+    padding: 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .dim-field {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .dim-name {
+    font-size: var(--text-0);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .dims input {
+    field-sizing: content;
+    min-inline-size: 3.5ch;
+    max-inline-size: 8ch;
+    border: 0;
+    border-bottom: 2px solid color-mix(in oklch, var(--ink) 30%, var(--bone));
+    background: transparent;
+    font-size: var(--text-3);
+    text-align: center;
+    color: var(--ink);
+    transition: border-color 0.25s ease;
+  }
+
+  .dims input:focus-visible {
+    outline: none;
+    border-bottom-color: var(--gold-1);
+  }
+
+  /* The caret blinking over the placeholder 0 reads as garbage; clear the
+     ghost as soon as the field is focused. */
+  .dims input:focus::placeholder {
+    color: transparent;
+  }
+
+  /* Chrome's spinners fight the minimal look. */
+  .dims input::-webkit-outer-spin-button,
+  .dims input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .dims input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .dim-times {
+    font-size: var(--text-2);
+    color: var(--ink-soft);
+  }
+
+  .dim-unit {
+    font-size: var(--text-0);
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    align-self: center;
+  }
+
+  /* ---- results ---- */
+
+  .results {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-1);
+  }
+
+  .stat-value {
+    font-size: var(--text-4);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .stat-value small {
+    font-size: 0.45em;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  .stat-label {
+    font-size: var(--text-0);
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    text-wrap: balance;
+    text-align: center;
+    max-width: 16ch;
+  }
+
+  .results-empty {
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    font-size: var(--text-1);
+  }
+
+  .save-row {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-2);
+  }
+
+  .save {
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease,
+      opacity 0.25s ease;
+  }
+
+  .save:not(:disabled):is(:hover, :focus-visible) {
+    background: var(--ink);
+    color: var(--bone);
+  }
+
+  .save:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .save-note {
+    font-size: var(--text-0);
+    color: color-mix(in oklch, var(--sky) 70%, var(--ink));
+  }
+
+  /* ---- reference accordions ---- */
+
+  .reference,
+  .history {
+    max-width: 44rem;
+    margin: var(--space-5) auto 0;
+    padding-inline: var(--space-4);
+  }
+
+  .reference details,
+  .history-grid details {
+    border-bottom: 1px solid color-mix(in oklch, var(--ink) 18%, var(--bone));
+  }
+
+  .reference summary,
+  .history-grid summary {
+    padding: var(--space-3) var(--space-1);
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.2s ease;
+  }
+
+  .reference summary::before,
+  .history-grid summary::before {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 0.55em;
+    margin-right: var(--space-2);
+    background: linear-gradient(135deg, var(--gold-2), var(--gold-1));
+    rotate: 45deg;
+    transition: rotate 0.25s ease;
+  }
+
+  details[open] > summary::before {
+    rotate: 135deg;
+  }
+
+  .reference summary:is(:hover, :focus-visible),
+  .history-grid summary:is(:hover, :focus-visible) {
+    color: var(--ink);
+  }
+
+  .reference details > :not(summary) {
+    margin-block: var(--space-2) var(--space-3);
+  }
+
+  /* timing bar: minutes become fractional grid columns */
+  .timing-bar {
+    display: grid;
+    gap: 3px;
+  }
+
+  .timing-seg {
+    --heat: calc(var(--seg) / 5);
+    display: grid;
+    gap: var(--space-1);
+    justify-items: center;
+    padding: var(--space-2) var(--space-1);
+    background: color-mix(
+      in oklch,
+      var(--gold-3) calc((1 - var(--heat)) * 100%),
+      var(--sky)
+    );
+    color: var(--ink);
+    border-radius: var(--radius-1);
+    min-width: 0;
+  }
+
+  .timing-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  .timing-minutes {
+    font-size: 0.7rem;
+    color: color-mix(in oklch, var(--ink) 65%, transparent);
+  }
+
+  .timing-total {
+    font-size: var(--text-0);
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  .states {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .states div {
+    display: grid;
+    grid-template-columns: 9em 1fr;
+    gap: var(--space-2);
+  }
+
+  .states dt {
+    color: var(--gold-1);
+    letter-spacing: 0.08em;
+  }
+
+  .states dd {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .reference table {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reference th {
+    font-weight: 400;
+    font-size: var(--text-0);
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    text-align: right;
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid color-mix(in oklch, var(--ink) 25%, var(--bone));
+  }
+
+  .reference td {
+    text-align: right;
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid color-mix(in oklch, var(--ink) 10%, var(--bone));
+  }
+
+  .formula {
+    display: grid;
+    gap: var(--space-3);
+    padding-left: 1.2em;
+  }
+
+  .formula li {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .formula var {
+    color: var(--gold-1);
+    font-style: normal;
+  }
+
+  .formula b {
+    color: var(--gold-1);
+    font-weight: 600;
+  }
+
+  .formula span {
+    display: block;
+    font-size: var(--text-0);
+    color: var(--ink-soft);
+  }
+
+  /* ---- history ---- */
+
+  .history h2 {
+    font-size: var(--text-1);
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    color: var(--ink-soft);
+  }
+
+  .history-note {
+    margin-top: var(--space-2);
+    font-size: var(--text-0);
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  .history-grid dl {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-3);
+  }
+
+  .history-grid dl div {
+    display: grid;
+    grid-template-columns: 7em 1fr;
+    gap: var(--space-2);
+  }
+
+  .history-grid dt {
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  .history-grid dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- motion ---- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .mold {
+      animation: none;
+      transition: none;
+    }
+    .mold-stage {
+      transition: none;
+    }
+  }
+}

@@ -1,60 +1,34 @@
-# gotro-v2
+# joshgotro.com
 
-The v2 rewrite of [joshgotro.com](https://www.joshgotro.com). Built side-by-side
-with the live v1 frontend (`../gotro`); cuts over to the production domain only
-when complete. The directory name is temporary.
+Personal site: a map to art, craft tools, and other not-work-related things.
 
-Planning docs live in the Obsidian vault under `Projects/joshgotro.com/`:
-
-- `v1.md` — assessment of the current production site
-- `v2-plan.md` — architecture, scope, phases, and security plan
-- `Decisions.md` — decision log
+- `/` is an abstract map. Hover or focus a region to see where it goes.
+- `/gallery` is stained glass work, from pattern to finished piece.
+- `/plaster-calculator` computes water and plaster for mold-making.
+- `/kiln` records ceramic and glass firings.
+- `/spotify` and `/discobard` handle OAuth callbacks for side projects.
 
 ## Stack
 
-Vite · React 19 · React Router 8 · TypeScript · plain modern CSS (no UI kit)
+React 19, React Router 8, TypeScript, Vite. Plain modern CSS: the home page,
+gallery motion, contact panel, and kiln tabs run on CSS alone (`:has()`,
+scroll-driven animations, popovers, `:target`). TanStack Query and
+react-hook-form load only on the tool routes.
 
 ## Development
 
 ```bash
-cp .env.example .env.local   # once
 npm install
-npm run dev                  # http://localhost:5173 (port is pinned — see vite.config.ts)
+npm run dev        # http://localhost:5173
+npm run lint
+npm run build
 ```
 
-The backend is the existing `../gotrodb` Express API:
+The backend is [gotrodb](https://github.com/Josh-Gotro/gotrodb) on port 3006.
+Set `VITE_BACKEND_API_URL=http://localhost:3006` in `.env.local`.
 
-```bash
-cd ../gotrodb && node server.js   # port 3006
-```
+## Deployment
 
-Port 5173 is already in gotrodb's CORS allowlist, so no proxy or backend
-change is needed for local development.
-
-## Commands
-
-| Command                | What it does                 |
-| ---------------------- | ---------------------------- |
-| `npm run dev`          | Dev server with HMR          |
-| `npm run build`        | Typecheck + production build |
-| `npm run preview`      | Serve the production build   |
-| `npm run lint`         | oxlint                       |
-| `npm run typecheck`    | tsc only                     |
-| `npm run format`       | Prettier, write              |
-| `npm run format:check` | Prettier, check only         |
-
-## Route map
-
-| Route                 | Status                                         |
-| --------------------- | ---------------------------------------------- |
-| `/`                   | Placeholder map — real scene lands in Phase 2  |
-| `/gallery`            | Placeholder — Phase 3                          |
-| `/plaster-calculator` | Placeholder — Phase 4                          |
-| `/kiln`               | Placeholder — Phase 4                          |
-| `/spotify`            | Placeholder — Phase 5                          |
-| `/spotify/callback`   | **Externally registered OAuth path** — Phase 5 |
-| `/discobard`          | **Externally registered OAuth path** — Phase 5 |
-| `*`                   | 404                                            |
-
-`/spotify/callback` and `/discobard` are registered redirect URIs on external
-OAuth apps (Spotify, Warcraft Logs). Their paths must never change.
+Heroku, static build served by nginx (`Procfile` + `config/nginx.conf.erb`).
+Push to main deploys. `VITE_BACKEND_API_URL` is set as a config var and baked
+in at build time.

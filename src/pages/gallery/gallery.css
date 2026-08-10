@@ -1,0 +1,415 @@
+/* Gallery — a dark room for glass to glow in.
+ *
+ * Modern CSS in use:
+ * - scroll-snap            the filmstrip itself; swipe/wheel/keys, no JS
+ * - animation-timeline     view(): centered work comes into focus;
+ *                          scroll(): gold progress band tracks position
+ * - [popover]              fullscreen viewer with free Esc/focus handling,
+ *                          animated via @starting-style + allow-discrete
+ * - mask-image             thumbnail rail fades out at its edges
+ * - background-clip: text  gold gradient heading
+ * - color-mix(oklch)       warm blacks derived from the home page's red
+ * - corner-shape           squircle thumbnails where supported
+ */
+
+@layer page {
+  .gallery-room {
+    /* Home palette, carried into the dark. */
+    --sky: #f03d3e;
+    --gold-1: #e88623;
+    --gold-2: #feba4d;
+    --gold-3: #ffed8d;
+    --room: color-mix(in oklch, #0c0b0b 96%, var(--sky));
+    --room-lift: color-mix(in oklch, #171514 92%, var(--sky));
+    --ink-soft: color-mix(in oklch, white 72%, var(--room));
+
+    height: 100dvh;
+    display: grid;
+    /* minmax(0, …) so the strip may shrink to the track instead of pushing
+       the thumbnail rail below the fold. */
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    background: radial-gradient(
+      120% 80% at 50% 0%,
+      var(--room-lift),
+      var(--room) 60%
+    );
+    color: var(--ink-soft);
+    font-family: 'Helvetica', sans-serif;
+    /* Progress band listens from outside the scroller. */
+    timeline-scope: --strip;
+  }
+
+  /* ---- gold progress band (home page motif, repurposed) ---- */
+
+  .gallery-progress {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 4px;
+    z-index: 5;
+    background: linear-gradient(
+      to right,
+      var(--gold-1),
+      var(--gold-2),
+      var(--gold-3)
+    );
+    transform-origin: left center;
+    /* Invisible until a scroll() timeline drives it — graceful no-support. */
+    scale: 0 1;
+    animation: gallery-progress linear both;
+    animation-timeline: --strip;
+  }
+
+  @keyframes gallery-progress {
+    from {
+      scale: 0 1;
+    }
+    to {
+      scale: 1 1;
+    }
+  }
+
+  /* ---- header ---- */
+
+  .gallery-header {
+    position: relative;
+    text-align: center;
+    padding: var(--space-4) var(--space-5) var(--space-3);
+  }
+
+  .gallery-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    background: linear-gradient(
+      100deg,
+      var(--gold-3),
+      var(--gold-2) 45%,
+      var(--gold-1)
+    );
+    background-clip: text;
+    color: transparent;
+  }
+
+  .gallery-header p {
+    margin-top: var(--space-1);
+    font-size: var(--text-0);
+    letter-spacing: 0.14em;
+    color: color-mix(in oklch, var(--ink-soft) 70%, var(--room));
+    text-wrap: balance;
+  }
+
+  /* The way home is the moon. */
+  .gallery-moon {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f0f0e4 40%,
+      #c0c0b6 100%
+    );
+    box-shadow:
+      0 0 12px rgb(255 255 255 / 0.25),
+      0 0 28px rgb(255 255 255 / 0.12);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .gallery-moon:is(:hover, :focus-visible) {
+    box-shadow:
+      0 0 16px rgb(255 255 255 / 0.45),
+      0 0 40px rgb(255 255 255 / 0.2);
+  }
+
+  /* ---- the filmstrip ---- */
+
+  .strip {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    scroll-timeline: --strip inline;
+    outline-offset: -3px;
+  }
+
+  .work {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    place-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4) var(--space-4);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    min-height: 0;
+  }
+
+  .work-open {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: zoom-in;
+    border-radius: var(--radius-2);
+    min-height: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    /* Size container: the image sizes against the track via cq units,
+       sidestepping the indefinite-percentage chain through minmax(0, 1fr). */
+    container-type: size;
+  }
+
+  .work img {
+    max-width: min(100cqw, 58rem);
+    max-height: 100cqh;
+    object-fit: contain;
+    border-radius: var(--radius-2);
+    /* The glow is the light through the glass. */
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.6),
+      0 12px 48px rgb(0 0 0 / 0.5),
+      0 0 90px color-mix(in oklch, var(--gold-2) 12%, transparent);
+  }
+
+  figcaption {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    font-size: var(--text-0);
+    letter-spacing: 0.1em;
+  }
+
+  .work-count {
+    color: var(--gold-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .work-title {
+    color: var(--ink-soft);
+    font-size: var(--text-1);
+    letter-spacing: 0.06em;
+  }
+
+  .work-phase {
+    color: color-mix(in oklch, var(--ink-soft) 60%, var(--room));
+    font-style: italic;
+  }
+
+  /* Centered work in focus, neighbours receded — scroll position IS the
+     animation's clock. No scroll listeners anywhere. */
+  @supports (animation-timeline: view()) {
+    .work {
+      animation: come-into-focus linear both;
+      animation-timeline: view(inline);
+    }
+  }
+
+  @keyframes come-into-focus {
+    0%,
+    100% {
+      scale: 0.88;
+      opacity: 0.3;
+      filter: saturate(0.5);
+    }
+    50% {
+      scale: 1;
+      opacity: 1;
+      filter: none;
+    }
+  }
+
+  /* ---- thumbnail rail ---- */
+
+  .rail {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4) var(--space-4);
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Ends dissolve instead of clipping. */
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 7%,
+      #000 93%,
+      transparent
+    );
+  }
+
+  /* Center when they fit, scroll when they don't. */
+  .rail > :first-child {
+    margin-inline-start: auto;
+  }
+  .rail > :last-child {
+    margin-inline-end: auto;
+  }
+
+  .rail a {
+    flex: 0 0 auto;
+    width: 3.4rem;
+    aspect-ratio: 1;
+    border-radius: var(--radius-2);
+    overflow: clip;
+    opacity: 0.4;
+    transition:
+      opacity 0.25s ease,
+      scale 0.25s ease;
+  }
+
+  @supports (corner-shape: squircle) {
+    .rail a {
+      border-radius: 32%;
+      corner-shape: squircle;
+    }
+  }
+
+  .rail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rail a:is(:hover, :focus-visible) {
+    opacity: 0.85;
+    scale: 1.08;
+  }
+
+  .rail a[aria-current='true'] {
+    opacity: 1;
+    scale: 1.08;
+    outline: 2px solid var(--gold-2);
+    outline-offset: 2px;
+  }
+
+  /* ---- fullscreen viewer (native popover) ---- */
+
+  .viewer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border: 0;
+    padding: var(--space-4);
+    background: transparent;
+    color: var(--ink-soft);
+    opacity: 0;
+    scale: 0.96;
+    transition:
+      opacity 0.25s ease,
+      scale 0.25s ease,
+      display 0.25s allow-discrete,
+      overlay 0.25s allow-discrete;
+  }
+
+  .viewer:popover-open {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    place-items: center;
+    gap: var(--space-2);
+    opacity: 1;
+    scale: 1;
+
+    @starting-style {
+      opacity: 0;
+      scale: 0.96;
+    }
+  }
+
+  .viewer img {
+    max-width: min(94vw, 100%);
+    max-height: calc(100dvh - 7rem);
+    object-fit: contain;
+    border-radius: var(--radius-2);
+  }
+
+  .viewer p {
+    font-size: var(--text-0);
+    letter-spacing: 0.12em;
+  }
+
+  .viewer::backdrop {
+    background: rgb(4 3 3 / 0.85);
+    backdrop-filter: blur(18px) saturate(0.7);
+    opacity: 0;
+    transition:
+      opacity 0.25s ease,
+      display 0.25s allow-discrete,
+      overlay 0.25s allow-discrete;
+  }
+
+  .viewer:popover-open::backdrop {
+    opacity: 1;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  .viewer-close {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.08);
+    color: var(--ink-soft);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .viewer-close:is(:hover, :focus-visible) {
+    background: rgb(255 255 255 / 0.2);
+  }
+
+  /* ---- motion & viewport ---- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .strip {
+      scroll-behavior: auto;
+    }
+    .work {
+      animation: none;
+    }
+    .viewer,
+    .viewer::backdrop,
+    .rail a {
+      transition-duration: 0s;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .gallery-header {
+      padding: var(--space-4) var(--space-4) var(--space-2);
+      /* Clear the moon without pushing the title off-center. */
+      padding-inline: 4rem;
+    }
+
+    .work {
+      padding-inline: var(--space-3);
+    }
+
+    .work img {
+      max-width: 92vw;
+    }
+
+    figcaption {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-1);
+      text-align: center;
+    }
+  }
+}

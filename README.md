@@ -1,21 +1,34 @@
-# React + Vite
+# joshgotro.com
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Personal site: a map to art, craft tools, and other not-work-related things.
 
-Currently, two official plugins are available:
+- `/` is an abstract map. Hover or focus a region to see where it goes.
+- `/gallery` is stained glass work, from pattern to finished piece.
+- `/plaster-calculator` computes water and plaster for mold-making.
+- `/kiln` records ceramic and glass firings.
+- `/spotify` and `/discobard` handle OAuth callbacks for side projects.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## Updating Heroku Environment Variables
+React 19, React Router 8, TypeScript, Vite. Plain modern CSS: the home page,
+gallery motion, contact panel, and kiln tabs run on CSS alone (`:has()`,
+scroll-driven animations, popovers, `:target`). TanStack Query and
+react-hook-form load only on the tool routes.
 
-- update the environment variable in heroku settings > config vars
-- restart the dynos using the heroku cli or from the dashboard.
+## Development
 
-### Restart Dynos
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run lint
+npm run build
+```
 
-1. `heroku login`
-2. `heroku apps`
-3. `heroku restart -a app-name`
+The backend is [gotrodb](https://github.com/Josh-Gotro/gotrodb) on port 3006.
+Set `VITE_BACKEND_API_URL=http://localhost:3006` in `.env.local`.
 
-If restarting the dynos doesn't work you need to force a build on heroku. Builds happen automatically when you push changes in, so consider pushing any change to the repo to trigger it.
+## Deployment
+
+Heroku, static build served by nginx (`Procfile` + `config/nginx.conf.erb`).
+Push to main deploys. `VITE_BACKEND_API_URL` is set as a config var and baked
+in at build time.

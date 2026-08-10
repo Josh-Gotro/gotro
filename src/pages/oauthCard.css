@@ -1,0 +1,162 @@
+/* Shared shell for the OAuth pages (/spotify, /spotify/callback, /discobard):
+ * one centered card in a dark room, same family as the kiln. These pages are
+ * mostly seen for four seconds by a redirect, so they stay quiet. */
+
+@layer page {
+  .oauth-room {
+    --sky: #f03d3e;
+    --gold-1: #e88623;
+    --gold-2: #feba4d;
+    --gold-3: #ffed8d;
+    --char: color-mix(in oklch, #141110 95%, var(--gold-1));
+    --char-lift: color-mix(in oklch, #221c18 92%, var(--gold-1));
+    --ink-soft: color-mix(in oklch, white 74%, var(--char));
+
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(to bottom, var(--char), var(--char-lift));
+    color: var(--ink-soft);
+    font-family: 'Helvetica', sans-serif;
+    padding: var(--space-4);
+  }
+
+  .oauth-moon {
+    position: fixed;
+    top: var(--space-3);
+    left: var(--space-3);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f0f0e4 40%,
+      #c0c0b6 100%
+    );
+    box-shadow:
+      0 0 12px rgb(255 255 255 / 0.25),
+      0 0 28px rgb(255 255 255 / 0.12);
+    transition: box-shadow 0.3s ease;
+  }
+
+  .oauth-moon:is(:hover, :focus-visible) {
+    box-shadow:
+      0 0 16px rgb(255 255 255 / 0.45),
+      0 0 40px rgb(255 255 255 / 0.2);
+  }
+
+  .oauth-card {
+    width: min(26rem, 92vw);
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    text-align: center;
+    background: color-mix(in oklch, black 18%, var(--char-lift));
+    border: 1px solid color-mix(in oklch, var(--gold-1) 18%, transparent);
+    border-radius: var(--radius-2);
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .oauth-card h1 {
+    font-size: var(--text-3);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    background: linear-gradient(
+      100deg,
+      var(--gold-3),
+      var(--gold-2) 45%,
+      var(--gold-1)
+    );
+    background-clip: text;
+    color: transparent;
+  }
+
+  .oauth-card p {
+    font-size: var(--text-0);
+    letter-spacing: 0.06em;
+    line-height: 1.7;
+    color: color-mix(in oklch, var(--ink-soft) 82%, var(--char));
+    text-wrap: pretty;
+  }
+
+  .oauth-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    letter-spacing: 0.1em;
+    font-size: var(--text-0);
+  }
+
+  .oauth-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: color-mix(in oklch, white 30%, var(--char));
+  }
+
+  .oauth-status.is-connected .oauth-dot {
+    background: #1db954; /* Spotify green, earned only when live */
+    box-shadow: 0 0 10px rgb(29 185 84 / 0.5);
+    animation: oauth-pulse 2.6s ease-in-out infinite;
+  }
+
+  @keyframes oauth-pulse {
+    50% {
+      box-shadow: 0 0 18px rgb(29 185 84 / 0.75);
+    }
+  }
+
+  .oauth-status.is-error .oauth-dot {
+    background: var(--sky);
+  }
+
+  .oauth-button {
+    border: 1.5px solid var(--gold-2);
+    background: transparent;
+    color: var(--gold-2);
+    padding: var(--space-2) var(--space-4);
+    border-radius: 999px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      background 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .oauth-button:is(:hover, :focus-visible) {
+    background: var(--gold-2);
+    color: var(--char);
+  }
+
+  /* Indeterminate spinner: conic gradient ring, no SVG. */
+  .oauth-spinner {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0turn,
+      transparent 0 0.15turn,
+      var(--gold-2) 0.5turn,
+      transparent 0.85turn 1turn
+    );
+    mask-image: radial-gradient(circle, transparent 55%, #000 56%);
+    animation: oauth-spin 1.1s linear infinite;
+  }
+
+  @keyframes oauth-spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .oauth-spinner {
+      animation-duration: 3s;
+    }
+    .oauth-status.is-connected .oauth-dot {
+      animation: none;
+    }
+  }
+}

@@ -1,0 +1,655 @@
+/* The map — faithful recreation of v1's Art page, interaction logic in CSS.
+ *
+ * Modern CSS in use here:
+ * - `:has()`            scene-level hover label + dimming, zero JS
+ * - `:is()`             hover/focus-visible treated identically everywhere
+ * - `@property`         registered custom properties → animatable gradient
+ *                       (the gold band shimmer) and label fade
+ * - `color-mix(oklch)`  derived tints that don't go muddy
+ * - `clip-path`         circular hit areas on the circles (v1's were square)
+ * - `sibling-index()`   branch fan angles with no per-child styles, where
+ *                       supported (inline --i fallback everywhere else)
+ * - `@layer`            page styles slot into the app's cascade layers
+ * - `text-wrap`         balance on the label
+ */
+
+@property --shine {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+/* Registered so the melt mask can actually animate — an unregistered custom
+   property would snap from 0% to 50% instead of interpolating. */
+@property --melt {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+@layer page {
+  .scene {
+    /* v1 palette, verbatim */
+    --sky-top: #f03d3e;
+    --sky-bottom: #ef3d3e;
+    --ink: #313131;
+    --tree-blue: #3d75fd;
+    --gold-1: #e88623;
+    --gold-2: #feba4d;
+    --gold-3: #ffed8d;
+
+    /* Derived in perceptual space instead of hand-picked hexes */
+    --tree-pink: color-mix(in oklch, var(--sky-top) 25%, white);
+    --label-ink: color-mix(in oklch, white 92%, var(--sky-top));
+
+    /* Written by :has() rules below; read by .scene-label */
+    --label: '';
+
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    overflow: clip;
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
+  }
+
+  /* ---- hover/focus label — v1's useState + onMouseEnter, now :has() ---- */
+
+  .scene:has(.to-gallery:is(:hover, :focus-visible)) {
+    --label: 'GALLERY';
+  }
+  .scene:has(.to-plaster:is(:hover, :focus-visible)) {
+    --label: 'PLASTER CALC';
+  }
+  .scene:has(.to-kiln:is(:hover, :focus-visible)) {
+    --label: 'KILN';
+  }
+  .scene:has(.to-substack:is(:hover, :focus-visible)) {
+    /* lowercase on purpose */
+    --label: 'substack';
+  }
+  .scene:has(.contact-toggle.open:is(:hover, :focus-visible)) {
+    --label: 'CONTACT';
+  }
+  .scene:has(.contact-toggle.close:is(:hover, :focus-visible)) {
+    --label: 'CLOSE';
+  }
+  /* Convention kept for future unassigned regions. */
+  .scene:has(.slot:hover) {
+    --label: '???';
+  }
+
+  .scene-label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translateX(-5%);
+    font-family: 'Helvetica', sans-serif;
+    font-size: 6em;
+    color: var(--label-ink);
+    text-align: center;
+    text-wrap: balance;
+    pointer-events: none;
+  }
+
+  .scene-label::after {
+    content: var(--label);
+  }
+
+  /* Everything not being pointed at steps back a touch. :has() + :not(). */
+  .scene:has(.region:is(:hover, :focus-visible))
+    .region:not(:hover, :focus-visible) {
+    opacity: 0.85;
+  }
+
+  /* ---- figure ---- */
+
+  .figure {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 400px;
+    background-color: var(--ink);
+    z-index: 1;
+  }
+
+  /* ---- moon head → /gallery ---- */
+
+  .head {
+    position: absolute;
+    top: 10%;
+    left: calc(50% - 45px);
+    width: 90px;
+    height: 90px;
+    display: block;
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f0f0e4 30%,
+      #d8d8cc 60%,
+      #c0c0b6 100%
+    );
+    border-radius: 50%;
+    transition: all 0.4s ease;
+    box-shadow:
+      inset -4px -4px 8px rgb(0 0 0 / 0.1),
+      0 0 15px rgb(255 255 255 / 0.3),
+      0 0 30px rgb(255 255 255 / 0.15);
+    z-index: 2;
+  }
+
+  .moon-face {
+    overflow: clip;
+  }
+
+  /* Crater texture, revealed on hover/focus */
+  .moon-face::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        circle at 30% 20%,
+        rgb(0 0 0 / 0.05) 3px,
+        transparent 8px
+      ),
+      radial-gradient(
+        circle at 70% 30%,
+        rgb(0 0 0 / 0.05) 4px,
+        transparent 9px
+      ),
+      radial-gradient(
+        circle at 40% 60%,
+        rgb(0 0 0 / 0.05) 5px,
+        transparent 10px
+      ),
+      radial-gradient(
+        circle at 25% 35%,
+        rgb(0 0 0 / 0.03) 2px,
+        transparent 5px
+      ),
+      radial-gradient(
+        circle at 65% 65%,
+        rgb(0 0 0 / 0.03) 2px,
+        transparent 6px
+      ),
+      radial-gradient(
+        circle at 80% 40%,
+        rgb(0 0 0 / 0.03) 3px,
+        transparent 7px
+      ),
+      radial-gradient(
+        circle at 45% 25%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 75% 55%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 20% 70%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 60% 85%,
+        rgb(0 0 0 / 0.02) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 35% 15%,
+        rgb(255 255 255 / 0.6) 1px,
+        transparent 3px
+      ),
+      radial-gradient(
+        circle at 85% 25%,
+        rgb(255 255 255 / 0.6) 1px,
+        transparent 3px
+      );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .moon-face:is(:hover, :focus-visible)::before {
+    opacity: 1;
+  }
+
+  .moon-face:is(:hover, :focus-visible) {
+    background: radial-gradient(
+      circle at 40% 40%,
+      #ffffff 0%,
+      #f8f8f0 40%,
+      #e8e8dc 70%,
+      #d0d0c8 100%
+    );
+    box-shadow:
+      inset -6px -6px 12px rgb(0 0 0 / 0.15),
+      0 0 20px rgb(255 255 255 / 0.4),
+      0 0 40px rgb(255 255 255 / 0.2),
+      0 0 60px rgb(255 255 255 / 0.1);
+  }
+
+  /* ---- tree → Substack (was /portfolio in v1) ---- */
+
+  .tree-container {
+    position: relative;
+    height: 55vh;
+  }
+
+  .tree {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    height: 12vh;
+    width: 5px;
+    display: block;
+    background-color: var(--tree-blue);
+    z-index: 2;
+  }
+
+  .branch {
+    position: absolute;
+    bottom: 100%;
+    height: 10vh;
+    width: 5px;
+    background-color: var(--tree-blue);
+    transform-origin: bottom;
+    /* v1 fanned branches -60°…+60° with 13 inline styles from JS */
+    rotate: calc((var(--i) - 6) * 10deg);
+  }
+
+  /* Same fan, no inline --i needed, where sibling-index() exists */
+  @supports (rotate: calc(sibling-index() * 1deg)) {
+    .branch {
+      rotate: calc((sibling-index() - 7) * 10deg);
+    }
+  }
+
+  /* v1 turned the tree pink by walking the DOM in a mouse handler. */
+  .tree:is(:hover, :focus-visible),
+  .tree:is(:hover, :focus-visible) .branch {
+    background-color: var(--tree-pink);
+  }
+
+  /* ---- circles ---- */
+
+  .circle {
+    border-radius: 50%;
+    position: absolute;
+    background-color: transparent;
+    border: 5px solid #ffffff;
+    display: block;
+    z-index: 2;
+    /* v1's hit areas were the square bounding boxes; clip to the shape */
+    clip-path: circle(50%);
+  }
+
+  .circle:is(:hover, :focus-visible) {
+    background-color: #ffffff;
+  }
+
+  .large-circle {
+    width: 200px;
+    height: 200px;
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .medium-circle {
+    width: 150px;
+    height: 150px;
+    bottom: 30px;
+    left: 30px;
+  }
+
+  .small-circle {
+    width: 100px;
+    height: 100px;
+    bottom: 40px;
+    left: 40px;
+  }
+
+  /* ---- gold band ---- */
+
+  .gold-band {
+    position: absolute;
+    top: 55%;
+    left: 0;
+    width: 100%;
+    height: 66px;
+    z-index: 0;
+    /* Registered --shine makes the gradient itself animatable (@property) */
+    background: linear-gradient(
+      to right,
+      var(--gold-1),
+      var(--gold-2) calc(35% + var(--shine)),
+      var(--gold-3) calc(65% + var(--shine)),
+      var(--gold-1)
+    );
+    animation: shine 7s ease-in-out infinite alternate;
+  }
+
+  @keyframes shine {
+    to {
+      --shine: 15%;
+    }
+  }
+
+  /* ---- contact: a CSS-only :target panel that melts the screen to black ----
+   *
+   * The circle itself is decorative; two anchors stack on top of it. `:has()`
+   * decides which one is clickable, so clicking the same circle opens and then
+   * closes the panel — and the circle stays visible above the veil throughout.
+   */
+
+  .contact-toggle {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    clip-path: circle(50%);
+    /* Above the veil so the circle remains clickable while open. */
+    z-index: 41;
+  }
+
+  /* Only one of the two is live at a time. `visibility` rather than
+     `pointer-events` so the dormant one also leaves the tab order — otherwise
+     Tab lands on a dead "Close" link while the panel is shut. */
+  .contact-toggle.close {
+    visibility: hidden;
+  }
+
+  .scene:has(#contact:target) .contact-toggle.open {
+    visibility: hidden;
+  }
+
+  .scene:has(#contact:target) .contact-toggle.close {
+    visibility: visible;
+  }
+
+  /* Hovering either toggle fills the circle, exactly as the other regions do. */
+  .scene:has(.contact-toggle:is(:hover, :focus-visible)) .small-circle {
+    background-color: #ffffff;
+  }
+
+  /* Keep the circle above the black veil so it never disappears. */
+  .small-circle {
+    z-index: 41;
+  }
+
+  .contact {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    visibility: hidden;
+    pointer-events: none;
+    /* Hold visibility until the melt has run backwards, so closing is
+       animated rather than an instant cut. */
+    transition: visibility 0s linear 0.9s;
+  }
+
+  .contact:target {
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  /* The melt. A gradient mask is the alpha channel: opaque black out to --melt,
+     then dissolving over the next ~14%. Animating --melt drags that soft edge
+     across half the screen.
+
+     Five stacked gradients each mask one horizontal band (mask-size +
+     mask-position), and each runs a few percent ahead of or behind the others.
+     Unioned together (mask-composite: add) the edge reads as an uneven, drippy
+     melt line rather than a clean wipe — while the body of the veil stays
+     fully opaque, which a single composited texture layer would not do. */
+  .contact-veil {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    mask-image:
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) + 5%),
+        transparent calc(var(--melt) + 17%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) - 3%),
+        transparent calc(var(--melt) + 10%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) + 2%),
+        transparent calc(var(--melt) + 15%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) - 6%),
+        transparent calc(var(--melt) + 7%)
+      ),
+      linear-gradient(
+        to right,
+        #000 calc(var(--melt) + 3%),
+        transparent calc(var(--melt) + 16%)
+      );
+    /* Slight overlap on the band height hides seams between them. */
+    mask-size: 100% 20.4%;
+    mask-position:
+      0 0,
+      0 25%,
+      0 50%,
+      0 75%,
+      0 100%;
+    mask-repeat: no-repeat;
+    mask-composite: add;
+    transition: --melt 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .contact:target .contact-veil {
+    --melt: 52%;
+  }
+
+  .contact-body {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: min(52%, 34rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-6) var(--space-5) var(--space-6) clamp(2rem, 8vw, 6rem);
+    color: #ffffff;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+  }
+
+  .contact:target .contact-body {
+    opacity: 1;
+    transition-delay: 0.35s;
+  }
+
+  .contact-body h2 {
+    margin: 0;
+    font-family: 'Helvetica', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-wrap: balance;
+    color: color-mix(in oklch, #ffffff 82%, var(--sky-top));
+  }
+
+  .contact-body ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .contact-body li {
+    /* Staggered entrance, one line of CSS instead of a rule per child. */
+    translate: -0.75rem 0;
+    opacity: 0;
+    transition:
+      translate 0.5s ease,
+      opacity 0.5s ease;
+    transition-delay: calc(0.4s + var(--i) * 0.08s);
+  }
+
+  .contact:target .contact-body li {
+    translate: 0 0;
+    opacity: 1;
+  }
+
+  .contact-body a {
+    font-family: 'Helvetica', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: #ffffff;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+    transition:
+      border-color 0.25s ease,
+      color 0.25s ease;
+  }
+
+  .contact-body a:is(:hover, :focus-visible) {
+    color: var(--gold-3);
+    border-bottom-color: var(--gold-3);
+  }
+
+  /* ---- focus & fallback nav ---- */
+
+  .scene a:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+  }
+
+  /* Hidden until keyboard-focused, then surfaces top-left. */
+  .scene-nav a {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .scene-nav a:focus-visible {
+    width: auto;
+    height: auto;
+    clip-path: none;
+    top: var(--space-3);
+    left: var(--space-3);
+    z-index: 10;
+    padding: var(--space-2) var(--space-3);
+    background: var(--ink);
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .scene-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ---- motion & viewport ---- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .gold-band {
+      animation: none;
+    }
+    .head,
+    .moon-face::before {
+      transition: none;
+    }
+    /* Panel still opens — it just arrives instead of melting. */
+    .contact,
+    .contact-veil,
+    .contact-body,
+    .contact-body li {
+      transition-duration: 0s;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .scene-label {
+      top: 0;
+      left: 0;
+      bottom: initial;
+      right: initial;
+      font-size: 4em;
+      transform: none;
+    }
+    .gold-band {
+      top: 60%;
+    }
+    .tree {
+      top: 50%;
+      left: 50%;
+      height: 20vh;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .tree {
+      top: 80%;
+      left: 80%;
+      height: 20vh;
+    }
+  }
+
+  /* Narrow screens: melt downward and use the full width, since a left-half
+     panel would leave no room to read. */
+  @media (max-width: 700px) {
+    /* Same idea rotated: bands run as vertical columns so the melt drips down. */
+    .contact-veil {
+      mask-image:
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) + 4%),
+          transparent calc(var(--melt) + 15%)
+        ),
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) - 4%),
+          transparent calc(var(--melt) + 8%)
+        ),
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) + 2%),
+          transparent calc(var(--melt) + 13%)
+        ),
+        linear-gradient(
+          to bottom,
+          #000 calc(var(--melt) - 2%),
+          transparent calc(var(--melt) + 10%)
+        );
+      mask-size: 25.4% 100%;
+      mask-position:
+        0 0,
+        33.33% 0,
+        66.66% 0,
+        100% 0;
+    }
+
+    .contact:target .contact-veil {
+      --melt: 58%;
+    }
+
+    .contact-body {
+      inset: 0 0 auto 0;
+      width: auto;
+      height: 58%;
+      padding: var(--space-5) var(--space-4);
+    }
+  }
+}

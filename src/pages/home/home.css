@@ -27,6 +27,13 @@
   initial-value: 0%;
 }
 
+/* Contour-line offset on the mountain; one 12% cycle = a seamless loop. */
+@property --contour {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
 @layer page {
   .scene {
     /* v1 palette, verbatim */
@@ -72,6 +79,9 @@
   }
   .scene:has(.contact-toggle.close:is(:hover, :focus-visible)) {
     --label: 'CLOSE';
+  }
+  .scene:has(.to-pathfinder:is(:hover, :focus-visible)) {
+    --label: 'PATHFINDER';
   }
   /* Convention kept for future unassigned regions. */
   .scene:has(.slot:hover) {
@@ -321,6 +331,8 @@
     width: 100%;
     height: 66px;
     z-index: 0;
+    /* Decorative; must not eat clicks meant for the mountain base behind it. */
+    pointer-events: none;
     /* Registered --shine makes the gradient itself animatable (@property) */
     background: linear-gradient(
       to right,
@@ -335,6 +347,139 @@
   @keyframes shine {
     to {
       --shine: 15%;
+    }
+  }
+
+  /* ---- topo mountain → Pathfinder ----
+   *
+   * A two-peak silhouette cut with clip-path: shape() — curve commands in
+   * CSS percentages, so the ridge scales with the element (polygon fallback
+   * where shape() is missing). The fill is a hypsometric elevation ramp with
+   * a contour-line layer whose registered --contour offset rises on hover.
+   * The hiker is a dot on offset-path tracing the same ridge coordinates:
+   * resting on the summit, walking the range while hovered or focused.
+   *
+   * Sits before the gold band in the DOM: the base paints behind it and the
+   * band becomes a horizon.
+   */
+
+  .mountain {
+    position: absolute;
+    right: clamp(1rem, 6vw, 5rem);
+    bottom: calc(45% - 22px);
+    width: clamp(150px, 24vw, 300px);
+    height: clamp(100px, 15vw, 190px);
+    display: block;
+  }
+
+  .mountain-body {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background:
+      /* contour lines, rising via --contour */
+      repeating-linear-gradient(
+        to top,
+        transparent calc(var(--contour) + 0%),
+        transparent calc(var(--contour) + 10.8%),
+        color-mix(in oklch, var(--ink) 28%, transparent)
+          calc(var(--contour) + 10.8%),
+        color-mix(in oklch, var(--ink) 28%, transparent)
+          calc(var(--contour) + 12%)
+      ),
+      /* hypsometric tints, base to snowcap */
+        linear-gradient(
+          to top,
+          color-mix(in oklch, var(--ink) 60%, var(--sky-top)) 0 20%,
+          color-mix(in oklch, var(--sky-top) 70%, var(--ink)) 20% 38%,
+          color-mix(in oklch, var(--sky-top) 55%, var(--gold-1)) 38% 54%,
+          var(--gold-1) 54% 68%,
+          var(--gold-2) 68% 79%,
+          var(--gold-3) 79% 86%,
+          #f0f0e4 86% 100%
+        );
+    clip-path: polygon(
+      0% 100%,
+      0% 80%,
+      32% 26%,
+      50% 48%,
+      70% 12%,
+      88% 42%,
+      100% 62%,
+      100% 100%
+    );
+    transition: filter 0.4s ease;
+  }
+
+  /* Softly curved flanks where shape() exists; same landmarks as the polygon. */
+  @supports (clip-path: shape(from 0% 0%, line to 100% 100%)) {
+    .mountain-body {
+      clip-path: shape(
+        from 0% 100%,
+        line to 0% 80%,
+        curve to 32% 26% with 14% 62%,
+        line to 50% 48%,
+        curve to 70% 12% with 60% 26%,
+        line to 88% 42%,
+        curve to 100% 62% with 95% 52%,
+        line to 100% 100%,
+        close
+      );
+    }
+  }
+
+  .to-pathfinder:is(:hover, :focus-visible) .mountain-body {
+    animation: contours-rise 1.4s linear infinite;
+    /* Alpenglow: the silhouette itself casts the light. */
+    filter: drop-shadow(0 0 14px rgb(255 237 141 / 0.35));
+  }
+
+  @keyframes contours-rise {
+    to {
+      --contour: 12%;
+    }
+  }
+
+  /* The hiker: only rendered where offset-path understands shape(). */
+  .hiker {
+    display: none;
+  }
+
+  @supports (offset-path: shape(from 0% 0%, line to 100% 100%)) {
+    .hiker {
+      display: block;
+      position: absolute;
+      width: 7px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: #f0f0e4;
+      box-shadow:
+        0 0 6px rgb(240 240 228 / 0.9),
+        0 0 14px rgb(240 240 228 / 0.4);
+      offset-path: shape(
+        from 0% 80%,
+        curve to 32% 26% with 14% 62%,
+        line to 50% 48%,
+        curve to 70% 12% with 60% 26%,
+        line to 88% 42%,
+        curve to 100% 62% with 95% 52%
+      );
+      offset-rotate: 0deg;
+      /* Resting on the summit. */
+      offset-distance: 65%;
+    }
+
+    .to-pathfinder:is(:hover, :focus-visible) .hiker {
+      animation: hike 3.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes hike {
+      from {
+        offset-distance: 0%;
+      }
+      to {
+        offset-distance: 100%;
+      }
     }
   }
 
@@ -578,6 +723,11 @@
     .contact-body li {
       transition-duration: 0s;
     }
+    /* Contours hold still; the hiker keeps its summit post. */
+    .to-pathfinder:is(:hover, :focus-visible) .mountain-body,
+    .to-pathfinder:is(:hover, :focus-visible) .hiker {
+      animation: none;
+    }
   }
 
   @media (max-width: 900px) {
@@ -591,6 +741,13 @@
     }
     .gold-band {
       top: 60%;
+    }
+    /* Band moved; the mountain keeps its base tucked behind the horizon. */
+    .mountain {
+      bottom: calc(40% - 16px);
+      right: clamp(0.5rem, 4vw, 2rem);
+      width: clamp(120px, 30vw, 200px);
+      height: clamp(80px, 19vw, 130px);
     }
     .tree {
       top: 50%;

@@ -53,6 +53,15 @@ export const destinations: Destination[] = [
     unlisted: true,
   },
   {
+    slug: 'pathfinder',
+    label: 'Pathfinder',
+    href: 'https://juneau-pathfinder.vercel.app',
+    hint: 'Trail guide for Juneau, Alaska',
+    external: true,
+    // Reachable only via the mountain region (2026-08-10).
+    unlisted: true,
+  },
+  {
     slug: 'spotify',
     label: 'Spotify',
     href: '/spotify',

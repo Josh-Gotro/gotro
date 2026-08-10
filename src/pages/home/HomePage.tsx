@@ -33,6 +33,7 @@ const branches = Array.from({ length: BRANCH_COUNT }, (_, i) => i);
 export default function HomePage() {
   const listed = destinations.filter((d) => !d.unlisted);
   const substack = destinations.find((d) => d.slug === 'substack')!;
+  const pathfinder = destinations.find((d) => d.slug === 'pathfinder')!;
 
   return (
     <main className="scene">
@@ -49,6 +50,20 @@ export default function HomePage() {
           ))}
         </ul>
       </nav>
+
+      {/* Topo mountain → Pathfinder. In the DOM before the gold band so its
+          base paints behind it and the band reads as a horizon. The hiker dot
+          rests on the summit and walks the ridge on hover; all CSS. */}
+      <a
+        href={pathfinder.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="region mountain to-pathfinder"
+        aria-label="Pathfinder: trail guide for Juneau, Alaska"
+      >
+        <span className="mountain-body" />
+        <span className="hiker" />
+      </a>
 
       <div className="gold-band" aria-hidden="true" />
 

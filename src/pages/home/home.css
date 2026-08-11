@@ -48,6 +48,8 @@
     /* Derived in perceptual space instead of hand-picked hexes */
     --tree-pink: color-mix(in oklch, var(--sky-top) 25%, white);
     --label-ink: color-mix(in oklch, white 92%, var(--sky-top));
+    /* The mountain's green: complementary to the red sky */
+    --pine: #3d8560;
 
     /* Written by :has() rules below; read by .scene-label */
     --label: '';
@@ -365,7 +367,9 @@
 
   .mountain {
     position: absolute;
-    right: clamp(1rem, 6vw, 5rem);
+    /* Anchored to the figure, not the viewport: the left flank always tucks
+       behind the monolith, at every width — the mobile look, everywhere. */
+    left: calc(50% + 3rem);
     bottom: calc(45% - 22px);
     width: clamp(150px, 24vw, 300px);
     height: clamp(100px, 15vw, 190px);
@@ -387,16 +391,16 @@
         color-mix(in oklch, var(--ink) 28%, transparent)
           calc(var(--contour) + 12%)
       ),
-      /* hypsometric tints, base to snowcap */
+      /* hypsometric tints, base to snowcap: black, greens, gold, white */
         linear-gradient(
           to top,
-          color-mix(in oklch, var(--ink) 60%, var(--sky-top)) 0 20%,
-          color-mix(in oklch, var(--sky-top) 70%, var(--ink)) 20% 38%,
-          color-mix(in oklch, var(--sky-top) 55%, var(--gold-1)) 38% 54%,
-          var(--gold-1) 54% 68%,
-          var(--gold-2) 68% 79%,
-          var(--gold-3) 79% 86%,
-          #f0f0e4 86% 100%
+          color-mix(in oklch, var(--ink) 80%, var(--pine)) 0 20%,
+          color-mix(in oklch, var(--pine) 45%, var(--ink)) 20% 38%,
+          color-mix(in oklch, var(--pine) 75%, var(--ink)) 38% 55%,
+          var(--pine) 55% 68%,
+          var(--gold-2) 68% 76%,
+          var(--gold-3) 76% 84%,
+          #ffffff 84% 100%
         );
     clip-path: polygon(
       0% 100%,
@@ -456,8 +460,16 @@
       box-shadow:
         0 0 6px rgb(240 240 228 / 0.9),
         0 0 14px rgb(240 240 228 / 0.4);
+      /* An out-and-back trail: shape() paths implicitly close, so the return
+         leg is walked explicitly and the closure becomes zero-length. 0% is
+         the right-hand trailhead; 50% is the far (tucked) end of the ridge. */
       offset-path: shape(
-        from 0% 80%,
+        from 100% 62%,
+        curve to 88% 42% with 95% 52%,
+        line to 70% 12%,
+        curve to 50% 48% with 60% 26%,
+        line to 32% 26%,
+        curve to 0% 80% with 14% 62%,
         curve to 32% 26% with 14% 62%,
         line to 50% 48%,
         curve to 70% 12% with 60% 26%,
@@ -465,14 +477,17 @@
         curve to 100% 62% with 95% 52%
       );
       offset-rotate: 0deg;
-      /* Resting on the summit. */
-      offset-distance: 65%;
+      /* Resting on the summit (crested at ~20% of the round trip). */
+      offset-distance: 20%;
     }
 
     .to-pathfinder:is(:hover, :focus-visible) .hiker {
-      animation: hike 3.2s ease-in-out infinite alternate;
+      animation: hike 5.5s ease-in-out infinite;
     }
 
+    /* Sets out from the visible right flank, treks the full ridge into the
+       tuck behind the monolith, and walks home: the path itself is the round
+       trip, so one plain cycle loops seamlessly. */
     @keyframes hike {
       from {
         offset-distance: 0%;
@@ -745,7 +760,6 @@
     /* Band moved; the mountain keeps its base tucked behind the horizon. */
     .mountain {
       bottom: calc(40% - 16px);
-      right: clamp(0.5rem, 4vw, 2rem);
       width: clamp(120px, 30vw, 200px);
       height: clamp(80px, 19vw, 130px);
     }
